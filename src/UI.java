@@ -29,12 +29,21 @@ public class UI extends JFrame {
 
         //Input Field Creation
         JPanel inputPanel = new JPanel();
+
         JLabel productNameLabel = new JLabel("Product:");
         JTextField productNameField = new JTextField(10);
+        JLabel productQuantityLabel = new JLabel("Quantity:");
+        JTextField productQuantityField = new JTextField(10);
+        JLabel productPriceLabel = new JLabel("Price:");
+        JTextField productPriceField = new JTextField(10);
 
         //Add field to inputPanel
         inputPanel.add(productNameLabel);
         inputPanel.add(productNameField);
+        inputPanel.add(productQuantityLabel);
+        inputPanel.add(productQuantityField);
+        inputPanel.add(productPriceLabel);
+        inputPanel.add(productPriceField);
 
         //Add button to buttonPanel
         buttonPanel.add(addButton);
