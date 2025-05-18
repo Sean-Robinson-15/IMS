@@ -28,7 +28,7 @@ public class UI extends JFrame {
         JPanel pricePanel = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel(new GridLayout( 0, 3));
 
-        //Create Button
+        //Button Creation
         JButton addButton = new JButton("Add");
         JButton updateButton = new JButton("Update");
         JButton removeButton = new JButton("Remove");
@@ -43,7 +43,7 @@ public class UI extends JFrame {
         JLabel productPriceLabel = new JLabel("   Price :  ");
         JTextField productPriceField = new JTextField(5);
 
-        //Add field to inputPanel
+        //Add fields to inputPanel
         productPanel.add(productNameLabel, BorderLayout.WEST);
         productPanel.add(productNameField);
         inputPanel.add(productPanel);
@@ -60,12 +60,12 @@ public class UI extends JFrame {
         inputPanel.add(new JLabel());
         inputPanel.add(new JLabel());
 
-        //Add button to buttonPanel
+        //Add buttons to buttonPanel
         buttonPanel.add(addButton);
         buttonPanel.add(removeButton);
         buttonPanel.add(updateButton);
 
-        //Add panel to window
+        //Add panels to window
         add(inputPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.SOUTH);
     }
