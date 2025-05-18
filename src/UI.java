@@ -20,6 +20,16 @@ public class UI extends JFrame {
 
         //Add Table to window
         add(scrollPane, BorderLayout.CENTER);
+
+        //Create Button
+        JPanel inputPanel = new JPanel();
+        JButton addButton = new JButton("Add");
+
+        //Add button to panel
+        inputPanel.add(addButton);
+
+        //Add panel to window
+        add(inputPanel, BorderLayout.NORTH);
     }
 
     public static void main(String[] args) {
