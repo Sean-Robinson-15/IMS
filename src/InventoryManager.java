@@ -30,4 +30,12 @@ public class InventoryManager {
         return new ArrayList<>(inventory.values());
     }
 
+    public List<String> getAllIDs() {
+        ArrayList<String> IDs = new ArrayList<String>();
+        for (Product p : inventory.values()) {
+            IDs.add(p.getID());
+        }
+        return IDs;
+    }
+
 }
