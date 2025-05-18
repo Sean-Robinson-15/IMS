@@ -21,35 +21,49 @@ public class UI extends JFrame {
         //Add Table to window
         add(scrollPane, BorderLayout.CENTER);
 
+        //Panel Creation
+        JPanel inputPanel = new JPanel(new GridLayout(2, 3, 10, -10));
+        JPanel productPanel = new JPanel(new BorderLayout());
+        JPanel quantityPanel = new JPanel(new BorderLayout());
+        JPanel pricePanel = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel(new GridLayout( 0, 3));
+
         //Create Button
-        JPanel buttonPanel = new JPanel();
         JButton addButton = new JButton("Add");
         JButton updateButton = new JButton("Update");
         JButton removeButton = new JButton("Remove");
 
-        //Input Field Creation
-        JPanel inputPanel = new JPanel();
-
-        JLabel productNameLabel = new JLabel("Product:");
+        //Field Creation
+        JLabel productNameLabel = new JLabel("   Product :  ");
         JTextField productNameField = new JTextField(10);
-        JLabel productQuantityLabel = new JLabel("Quantity:");
-        JTextField productQuantityField = new JTextField(10);
-        JLabel productPriceLabel = new JLabel("Price:");
-        JTextField productPriceField = new JTextField(10);
+
+        JLabel productQuantityLabel = new JLabel("  Quantity :  ");
+        JTextField productQuantityField = new JTextField(5);
+
+        JLabel productPriceLabel = new JLabel("   Price :  ");
+        JTextField productPriceField = new JTextField(5);
 
         //Add field to inputPanel
-        inputPanel.add(productNameLabel);
-        inputPanel.add(productNameField);
-        inputPanel.add(productQuantityLabel);
-        inputPanel.add(productQuantityField);
-        inputPanel.add(productPriceLabel);
-        inputPanel.add(productPriceField);
+        productPanel.add(productNameLabel, BorderLayout.WEST);
+        productPanel.add(productNameField);
+        inputPanel.add(productPanel);
+
+        quantityPanel.add(productQuantityLabel, BorderLayout.WEST);
+        quantityPanel.add(productQuantityField);
+        inputPanel.add(quantityPanel);
+
+        pricePanel.add(productPriceLabel, BorderLayout.WEST);
+        pricePanel.add(productPriceField);
+        inputPanel.add(pricePanel);
+
+        //Create blanks as easiest solution to create blank row, will {RETURN} to refactor
+        inputPanel.add(new JLabel());
+        inputPanel.add(new JLabel());
 
         //Add button to buttonPanel
         buttonPanel.add(addButton);
         buttonPanel.add(removeButton);
         buttonPanel.add(updateButton);
-
 
         //Add panel to window
         add(inputPanel, BorderLayout.NORTH);
