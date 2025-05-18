@@ -8,6 +8,16 @@ public class InventoryManager {
         System.out.println("Item added: " + ID + " " + name);
     }
 
+    public void updateItem(String ID, int quantity) {
+        Product product = inventory.get(ID);
+        if (product != null) {
+            product.setQuantity(quantity);
+            System.out.println("Quantity updated to " + quantity);
+        } else {
+            System.out.println("Quantity Not updated for " + ID + ". \n is the ID correct?");
+        }
+    }
+
     public void removeItem(String ID) {
         if (inventory.remove(ID) != null) {
             System.out.println("Item Removed : " + ID);
