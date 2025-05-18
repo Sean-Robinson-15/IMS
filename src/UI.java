@@ -22,19 +22,29 @@ public class UI extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
 
         //Create Button
-        JPanel inputPanel = new JPanel();
+        JPanel buttonPanel = new JPanel();
         JButton addButton = new JButton("Add");
         JButton updateButton = new JButton("Update");
         JButton removeButton = new JButton("Remove");
 
-        //Add button to panel
-        inputPanel.add(addButton);
-        inputPanel.add(removeButton);
-        inputPanel.add(updateButton);
+        //Input Field Creation
+        JPanel inputPanel = new JPanel();
+        JLabel productNameLabel = new JLabel("Product:");
+        JTextField productNameField = new JTextField(10);
+
+        //Add field to inputPanel
+        inputPanel.add(productNameLabel);
+        inputPanel.add(productNameField);
+
+        //Add button to buttonPanel
+        buttonPanel.add(addButton);
+        buttonPanel.add(removeButton);
+        buttonPanel.add(updateButton);
 
 
         //Add panel to window
-        add(inputPanel, BorderLayout.SOUTH);
+        add(inputPanel, BorderLayout.NORTH);
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     public static void main(String[] args) {
