@@ -73,6 +73,9 @@ public class UI extends JFrame {
 
         //Listeners to do CRUD operations
         addButton.addActionListener(e -> {
+           String ID = productNameField.getText();
+           int quan = Integer.parseInt(productQuantityField.getText());
+           manager.updateItem(ID, quan);
            refreshTable();
         });
     }
