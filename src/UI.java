@@ -70,6 +70,11 @@ public class UI extends JFrame {
         //Add panels to window
         add(inputPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.SOUTH);
+
+        //Listeners to do CRUD operations
+        addButton.addActionListener(e -> {
+           refreshTable();
+        });
     }
 
 
