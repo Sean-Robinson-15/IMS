@@ -12,7 +12,20 @@ public class Product {
         this.price = price;
     }
 
+    //Getters
+    public int getID() {
+        return ID;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public double getPrice() {
+        return price;
     }
 }
