@@ -24,9 +24,14 @@ public class UI extends JFrame {
         //Create Button
         JPanel inputPanel = new JPanel();
         JButton addButton = new JButton("Add");
+        JButton updateButton = new JButton("Update");
+        JButton removeButton = new JButton("Remove");
 
         //Add button to panel
         inputPanel.add(addButton);
+        inputPanel.add(removeButton);
+        inputPanel.add(updateButton);
+
 
         //Add panel to window
         add(inputPanel, BorderLayout.NORTH);
