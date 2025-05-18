@@ -34,7 +34,7 @@ public class UI extends JFrame {
 
 
         //Add panel to window
-        add(inputPanel, BorderLayout.NORTH);
+        add(inputPanel, BorderLayout.SOUTH);
     }
 
     public static void main(String[] args) {
