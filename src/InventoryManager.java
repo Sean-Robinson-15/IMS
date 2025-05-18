@@ -16,4 +16,8 @@ public class InventoryManager {
         }
     }
 
+    public List<Product> getAllItems() {
+        return new ArrayList<>(inventory.values());
+    }
+
 }
