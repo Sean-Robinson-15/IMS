@@ -3,6 +3,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class UI extends JFrame {
+    private InventoryManager manager = new InventoryManager();
+    private DefaultTableModel inventoryTable;
 
     public UI() {
         //Create Window
@@ -12,7 +14,7 @@ public class UI extends JFrame {
         setLocationRelativeTo(null);
 
         //Create Default Table
-        DefaultTableModel inventoryTable = new DefaultTableModel(new Object[]{"ID", "Product", "Quantity", "Price"}, 1);
+        inventoryTable = new DefaultTableModel(new Object[]{"ID", "Product", "Quantity", "Price"}, 1);
 
         //Create table based on default above
         JTable table = new JTable(inventoryTable);
@@ -68,6 +70,14 @@ public class UI extends JFrame {
         //Add panels to window
         add(inputPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+
+    private void refreshTable() {
+        inventoryTable.setRowCount(0);
+        for (Product item : manager.getAllItems()) {
+            inventoryTable.addRow(new Object[]{item.getName(), item.getQuantity(), item.getPrice()});
+        }
     }
 
     public static void main(String[] args) {
