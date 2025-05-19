@@ -7,6 +7,27 @@ public class InventoryManager {
         inventory.put(ID, new Product(ID, name, quantity, price));
         System.out.println("Item added: " + ID + " " + name);
     }
+    public void testItems() {
+        String ID = "69";
+        String name = "test";
+        int quantity = 1;
+        double price = 5.5;
+
+        String ID1 = "420";
+        String name1 = "test";
+        int quantity1 = 1;
+        double price1 = 5.6;
+
+        String ID2 = "71";
+        String name2 = "test";
+        int quantity2 = 1;
+        double price2 = 5.6;
+
+        inventory.put(ID, new Product(ID, name, quantity, price));
+        inventory.put(ID1, new Product(ID1, name1, quantity1, price1));
+        inventory.put(ID2, new Product(ID2, name2, quantity2, price2));
+        System.out.println("Item added: " + ID + " " + name);
+    }
 
     public void updateItem(String ID, int quantity) {
         Product product = inventory.get(ID);
@@ -26,11 +47,11 @@ public class InventoryManager {
         }
     }
 
-    public List<Product> getAllItems() {
+    public ArrayList<Product> getAllItems() {
         return new ArrayList<>(inventory.values());
     }
 
-    public List<String> getAllIDs() {
+    public ArrayList<String> getAllIDs() {
         ArrayList<String> IDs = new ArrayList<String>();
         for (Product p : inventory.values()) {
             IDs.add(p.getID());

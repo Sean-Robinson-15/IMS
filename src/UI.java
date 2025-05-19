@@ -1,12 +1,16 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class UI extends JFrame {
     private InventoryManager manager = new InventoryManager();
     private DefaultTableModel inventoryTable;
 
     public UI() {
+        manager.testItems();
+
+
         //Create Window
         setTitle("IMS by BNU Industry Solutions LTD");
         setSize(690,420);
@@ -78,14 +82,24 @@ public class UI extends JFrame {
         //Add panels to window
         add(inputPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.SOUTH);
+        refreshTable();
 
         //Listeners to do CRUD operations
         addButton.addActionListener(e -> {
-            String ID = productNameField.getText();
+            ArrayList<String> IDs = manager.getAllIDs();
+            for (String id : IDs) {
+                System.out.println(id);
+            }
+            String ID = productIDField.getText();
+            String name = productNameField.getText();
             int quan = Integer.parseInt(productQuantityField.getText());
-            manager.updateItem(ID, quan);
+            double price = Double.parseDouble(productPriceField.getText());
+            if (!IDs.contains(ID)) {
+                manager.addItem(ID, name, quan, price);
+            }
             refreshTable();
         });
+
     }
 
 
