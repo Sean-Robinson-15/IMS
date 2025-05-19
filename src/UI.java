@@ -96,9 +96,6 @@ public class UI extends JFrame {
         //Listeners to do CRUD operations
         addButton.addActionListener(e -> {
             ArrayList<String> IDs = manager.getAllIDs();
-            for (String id : IDs) {
-                System.out.println(id);
-            }
             String ID = productIDField.getText();
             String name = productNameField.getText();
             int quan = Integer.parseInt(productQuantityField.getText());
@@ -116,9 +113,22 @@ public class UI extends JFrame {
             refreshTable();
         });
 
+        removeButton.addActionListener(e -> {
+            ArrayList<String> IDs = manager.getAllIDs();
+             String ID = productIDField.getText();
+            if (IDs.contains(ID)) {
+                manager.removeItem(ID);
+                errorPanel.removeAll(); // {RETURN} refactor into function later
+                errorPanel.add(new JLabel("ID "+ID+" has been removed"));
+                errorPanel.updateUI();
+            } else {
+                errorPanel.removeAll();
+                errorPanel.add(new JLabel("ID "+ID+" doesnt Exist!"));
+                errorPanel.updateUI();
+            }
+            refreshTable();
+        });
     }
-
-
 
     private void refreshTable() {
         inventoryTable.setRowCount(0);
