@@ -15,7 +15,7 @@ public class UI extends JFrame {
         setTitle("IMS by BNU Industry Solutions LTD");
         setSize(690,420);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setLocation(-900, 500);
 
         //Create Default Table
         inventoryTable = new DefaultTableModel(new Object[]{"ID", "Product", "Quantity", "Price"}, 1);
@@ -27,13 +27,18 @@ public class UI extends JFrame {
         //Add Table to window
         add(scrollPane, BorderLayout.CENTER);
 
-        //Panel Creation
-        JPanel inputPanel = new JPanel(new GridLayout(0, 4, 10, -10));
+        //Initial UI/Panel Creation. Will {RETURN} to see if there is a better way
+        JPanel northPanel = new JPanel(new GridLayout( 2, 1, 10, -10));
+        JPanel southPanel = new JPanel(new GridLayout( 2, 1));
+        JPanel inputPanel = new JPanel(new GridLayout());
+        JPanel buttonPanel = new JPanel(new GridLayout());
         JPanel IDPanel = new JPanel(new BorderLayout());
         JPanel productPanel = new JPanel(new BorderLayout());
         JPanel quantityPanel = new JPanel(new BorderLayout());
         JPanel pricePanel = new JPanel(new BorderLayout());
-        JPanel buttonPanel = new JPanel(new GridLayout( 0, 3));
+        JPanel errorPanel = new JPanel(new BorderLayout());
+
+
 
         //Button Creation
         JButton addButton = new JButton("Add");
@@ -71,17 +76,21 @@ public class UI extends JFrame {
         inputPanel.add(pricePanel);
 
         //Create blanks as easiest solution to create blank row, will {RETURN} to refactor
-        inputPanel.add(new JLabel());
-        inputPanel.add(new JLabel());
+        northPanel.add(inputPanel);
+        northPanel.add(new JPanel());
 
         //Add buttons to buttonPanel
         buttonPanel.add(addButton);
-        buttonPanel.add(removeButton);
         buttonPanel.add(updateButton);
+        buttonPanel.add(removeButton);
+
+        //Added to southPanel
+        southPanel.add(errorPanel);
+        southPanel.add(buttonPanel);
 
         //Add panels to window
-        add(inputPanel, BorderLayout.NORTH);
-        add(buttonPanel, BorderLayout.SOUTH);
+        add(northPanel, BorderLayout.NORTH);
+        add(southPanel, BorderLayout.SOUTH);
         refreshTable();
 
         //Listeners to do CRUD operations
@@ -96,11 +105,19 @@ public class UI extends JFrame {
             double price = Double.parseDouble(productPriceField.getText());
             if (!IDs.contains(ID)) {
                 manager.addItem(ID, name, quan, price);
+                errorPanel.removeAll(); // {RETURN} refactor into function later
+                errorPanel.add(new JLabel("ID "+ID+" has been added"));
+                errorPanel.updateUI();
+            } else {
+                errorPanel.removeAll();
+                errorPanel.add(new JLabel("ID "+ID+" Already Exists!"));
+                errorPanel.updateUI();
             }
             refreshTable();
         });
 
     }
+
 
 
     private void refreshTable() {
