@@ -24,7 +24,8 @@ public class UI extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
 
         //Panel Creation
-        JPanel inputPanel = new JPanel(new GridLayout(2, 3, 10, -10));
+        JPanel inputPanel = new JPanel(new GridLayout(0, 4, 10, -10));
+        JPanel IDPanel = new JPanel(new BorderLayout());
         JPanel productPanel = new JPanel(new BorderLayout());
         JPanel quantityPanel = new JPanel(new BorderLayout());
         JPanel pricePanel = new JPanel(new BorderLayout());
@@ -36,6 +37,9 @@ public class UI extends JFrame {
         JButton removeButton = new JButton("Remove");
 
         //Field Creation
+        JLabel productIDLabel = new JLabel("   ID :  ");
+        JTextField productIDField = new JTextField(10);
+
         JLabel productNameLabel = new JLabel("   Product :  ");
         JTextField productNameField = new JTextField(10);
 
@@ -46,6 +50,10 @@ public class UI extends JFrame {
         JTextField productPriceField = new JTextField(5);
 
         //Add fields to inputPanel
+        IDPanel.add(productIDLabel, BorderLayout.WEST);
+        IDPanel.add(productIDField);
+        inputPanel.add(IDPanel);
+
         productPanel.add(productNameLabel, BorderLayout.WEST);
         productPanel.add(productNameField);
         inputPanel.add(productPanel);
@@ -73,10 +81,10 @@ public class UI extends JFrame {
 
         //Listeners to do CRUD operations
         addButton.addActionListener(e -> {
-           String ID = productNameField.getText();
-           int quan = Integer.parseInt(productQuantityField.getText());
-           manager.updateItem(ID, quan);
-           refreshTable();
+            String ID = productNameField.getText();
+            int quan = Integer.parseInt(productQuantityField.getText());
+            manager.updateItem(ID, quan);
+            refreshTable();
         });
     }
 
@@ -84,7 +92,7 @@ public class UI extends JFrame {
     private void refreshTable() {
         inventoryTable.setRowCount(0);
         for (Product item : manager.getAllItems()) {
-            inventoryTable.addRow(new Object[]{item.getName(), item.getQuantity(), item.getPrice()});
+            inventoryTable.addRow(new Object[]{item.getID(), item.getName(), item.getQuantity(), item.getPrice()});
         }
     }
 
