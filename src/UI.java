@@ -78,13 +78,9 @@ public class UI extends JFrame {
             double price = Double.parseDouble(productPriceField.getText());
             if (!IDs.contains(ID)) {
                 manager.addItem(ID, name, quan, price);
-                errorPanel.removeAll(); // {RETURN} refactor into function later
-                errorPanel.add(new JLabel("ID "+ID+" has been added"));
-                errorPanel.updateUI();
+                updatePanel(errorPanel, "ID "+ID+" has been added.");
             } else {
-                errorPanel.removeAll();
-                errorPanel.add(new JLabel("ID "+ID+" Already Exists!"));
-                errorPanel.updateUI();
+                updatePanel(errorPanel, "ID "+ID+" already Exists!");
             }
             refreshTable();
         });
@@ -94,16 +90,18 @@ public class UI extends JFrame {
             String ID = productIDField.getText();
             if (IDs.contains(ID)) {
                 manager.removeItem(ID);
-                errorPanel.removeAll(); // {RETURN} refactor into function later
-                errorPanel.add(new JLabel("ID "+ID+" has been removed"));
-                errorPanel.updateUI();
+                updatePanel(errorPanel,"ID "+ID+" has been removed.");
             } else {
-                errorPanel.removeAll();
-                errorPanel.add(new JLabel("ID "+ID+" doesnt Exist!"));
-                errorPanel.updateUI();
+                updatePanel(errorPanel, "ID "+ID+" doesnt Exist!");
             }
             refreshTable();
         });
+    }
+
+    private void updatePanel(JPanel panel, String output) {
+        panel.removeAll();
+        panel.add(new JLabel(output));
+        panel.updateUI();
     }
 
     private void addLabelField(JPanel parent, String labelText, JTextField textField) {
