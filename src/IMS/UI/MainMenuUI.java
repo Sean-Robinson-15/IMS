@@ -1,14 +1,9 @@
 package IMS.UI;
 import IMS.Inventory.InventoryManager;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class MainMenuUI extends JFrame {
-
-    private DefaultTableModel inventoryTable;
-
     public MainMenuUI(InventoryManager manager){
         setTitle("IMS by BNU Industry Solutions LTD");
         setSize(690,420);
@@ -42,6 +37,11 @@ public class MainMenuUI extends JFrame {
         ordersButton.addActionListener(e -> {
             OrdersUI ordersUI = new OrdersUI(manager);
             switchPanel(ordersUI, menuPanel);
+        });
+
+        suppliersButton.addActionListener(e -> {
+            SuppliersUI suppliersUI = new SuppliersUI(manager);
+            switchPanel(suppliersUI, menuPanel);
         });
     }
 

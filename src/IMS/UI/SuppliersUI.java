@@ -9,8 +9,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class OrdersUI extends GUI {
-        public OrdersUI(InventoryManager manager) {
+public class SuppliersUI extends GUI {
+    public SuppliersUI(InventoryManager manager) {
         setLayout(new BorderLayout());
         //Add Table to window
 
@@ -52,7 +52,7 @@ public class OrdersUI extends GUI {
         southPanel.add(buttonPanel);
 
         //Added title
-        JLabel label = new JLabel("Orders");
+        JLabel label = new JLabel("Suppliers");
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setFont(new Font("Verdana", Font.PLAIN, 18));
         Border border = BorderFactory.createLineBorder(Color.BLACK);
