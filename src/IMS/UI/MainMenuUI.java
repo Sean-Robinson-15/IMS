@@ -36,12 +36,7 @@ public class MainMenuUI extends JFrame {
 
         inventoryButton.addActionListener(e -> {
             InventoryUI inventoryUI = new InventoryUI(manager);
-            if (!checkUI("InventoryUI")) {
-                removeUI("InventoryUI");
-                add(inventoryUI);
-                this.repaint();
-                this.revalidate();
-            }
+            switchPanel(inventoryUI, "InventoryUI", menuPanel);
         });
 
         ordersButton.addActionListener(e -> {
@@ -53,6 +48,17 @@ public class MainMenuUI extends JFrame {
                 this.revalidate();
             }
         });
+    }
+
+    private void switchPanel(JPanel panel, String panelName, JPanel menuPanel) {
+        panel.setName(panelName);
+        if (!checkUI(panelName)) {
+            removeUI(panelName);
+            add(panel);
+            add(menuPanel, BorderLayout.NORTH);
+            repaint();
+            revalidate();
+        }
     }
 
     private boolean checkUI(String string) {
