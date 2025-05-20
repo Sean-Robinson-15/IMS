@@ -15,9 +15,7 @@ public class MainMenuUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocation(900, 500);
 
-
         JPanel menuPanel = new JPanel(new GridLayout());
-
         JButton homeButton = new JButton("Home");
         JButton inventoryButton = new JButton("Inventory");
         JButton ordersButton = new JButton("Orders");
@@ -27,7 +25,6 @@ public class MainMenuUI extends JFrame {
         menuPanel.add(inventoryButton);
         menuPanel.add(ordersButton);
         menuPanel.add(suppliersButton);
-
         add(menuPanel, BorderLayout.NORTH);
 
         homeButton.addActionListener(e -> {
