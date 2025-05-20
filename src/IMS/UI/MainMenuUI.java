@@ -2,7 +2,6 @@ package IMS.UI;
 import IMS.Inventory.InventoryManager;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
 
 public class MainMenuUI extends JFrame {
     public MainMenuUI(InventoryManager manager){
@@ -61,7 +60,7 @@ public class MainMenuUI extends JFrame {
     private boolean checkUI(String string) {
         for (Component comp : getContentPane().getComponents()) {
             System.out.println(comp.getClass().getSimpleName());
-            if (comp.getName().equals(string)) {
+            if (comp.getClass().getSimpleName().equals(string)) {
                 return true;
             }
         }
@@ -70,7 +69,7 @@ public class MainMenuUI extends JFrame {
     private void removeUIExcept(String string) {
         for (Component comp : getContentPane().getComponents()) {
             System.out.println(comp.getClass().getSimpleName());
-            if (!Objects.equals(comp.getName(), string) && !Objects.equals(comp.getName(), "JPanel")) {
+            if (!comp.getClass().getSimpleName().equals(string) && !comp.getClass().getSimpleName().equals("JPanel")) {
                 this.remove(comp);
             }
         }
