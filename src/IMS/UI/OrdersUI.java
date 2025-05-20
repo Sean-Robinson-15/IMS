@@ -9,26 +9,10 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class InventoryUI extends GUI {
-
-    private DefaultTableModel inventoryTable;
-
-    public InventoryUI(InventoryManager manager) {
-        setName("InventoryUI");
+public class OrdersUI extends GUI {
+        public OrdersUI(InventoryManager manager) {
+        setName("OrdersUI");
         setLayout(new BorderLayout());
-        //Create Window
-//        setTitle("IMS by BNU Industry Solutions LTD");
-//        setSize(690,420);
-//        setDefaultCloseOperation(EXIT_ON_CLOSE);
-//        setLocation(-900, 500);
-
-        //Create Default Table
-        inventoryTable = new DefaultTableModel(new Object[]{"ID", "Product", "Quantity", "Price"}, 1);
-
-        //Create table based on default above
-        JTable table = new JTable(inventoryTable);
-        JScrollPane scrollPane = new JScrollPane(table);
-
         //Add Table to window
 
 
@@ -78,13 +62,9 @@ public class InventoryUI extends GUI {
         label.setBackground(new Color(100,20,70));
         northPanel.add(label);
 
-
-
         //Add panels to window
         add(northPanel, BorderLayout.NORTH);
         add(southPanel, BorderLayout.SOUTH);
-        add(scrollPane, BorderLayout.CENTER);
-        refreshTable(manager);
 
         //Listeners to do CRUD operations
         addButton.addActionListener(e -> {
@@ -99,7 +79,6 @@ public class InventoryUI extends GUI {
             } else {
                 updatePanel(errorPanel, "ID "+ID+" already Exists!");
             }
-            refreshTable(manager);
         });
 
         updateButton.addActionListener(e -> {
@@ -112,8 +91,8 @@ public class InventoryUI extends GUI {
             } else {
                 updatePanel(errorPanel, "ID "+ID+" doesnt Exist!");
             }
-            refreshTable(manager);
         });
+
         removeButton.addActionListener(e -> {
             ArrayList<String> IDs = manager.getAllIDs();
             String ID = productIDField.getText();
@@ -123,7 +102,6 @@ public class InventoryUI extends GUI {
             } else {
                 updatePanel(errorPanel, "ID "+ID+" doesnt Exist!");
             }
-            refreshTable(manager);
         });
     }
 
@@ -133,12 +111,4 @@ public class InventoryUI extends GUI {
         panel.updateUI();
     }
 
-
-
-    private void refreshTable(InventoryManager manager) {
-        inventoryTable.setRowCount(0);
-        for (Product item : manager.getAllItems()) {
-            inventoryTable.addRow(new Object[]{item.getID(), item.getName(), item.getQuantity(), item.getPrice()});
-        }
-    }
 }

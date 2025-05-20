@@ -11,20 +11,20 @@ public class InventoryManager {
         System.out.println("Item added: " + ID + " " + name);
     }
     public void testItems() {
-        String ID = "69";
-        String name = "test";
-        int quantity = 1;
-        double price = 5.5;
+        String ID = "BNU69";
+        String name = "BIG Machine";
+        int quantity = 7;
+        double price = 3.14;
 
-        String ID1 = "420";
-        String name1 = "test";
-        int quantity1 = 1;
-        double price1 = 5.6;
+        String ID1 = "BNU420";
+        String name1 = "Even Bigger Machine";
+        int quantity1 = 14;
+        double price1 = 32;
 
-        String ID2 = "71";
-        String name2 = "test";
-        int quantity2 = 1;
-        double price2 = 5.6;
+        String ID2 = "BNU71";
+        String name2 = "Machiney McMachineFace";
+        int quantity2 = 21;
+        double price2 = 100.54;
 
         inventory.put(ID, new Product(ID, name, quantity, price));
         inventory.put(ID1, new Product(ID1, name1, quantity1, price1));

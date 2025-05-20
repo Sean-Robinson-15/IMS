@@ -1,6 +1,7 @@
 package IMS.UI;
 import IMS.Inventory.InventoryManager;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
@@ -12,7 +13,7 @@ public class MainMenuUI extends JFrame {
         setTitle("IMS by BNU Industry Solutions LTD");
         setSize(690,420);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocation(-900, 500);
+        setLocation(900, 500);
 
 
         JPanel menuPanel = new JPanel(new GridLayout());
@@ -27,11 +28,11 @@ public class MainMenuUI extends JFrame {
         menuPanel.add(ordersButton);
         menuPanel.add(suppliersButton);
 
-        add(menuPanel, BorderLayout.SOUTH);
+        add(menuPanel, BorderLayout.NORTH);
 
         homeButton.addActionListener(e -> {
             this.getContentPane().removeAll();
-            this.add(menuPanel, BorderLayout.SOUTH);
+            this.add(menuPanel, BorderLayout.NORTH);
             this.repaint();
             this.revalidate();
         });
@@ -39,7 +40,18 @@ public class MainMenuUI extends JFrame {
         inventoryButton.addActionListener(e -> {
             InventoryUI inventoryUI = new InventoryUI(manager);
             if (!checkUI("InventoryUI")) {
+                removeUI("InventoryUI");
                 add(inventoryUI);
+                this.repaint();
+                this.revalidate();
+            }
+        });
+
+        ordersButton.addActionListener(e -> {
+            OrdersUI ordersUI = new OrdersUI(manager);
+            if (!checkUI("OrdersUI")) {
+                removeUI("OrdersUI");
+                add(ordersUI);
                 this.repaint();
                 this.revalidate();
             }
@@ -48,11 +60,19 @@ public class MainMenuUI extends JFrame {
 
     private boolean checkUI(String string) {
         for (Component frame : this.getContentPane().getComponents()) {
-            System.out.println(frame.getName());
+            System.out.println(frame);
             if (frame.getName() == string) {
                 return true;
             }
         }
         return false;
+    }
+    private void removeUI(String string) {
+        for (Component frame : this.getContentPane().getComponents()) {
+            System.out.println(frame);
+            if (frame.getName() != string && frame.getName() !=null) {
+                this.remove(frame);
+            }
+        }
     }
 }
