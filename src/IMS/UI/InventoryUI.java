@@ -1,4 +1,5 @@
 package IMS.UI;
+import IMS.UI.GUI;
 import IMS.Inventory.InventoryManager;
 import IMS.Product.Product;
 
@@ -7,18 +8,19 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class InventoryUI extends JFrame {
-    private InventoryManager manager = new InventoryManager();
+public class InventoryUI extends GUI {
+
     private DefaultTableModel inventoryTable;
 
-    public InventoryUI() {
+    public InventoryUI(InventoryManager manager) {
         manager.testItems();
-
+        setName("InventoryUI");
+        setLayout(new BorderLayout());
         //Create Window
-        setTitle("IMS by BNU Industry Solutions LTD");
-        setSize(690,420);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocation(-900, 500);
+//        setTitle("IMS by BNU Industry Solutions LTD");
+//        setSize(690,420);
+//        setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        setLocation(-900, 500);
 
         //Create Default Table
         inventoryTable = new DefaultTableModel(new Object[]{"ID", "Product", "Quantity", "Price"}, 1);
@@ -28,7 +30,7 @@ public class InventoryUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(table);
 
         //Add Table to window
-        add(scrollPane, BorderLayout.CENTER);
+
 
         //Initial IMS.UI.UI/Panel Creation. Will {RETURN} to see if there is a better way
         JPanel northPanel = new JPanel(new GridLayout( 2, 1, 10, -10));
@@ -70,7 +72,8 @@ public class InventoryUI extends JFrame {
         //Add panels to window
         add(northPanel, BorderLayout.NORTH);
         add(southPanel, BorderLayout.SOUTH);
-        refreshTable();
+        add(scrollPane, BorderLayout.CENTER);
+        refreshTable(manager);
 
         //Listeners to do CRUD operations
         addButton.addActionListener(e -> {
@@ -85,7 +88,7 @@ public class InventoryUI extends JFrame {
             } else {
                 updatePanel(errorPanel, "ID "+ID+" already Exists!");
             }
-            refreshTable();
+            refreshTable(manager);
         });
 
         removeButton.addActionListener(e -> {
@@ -97,7 +100,7 @@ public class InventoryUI extends JFrame {
             } else {
                 updatePanel(errorPanel, "ID "+ID+" doesnt Exist!");
             }
-            refreshTable();
+            refreshTable(manager);
         });
     }
 
@@ -107,14 +110,9 @@ public class InventoryUI extends JFrame {
         panel.updateUI();
     }
 
-    private void addLabelField(JPanel parent, String labelText, JTextField textField) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel(labelText), BorderLayout.WEST);
-        panel.add(textField, BorderLayout.CENTER);
-        parent.add(panel);
-    }
 
-    private void refreshTable() {
+
+    private void refreshTable(InventoryManager manager) {
         inventoryTable.setRowCount(0);
         for (Product item : manager.getAllItems()) {
             inventoryTable.addRow(new Object[]{item.getID(), item.getName(), item.getQuantity(), item.getPrice()});
