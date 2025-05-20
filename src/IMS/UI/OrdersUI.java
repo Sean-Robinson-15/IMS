@@ -52,14 +52,12 @@ public class OrdersUI extends GUI {
         southPanel.add(inputPanel);
         southPanel.add(buttonPanel);
 
-        JLabel label = new JLabel("Inventory");
+        //Added title
+        JLabel label = new JLabel("Order");
         label.setHorizontalAlignment(JLabel.CENTER);
-//        label.setPreferredSize(new Dimension());
         label.setFont(new Font("Verdana", Font.PLAIN, 18));
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         label.setBorder(border);
-
-        label.setBackground(new Color(100,20,70));
         northPanel.add(label);
 
         //Add panels to window

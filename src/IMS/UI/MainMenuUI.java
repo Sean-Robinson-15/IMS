@@ -36,16 +36,17 @@ public class MainMenuUI extends JFrame {
 
         inventoryButton.addActionListener(e -> {
             InventoryUI inventoryUI = new InventoryUI(manager);
-            switchPanel(inventoryUI, "InventoryUI", menuPanel);
+            switchPanel(inventoryUI, menuPanel);
         });
 
         ordersButton.addActionListener(e -> {
             OrdersUI ordersUI = new OrdersUI(manager);
-            switchPanel(ordersUI, "OrdersUI", menuPanel);
+            switchPanel(ordersUI, menuPanel);
         });
     }
 
-    private void switchPanel(JPanel panel, String panelName, JPanel menuPanel) {
+    private void switchPanel(JPanel panel, JPanel menuPanel) {
+        String panelName = panel.getClass().getSimpleName();
         panel.setName(panelName);
         if (!checkUI(panelName)) {
             removeUI(panelName);
@@ -58,8 +59,8 @@ public class MainMenuUI extends JFrame {
 
     private boolean checkUI(String string) {
         for (Component frame : this.getContentPane().getComponents()) {
-            System.out.println(frame);
-            if (frame.getName() == string) {
+            System.out.println(frame.getClass().getSimpleName());
+            if (frame.getClass().getSimpleName() == string) {
                 return true;
             }
         }
@@ -67,8 +68,8 @@ public class MainMenuUI extends JFrame {
     }
     private void removeUI(String string) {
         for (Component frame : this.getContentPane().getComponents()) {
-            System.out.println(frame);
-            if (frame.getName() != string && frame.getName() !=null) {
+            System.out.println(frame.getClass().getSimpleName());
+            if (frame.getClass().getSimpleName() != string && frame.getClass().getSimpleName() != "JPanel") {
                 this.remove(frame);
             }
         }

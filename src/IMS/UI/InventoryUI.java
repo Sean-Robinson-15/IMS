@@ -14,7 +14,6 @@ public class InventoryUI extends GUI {
     private DefaultTableModel inventoryTable;
 
     public InventoryUI(InventoryManager manager) {
-        setName("InventoryUI");
         setLayout(new BorderLayout());
         //Create Window
 //        setTitle("IMS by BNU Industry Solutions LTD");
@@ -68,14 +67,12 @@ public class InventoryUI extends GUI {
         southPanel.add(inputPanel);
         southPanel.add(buttonPanel);
 
+        //Added Title
         JLabel label = new JLabel("Inventory");
         label.setHorizontalAlignment(JLabel.CENTER);
-//        label.setPreferredSize(new Dimension());
         label.setFont(new Font("Verdana", Font.PLAIN, 18));
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         label.setBorder(border);
-
-        label.setBackground(new Color(100,20,70));
         northPanel.add(label);
 
 
