@@ -28,10 +28,10 @@ public class MainMenuUI extends JFrame {
         add(menuPanel, BorderLayout.NORTH);
 
         homeButton.addActionListener(e -> {
-            this.getContentPane().removeAll();
-            this.add(menuPanel, BorderLayout.NORTH);
-            this.repaint();
-            this.revalidate();
+            getContentPane().removeAll();
+            add(menuPanel, BorderLayout.NORTH);
+            repaint();
+            revalidate();
         });
 
         inventoryButton.addActionListener(e -> {
