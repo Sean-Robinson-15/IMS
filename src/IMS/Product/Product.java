@@ -1,3 +1,5 @@
+package IMS.Product;
+
 public class Product {
     private String ID;
     private String name;

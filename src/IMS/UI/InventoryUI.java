@@ -1,15 +1,18 @@
+package IMS.UI;
+import IMS.Inventory.InventoryManager;
+import IMS.Product.Product;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class UI extends JFrame {
+public class InventoryUI extends JFrame {
     private InventoryManager manager = new InventoryManager();
     private DefaultTableModel inventoryTable;
 
-    public UI() {
+    public InventoryUI() {
         manager.testItems();
-
 
         //Create Window
         setTitle("IMS by BNU Industry Solutions LTD");
@@ -27,7 +30,7 @@ public class UI extends JFrame {
         //Add Table to window
         add(scrollPane, BorderLayout.CENTER);
 
-        //Initial UI/Panel Creation. Will {RETURN} to see if there is a better way
+        //Initial IMS.UI.UI/Panel Creation. Will {RETURN} to see if there is a better way
         JPanel northPanel = new JPanel(new GridLayout( 2, 1, 10, -10));
         JPanel southPanel = new JPanel(new GridLayout( 2, 1));
         JPanel inputPanel = new JPanel(new GridLayout());
@@ -116,9 +119,5 @@ public class UI extends JFrame {
         for (Product item : manager.getAllItems()) {
             inventoryTable.addRow(new Object[]{item.getID(), item.getName(), item.getQuantity(), item.getPrice()});
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new UI().setVisible(true));
     }
 }

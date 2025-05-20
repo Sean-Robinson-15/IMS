@@ -1,3 +1,6 @@
+package IMS.Inventory;
+import IMS.Product.*;
+
 import java.util.*;
 
 public class InventoryManager {
@@ -43,7 +46,7 @@ public class InventoryManager {
         if (inventory.remove(ID) != null) {
             System.out.println("Item Removed : " + ID);
         } else {
-            System.out.println("Error! Product Code (" + ID +") doesnt exist.");
+            System.out.println("Error! IMS.Product.Product Code (" + ID +") doesnt exist.");
         }
     }
 
