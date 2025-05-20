@@ -49,7 +49,7 @@ public class MainMenuUI extends JFrame {
         String panelName = panel.getClass().getSimpleName();
         panel.setName(panelName);
         if (!checkUI(panelName)) {
-            removeUI(panelName);
+            removeUIExcept(panelName);
             add(panel);
             add(menuPanel, BorderLayout.NORTH);
             repaint();
@@ -58,19 +58,19 @@ public class MainMenuUI extends JFrame {
     }
 
     private boolean checkUI(String string) {
-        for (Component frame : this.getContentPane().getComponents()) {
-            System.out.println(frame.getClass().getSimpleName());
-            if (frame.getClass().getSimpleName() == string) {
+        for (Component comp : this.getContentPane().getComponents()) {
+            System.out.println(comp.getClass().getSimpleName());
+            if (comp.getClass().getSimpleName() == string) {
                 return true;
             }
         }
         return false;
     }
-    private void removeUI(String string) {
-        for (Component frame : this.getContentPane().getComponents()) {
-            System.out.println(frame.getClass().getSimpleName());
-            if (frame.getClass().getSimpleName() != string && frame.getClass().getSimpleName() != "JPanel") {
-                this.remove(frame);
+    private void removeUIExcept(String string) {
+        for (Component comp : this.getContentPane().getComponents()) {
+            System.out.println(comp.getClass().getSimpleName());
+            if (comp.getClass().getSimpleName() != string && comp.getClass().getSimpleName() != "JPanel") {
+                this.remove(comp);
             }
         }
     }
