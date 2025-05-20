@@ -1,8 +1,8 @@
 package IMS.Product;
 
 public class Product {
-    private String ID;
-    private String name;
+    private final String ID;
+    private final String name;
     private int quantity;
     private double price;
 

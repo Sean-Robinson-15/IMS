@@ -14,7 +14,6 @@ public class OrdersUI extends GUI {
         setLayout(new BorderLayout());
         //Add Table to window
 
-
         //Initial IMS.UI.UI/Panel Creation. Will {RETURN} to see if there is a better way
         JPanel southPanel = new JPanel(new GridLayout( 3, 1, 5, 5));
         JPanel northPanel = new JPanel(new GridLayout());

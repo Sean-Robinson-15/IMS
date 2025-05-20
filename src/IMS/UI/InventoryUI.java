@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class InventoryUI extends GUI {
 
-    private DefaultTableModel inventoryTable;
+    private final DefaultTableModel inventoryTable;
 
     public InventoryUI(InventoryManager manager) {
         setLayout(new BorderLayout());

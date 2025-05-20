@@ -59,8 +59,11 @@ public class MainMenuUI extends JFrame {
 
     private boolean checkUI(String string) {
         for (Component comp : getContentPane().getComponents()) {
-            System.out.println(comp.getClass().getSimpleName());
-            if (comp.getClass().getSimpleName().equals(string)) {
+            String name = comp.getClass().getSimpleName();
+            if (!name.equals("JPanel")) {
+                System.out.println("checking " + name);
+            }
+            if (name.equals(string)) {
                 return true;
             }
         }
@@ -68,8 +71,8 @@ public class MainMenuUI extends JFrame {
     }
     private void removeUIExcept(String string) {
         for (Component comp : getContentPane().getComponents()) {
-            System.out.println(comp.getClass().getSimpleName());
             if (!comp.getClass().getSimpleName().equals(string) && !comp.getClass().getSimpleName().equals("JPanel")) {
+                System.out.println("removing "+comp.getClass().getSimpleName());
                 this.remove(comp);
             }
         }
