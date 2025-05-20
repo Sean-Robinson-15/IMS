@@ -41,12 +41,7 @@ public class MainMenuUI extends JFrame {
 
         ordersButton.addActionListener(e -> {
             OrdersUI ordersUI = new OrdersUI(manager);
-            if (!checkUI("OrdersUI")) {
-                removeUI("OrdersUI");
-                add(ordersUI);
-                this.repaint();
-                this.revalidate();
-            }
+            switchPanel(ordersUI, "OrdersUI", menuPanel);
         });
     }
 
