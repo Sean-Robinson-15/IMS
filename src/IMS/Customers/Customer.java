@@ -1,4 +1,4 @@
-package IMS.Customer;
+package IMS.Customers;
 
 public class Customer {
 }

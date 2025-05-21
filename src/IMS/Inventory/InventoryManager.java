@@ -1,5 +1,5 @@
 package IMS.Inventory;
-import IMS.Product.*;
+import IMS.Products.*;
 
 import java.util.*;
 
@@ -38,7 +38,29 @@ public class InventoryManager {
             product.setQuantity(quantity);
             System.out.println("Quantity updated to " + quantity);
         } else {
-            System.out.println("Quantity Not updated for " + ID + ". \n is the ID correct?");
+            System.out.println("Quantity not updated for " + ID + ". \n is the ID correct?");
+        }
+    }
+
+
+    public void updateItem(String ID, double price) {
+        Product product = inventory.get(ID);
+        if (product != null) {
+            product.setPrice(price);
+            System.out.println("Price updated to " + price);
+        } else {
+            System.out.println("Price not updated for " + ID + ". \n is the ID correct?");
+        }
+    }
+
+    public void updateItem(String ID, int quantity, double price) {
+        Product product = inventory.get(ID);
+        if (product != null) {
+            product.setPrice(price);
+            product.setQuantity(quantity);
+            System.out.println("Price and Quantity updated to " + price + ", " + quantity);
+        } else {
+            System.out.println("Price and Quantity not updated for " + ID + ". \n is the ID correct?");
         }
     }
 

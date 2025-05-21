@@ -1,7 +1,6 @@
 package IMS.UI;
-import IMS.UI.GUI;
 import IMS.Inventory.InventoryManager;
-import IMS.Product.Product;
+import IMS.Products.Product;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -15,11 +14,7 @@ public class InventoryUI extends GUI {
 
     public InventoryUI(InventoryManager manager) {
         setLayout(new BorderLayout());
-        //Create Window
-//        setTitle("IMS by BNU Industry Solutions LTD");
-//        setSize(690,420);
-//        setDefaultCloseOperation(EXIT_ON_CLOSE);
-//        setLocation(-900, 500);
+
 
         //Create Default Table
         inventoryTable = new DefaultTableModel(new Object[]{"ID", "Product", "Quantity", "Price"}, 1);
@@ -101,16 +96,42 @@ public class InventoryUI extends GUI {
 
         updateButton.addActionListener(e -> {
             ArrayList<String> IDs = manager.getAllIDs();
-            String ID = productIDField.getText();
-            int quantity = Integer.parseInt(productQuantityField.getText());
-            if (IDs.contains(ID)) {
-                manager.updateItem(ID, quantity);
-                updatePanel(errorPanel,"ID "+ID+" has been removed.");
-            } else {
-                updatePanel(errorPanel, "ID "+ID+" doesnt Exist!");
+            String ID = productIDField.getText().trim();
+            String quantityText = productQuantityField.getText().trim();
+            String priceText = productPriceField.getText().trim();
+
+            boolean updated = false;
+
+            try {
+                if (!quantityText.isEmpty() && !priceText.isEmpty()) {
+                    int quantity = Integer.parseInt(quantityText);
+                    double price = Double.parseDouble(priceText);
+                    manager.updateItem(ID,quantity,price);
+                    updated = true;
+                } else if (!quantityText.isEmpty()) {
+                    int quantity = Integer.parseInt(quantityText);
+                    manager.updateItem(ID, quantity);
+                    updated = true;
+                } else if (!priceText.isEmpty()) {
+                    double price = Double.parseDouble(priceText);
+                    manager.updateItem(ID, price);
+                    updated = true;
+                }
+            } catch (NumberFormatException except) {
+                updatePanel(errorPanel, "Invalid Number Format");
+                return;
             }
+
+            if (updated) {
+                updatePanel(errorPanel, "ID " + ID + " has been updated");
+            } else {
+                updatePanel(errorPanel, "No valid quanitity or price provided");
+            }
+
             refreshTable(manager);
         });
+
+
         removeButton.addActionListener(e -> {
             ArrayList<String> IDs = manager.getAllIDs();
             String ID = productIDField.getText();

@@ -1,4 +1,4 @@
-package IMS.Product;
+package IMS.Products;
 
 public class Product {
     private final String ID;

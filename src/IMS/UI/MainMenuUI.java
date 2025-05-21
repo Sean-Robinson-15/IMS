@@ -8,7 +8,7 @@ public class MainMenuUI extends JFrame {
         setTitle("IMS by BNU Industry Solutions LTD");
         setSize(690,420);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocation(900, 500);
+        setLocation(-900, 500);
 
         JPanel menuPanel = new JPanel(new GridLayout());
         JButton homeButton = new JButton("Home");

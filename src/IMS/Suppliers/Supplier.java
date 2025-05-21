@@ -1,4 +1,4 @@
-package IMS.Supplier;
+package IMS.Suppliers;
 
 public class Supplier {
 }

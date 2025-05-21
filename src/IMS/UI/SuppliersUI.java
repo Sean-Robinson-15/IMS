@@ -1,11 +1,8 @@
 package IMS.UI;
-import IMS.UI.GUI;
 import IMS.Inventory.InventoryManager;
-import IMS.Product.Product;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
