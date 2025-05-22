@@ -18,8 +18,7 @@ public class InventoryUI extends GUI {
 
 
         //Create Default Table
-        inventoryTable = new DefaultTableModel(new Object[]{"ID", "Product", "Quantity", "Price"}, 1);
-
+        inventoryTable = createNonEditTable(new String[]{"ID","Product", "Quantity", "Price"});
         //Create table based on default above
         JTable table = new JTable(inventoryTable);
         JScrollPane scrollPane = new JScrollPane(table);

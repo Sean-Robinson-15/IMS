@@ -11,16 +11,29 @@ import java.util.ArrayList;
 public class OrdersUI extends GUI {
     private final InventoryManager manager;
     private final DefaultTableModel inventoryTable;
+    private final DefaultTableModel basketTable;
         public OrdersUI(InventoryManager manager) {
             this.manager = manager;
             setLayout(new BorderLayout());
 
             //Create Default Table
-            inventoryTable = new DefaultTableModel(new Object[]{"ID", "Product", "Quantity", "Price"}, 1);
+            inventoryTable = createNonEditTable(new String[]{"ID","Product", "Quantity", "Price"});
+            basketTable = createNonEditTable(new String[]{"Product", "Quantity", "Price"});
+
 
             //Create table based on default above
             JTable table = new JTable(inventoryTable);
-            JScrollPane scrollPane = new JScrollPane(table);
+            JTable basket = new JTable(basketTable);
+
+            JPanel stockPane = createTablePanel(table, "Inventory");
+            JPanel basketPane = createTablePanel(basket, "Basket");
+            basketPane.setMinimumSize(new Dimension(200,200));
+            JSplitPane mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,stockPane,basketPane);
+            mainPanel.setDividerLocation(450);
+            mainPanel.setResizeWeight(1);
+
+//            mainPanel.add(stockPane);
+//            mainPanel.add(basketPane);
 
             //Add Table to window
 
@@ -33,9 +46,11 @@ public class OrdersUI extends GUI {
             JPanel errorPanel = new JPanel(new BorderLayout());
 
             //Button Creation
-            JButton addButton = new JButton("Add");
-            JButton updateButton = new JButton("Update");
-            JButton removeButton = new JButton("Remove");
+            JButton addButton = new JButton("Add To Basket");
+            JButton removeOneButton = new JButton("Remove from Basket");
+            JButton removeAllButton = new JButton("Remove All");
+            JButton checkoutButton = new JButton("Checkout");
+
 
             //Field Creation
             JTextField productIDField = new JTextField(10);
@@ -53,8 +68,9 @@ public class OrdersUI extends GUI {
 
             //Add buttons to buttonPanel
             buttonPanel.add(addButton);
-            buttonPanel.add(updateButton);
-            buttonPanel.add(removeButton);
+            buttonPanel.add(removeAllButton);
+            buttonPanel.add(removeOneButton);
+            buttonPanel.add(checkoutButton);
 
             //Added to southPanel
             southPanel.add(errorPanel);
@@ -72,39 +88,20 @@ public class OrdersUI extends GUI {
             //Add panels to window
             add(northPanel, BorderLayout.NORTH);
             add(southPanel, BorderLayout.SOUTH);
-            add(scrollPane, BorderLayout.CENTER);
+            add(mainPanel, BorderLayout.CENTER);
             refreshTable();
 
             //Listeners to do CRUD operations
             addButton.addActionListener(e -> {
-                ArrayList<String> IDs = manager.getAllIDs();
-                String ID = productIDField.getText();
-                String name = productNameField.getText();
-                int quan = Integer.parseInt(productQuantityField.getText());
-                double price = Double.parseDouble(productPriceField.getText());
-                if (!IDs.contains(ID)) {
-                    manager.addItem(ID, name, quan, price);
-                    updatePanel(errorPanel, "ID "+ID+" has been added.");
-                } else {
-                    updatePanel(errorPanel, "ID "+ID+" already Exists!");
-                }
-                refreshTable();
-            });
-
-            updateButton.addActionListener(e -> {
 
             });
 
-            removeButton.addActionListener(e -> {
-                ArrayList<String> IDs = manager.getAllIDs();
-                String ID = productIDField.getText();
-                if (IDs.contains(ID)) {
-                    manager.removeItem(ID);
-                    updatePanel(errorPanel,"ID "+ID+" has been removed.");
-                } else {
-                    updatePanel(errorPanel, "ID "+ID+" doesnt Exist!");
-                }
-                refreshTable();
+            checkoutButton.addActionListener(e -> {
+
+            });
+
+            removeOneButton.addActionListener(e -> {
+
             });
 
         }
@@ -115,12 +112,24 @@ public class OrdersUI extends GUI {
         panel.updateUI();
     }
 
+    private JPanel createTablePanel(JTable table, String header) {
+            JPanel panel = new JPanel(new BorderLayout());
+            panel.add(new JScrollPane(table), BorderLayout.CENTER);
+            JLabel headerLabel = createHeader(header);
+            panel.add(headerLabel, BorderLayout.NORTH);
+            return panel;
+    }
+
 
 
     public void refreshTable() {
         inventoryTable.setRowCount(0);
         for (Product item : manager.getAllItems()) {
             inventoryTable.addRow(new Object[]{item.getID(), item.getName(), item.getQuantity(), item.getPrice()});
+        }
+        basketTable.setRowCount(0);
+        for (Product item : manager.getAllItems()) {
+            basketTable.addRow(new Object[]{ item.getName(), item.getQuantity(), item.getPrice()});
         }
     }
 }
