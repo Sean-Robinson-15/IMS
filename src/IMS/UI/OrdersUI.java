@@ -62,7 +62,7 @@ public class OrdersUI extends GUI {
             southPanel.add(buttonPanel);
 
             //Added Title
-            JLabel label = new JLabel("Inventory");
+            JLabel label = new JLabel("Orders");
             label.setHorizontalAlignment(JLabel.CENTER);
             label.setFont(new Font("Verdana", Font.PLAIN, 18));
             Border border = BorderFactory.createLineBorder(Color.BLACK);

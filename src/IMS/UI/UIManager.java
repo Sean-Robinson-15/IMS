@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class MainMenuUI extends JFrame {
-    public MainMenuUI(InventoryManager manager){
+public class UIManager extends JFrame {
+    public UIManager(InventoryManager manager){
         setTitle("IMS by BNU Industry Solutions LTD");
         setSize(690,420);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -48,7 +48,6 @@ public class MainMenuUI extends JFrame {
 
     private void switchPanel(JPanel panel, JPanel menuPanel) {
         String panelName = panel.getClass().getSimpleName();
-        panel.setName(panelName);
         if (!checkUI(panelName)) {
             removeUIExcept(panelName);
             add(panel);
