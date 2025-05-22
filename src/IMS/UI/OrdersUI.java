@@ -9,8 +9,10 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class OrdersUI extends GUI {
+    private final InventoryManager manager;
     private final DefaultTableModel inventoryTable;
         public OrdersUI(InventoryManager manager) {
+            this.manager = manager;
             setLayout(new BorderLayout());
 
             //Create Default Table
@@ -71,7 +73,7 @@ public class OrdersUI extends GUI {
             add(northPanel, BorderLayout.NORTH);
             add(southPanel, BorderLayout.SOUTH);
             add(scrollPane, BorderLayout.CENTER);
-            refreshTable(manager);
+            refreshTable();
 
             //Listeners to do CRUD operations
             addButton.addActionListener(e -> {
@@ -86,7 +88,7 @@ public class OrdersUI extends GUI {
                 } else {
                     updatePanel(errorPanel, "ID "+ID+" already Exists!");
                 }
-                refreshTable(manager);
+                refreshTable();
             });
 
             updateButton.addActionListener(e -> {
@@ -102,7 +104,7 @@ public class OrdersUI extends GUI {
                 } else {
                     updatePanel(errorPanel, "ID "+ID+" doesnt Exist!");
                 }
-                refreshTable(manager);
+                refreshTable();
             });
 
         }
@@ -115,7 +117,7 @@ public class OrdersUI extends GUI {
 
 
 
-    private void refreshTable(InventoryManager manager) {
+    public void refreshTable() {
         inventoryTable.setRowCount(0);
         for (Product item : manager.getAllItems()) {
             inventoryTable.addRow(new Object[]{item.getID(), item.getName(), item.getQuantity(), item.getPrice()});

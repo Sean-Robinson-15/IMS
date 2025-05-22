@@ -7,8 +7,10 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class SuppliersUI extends GUI {
+    private final InventoryManager manager;
     public SuppliersUI(InventoryManager manager) {
         setLayout(new BorderLayout());
+        this.manager = manager;
         //Add Table to window
 
 
@@ -81,7 +83,7 @@ public class SuppliersUI extends GUI {
             int quantity = Integer.parseInt(productQuantityField.getText());
             if (IDs.contains(ID)) {
                 manager.updateItem(ID, quantity);
-                updatePanel(errorPanel,"ID "+ID+" has been removed.");
+                updatePanel(errorPanel,"ID "+ID+" has been updated.");
             } else {
                 updatePanel(errorPanel, "ID "+ID+" doesnt Exist!");
             }
@@ -103,6 +105,11 @@ public class SuppliersUI extends GUI {
         panel.removeAll();
         panel.add(new JLabel(output));
         panel.updateUI();
+    }
+
+    public void refreshTable(){
+        manager.getAllIDs();
+        // PLaceholder for later
     }
 
 }

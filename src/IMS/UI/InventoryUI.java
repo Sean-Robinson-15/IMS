@@ -9,11 +9,12 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class InventoryUI extends GUI {
-
+    private final InventoryManager manager;
     private final DefaultTableModel inventoryTable;
 
     public InventoryUI(InventoryManager manager) {
         setLayout(new BorderLayout());
+        this.manager = manager;
 
 
         //Create Default Table
@@ -76,7 +77,7 @@ public class InventoryUI extends GUI {
         add(northPanel, BorderLayout.NORTH);
         add(southPanel, BorderLayout.SOUTH);
         add(scrollPane, BorderLayout.CENTER);
-        refreshTable(manager);
+        refreshTable();
 
         //Listeners to do CRUD operations
         addButton.addActionListener(e -> {
@@ -91,7 +92,7 @@ public class InventoryUI extends GUI {
             } else {
                 updatePanel(errorPanel, "ID "+ID+" already Exists!");
             }
-            refreshTable(manager);
+            refreshTable();
         });
 
         updateButton.addActionListener(e -> {
@@ -128,7 +129,7 @@ public class InventoryUI extends GUI {
                 updatePanel(errorPanel, "No valid quanitity or price provided");
             }
 
-            refreshTable(manager);
+            refreshTable();
         });
 
 
@@ -141,7 +142,7 @@ public class InventoryUI extends GUI {
             } else {
                 updatePanel(errorPanel, "ID "+ID+" doesnt Exist!");
             }
-            refreshTable(manager);
+            refreshTable();
         });
     }
 
@@ -152,8 +153,8 @@ public class InventoryUI extends GUI {
     }
 
 
-
-    private void refreshTable(InventoryManager manager) {
+    @Override
+    public void refreshTable() {
         inventoryTable.setRowCount(0);
         for (Product item : manager.getAllItems()) {
             inventoryTable.addRow(new Object[]{item.getID(), item.getName(), item.getQuantity(), item.getPrice()});
