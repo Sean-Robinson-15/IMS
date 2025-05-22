@@ -5,12 +5,22 @@ import java.awt.*;
 
 
 public class UIManager extends JFrame {
-    public UIManager(InventoryManager manager){
+    private final InventoryManager manager;
+    private final JPanel menuPanel;
+
+
+    public UIManager(InventoryManager manager) {
+        this.manager = manager;
         setTitle("IMS by BNU Industry Solutions LTD");
-        setSize(690,420);
+        setSize(690, 420);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocation(900, 500);
+        menuPanel = createMainMenuUI();
+        add(menuPanel, BorderLayout.NORTH);
 
+    }
+
+    private JPanel createMainMenuUI() {
         JPanel menuPanel = new JPanel(new GridLayout());
         JButton homeButton = new JButton("Home");
         JButton inventoryButton = new JButton("Inventory");
@@ -21,13 +31,9 @@ public class UIManager extends JFrame {
         menuPanel.add(inventoryButton);
         menuPanel.add(ordersButton);
         menuPanel.add(suppliersButton);
-        add(menuPanel, BorderLayout.NORTH);
 
         homeButton.addActionListener(e -> {
-            getContentPane().removeAll();
-            add(menuPanel, BorderLayout.NORTH);
-            repaint();
-            revalidate();
+            switchPanel();
         });
 
         inventoryButton.addActionListener(e -> {
@@ -44,6 +50,7 @@ public class UIManager extends JFrame {
             SuppliersUI suppliersUI = new SuppliersUI(manager);
             switchPanel(suppliersUI, menuPanel);
         });
+        return menuPanel;
     }
 
     private void switchPanel(JPanel panel, JPanel menuPanel) {
@@ -55,6 +62,12 @@ public class UIManager extends JFrame {
             repaint();
             revalidate();
         }
+    }
+    private void switchPanel() {
+        getContentPane().removeAll();
+        add(menuPanel, BorderLayout.NORTH);
+        repaint();
+        revalidate();
     }
 
     private boolean checkUI(String string) {
