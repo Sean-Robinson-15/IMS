@@ -2,6 +2,7 @@ package IMS.UI;
 
 import IMS.Interfaces.UIPanelInterface;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
@@ -28,5 +29,16 @@ public abstract class GUI extends JPanel implements UIPanelInterface {
         label.setFont(new Font("Verdana", Font.BOLD, 16));
         label.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
         return label;
+    }
+
+    protected JPanel createNorthPanel(String pageTitle) {
+        JPanel northPanel = new JPanel(new GridLayout());
+        JLabel label = new JLabel(pageTitle);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setFont(new Font("Verdana", Font.PLAIN, 18));
+        Border border = BorderFactory.createLineBorder(Color.BLACK);
+        label.setBorder(border);
+        northPanel.add(label);
+        return northPanel;
     }
 }

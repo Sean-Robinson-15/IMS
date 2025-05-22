@@ -28,7 +28,7 @@ public class InventoryUI extends GUI {
 
         //Initial IMS.UI.UI/Panel Creation. Will {RETURN} to see if there is a better way
         JPanel southPanel = new JPanel(new GridLayout( 3, 1, 5, 5));
-        JPanel northPanel = new JPanel(new GridLayout());
+        JPanel northPanel = createNorthPanel("Inventory");
         JPanel inputPanel = new JPanel(new GridLayout());
         JPanel buttonPanel = new JPanel(new GridLayout());
         JPanel errorPanel = new JPanel(new BorderLayout());
@@ -61,16 +61,6 @@ public class InventoryUI extends GUI {
         southPanel.add(errorPanel);
         southPanel.add(inputPanel);
         southPanel.add(buttonPanel);
-
-        //Added Title
-        JLabel label = new JLabel("Inventory");
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label.setFont(new Font("Verdana", Font.PLAIN, 18));
-        Border border = BorderFactory.createLineBorder(Color.BLACK);
-        label.setBorder(border);
-        northPanel.add(label);
-
-
 
         //Add panels to window
         add(northPanel, BorderLayout.NORTH);
