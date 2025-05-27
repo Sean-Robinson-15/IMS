@@ -99,8 +99,8 @@ public class OrdersUI extends GUI {
                 return;
             }
             int inputQuan = Integer.parseInt(productQuantityField.getText());
-            int quan = manager.getQuantity(ID);
-            if (inputQuan <= quan) {
+            int stockQuan = manager.getQuantity(ID);
+            if (inputQuan <= stockQuan) {
 
                 String name = manager.getName(ID);
                 double price = manager.getPrice(ID);

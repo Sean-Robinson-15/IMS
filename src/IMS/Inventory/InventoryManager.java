@@ -12,9 +12,15 @@ public class InventoryManager {
         System.out.println("Item added: " + ID + " " + name);
     }
     public void addToBasket( String ID, String name, int quantity, double price) {
+        //change to use map/key combo on inventory
         for (Product prod : getAllItems()) {
             if (prod.getID().equals(ID)) {
-                basket.put(ID, new Product(ID, name, quantity, price));
+                if (basket.containsKey(ID)) {
+                    int currentBasketQuantity = getBasketQuantity(ID);
+                    basket.put(ID, new Product(ID, name, currentBasketQuantity + quantity, price));
+                } else {
+                    basket.put(ID, new Product(ID, name, quantity, price));
+                }
                 System.out.println("Item added to basket: " + ID + " " + name);
                 updateItem(ID, prod.getQuantity() - quantity);
             }
@@ -144,6 +150,11 @@ public class InventoryManager {
     public void removeItemFromBasket(String ID) {
         int basketQuantity = getBasketQuantity(ID);
         resetQuantity(ID, basketQuantity);
+        basket.remove(ID);
+    }
+    public void removeItemFromBasket(String ID, int Quantity) {
+        int basketQuantity = getBasketQuantity(ID);
+        resetQuantity(ID, Quantity);
         basket.remove(ID);
     }
 
