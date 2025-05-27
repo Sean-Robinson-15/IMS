@@ -5,32 +5,41 @@ import java.util.*;
 
 public class InventoryManager {
     private final Map<String, Product> inventory = new HashMap<>();
+    private final Map<String, Product> basket = new HashMap<>();
 
     public void addItem(String ID, String name, int quantity, double price) {
         inventory.put(ID, new Product(ID, name, quantity, price));
         System.out.println("Item added: " + ID + " " + name);
     }
-    public void testItems() {
-        String ID = "BNU69";
-        String name = "BIG Machine";
-        int quantity = 7;
-        double price = 3.14;
+    public void addToBasket( String ID, String name, int quantity, double price) {
+        for (Product prod : getAllItems()) {
+            if (prod.getID().equals(ID)) {
+                basket.put(ID, new Product(ID, name, quantity, price));
+                System.out.println("Item added to basket: " + ID + " " + name);
+                updateItem(ID, prod.getQuantity() - quantity);
+            }
 
-        String ID1 = "BNU420";
-        String name1 = "Even Bigger Machine";
-        int quantity1 = 14;
-        double price1 = 32;
-
-        String ID2 = "BNU71";
-        String name2 = "Machiney McMachineFace";
-        int quantity2 = 21;
-        double price2 = 100.54;
-
-        inventory.put(ID, new Product(ID, name, quantity, price));
-        inventory.put(ID1, new Product(ID1, name1, quantity1, price1));
-        inventory.put(ID2, new Product(ID2, name2, quantity2, price2));
-        System.out.println("Item added: " + ID + " " + name);
+        }
     }
+    public void testItems() {
+        randomize(inventory, 10);
+        ArrayList<Product> inventoryArray = getAllItems();
+        Product prod = inventoryArray.get((int)(Math.random()*inventoryArray.size()));
+        addToBasket(prod.getID(), prod.getName(), (int)(Math.random()*prod.getQuantity()), prod.getPrice());
+
+    }
+    public void randomize(Map<String, Product> map, Integer num) {
+        String[] randomStr = {"rD9av","R11Xt","E6qa2","BOnbh","2oFxY","Xt31Q","eMPF2","bJJKZ","R870x","m3cwL","ZXlpU","m4hen","bhj7N","JNP3J","MtZ5P","EQOWO","uo9Vb","VeUIF","JTakW","SKRrl","s6NFt","FUvy7","Ponqd","poid1","Y1V","5","n7MgC","O2OfQ","DSgzo","wmoUb","Y64Fb"};
+        for (int i = 0; i < num; i++)
+        {
+            String ID = String.format("BNU%03d", (int)(Math.random()*1000));
+            String name = randomStr[(int)(Math.random()*randomStr.length)];
+            int quantity = (int)(Math.random()*50) +1;
+            double price = (double) Math.round(Math.random()*1000)/100;
+            map.put(ID, new Product(ID, name, quantity, price));
+        }
+    }
+
 
     public void updateItem(String ID, int quantity) {
         Product product = inventory.get(ID);
@@ -76,12 +85,66 @@ public class InventoryManager {
         return new ArrayList<>(inventory.values());
     }
 
+    public ArrayList<Product> getBasket() {
+        return new ArrayList<>(basket.values());
+    }
+
     public ArrayList<String> getAllIDs() {
         ArrayList<String> IDs = new ArrayList<String>();
         for (Product p : inventory.values()) {
             IDs.add(p.getID());
         }
         return IDs;
+    }
+
+    public double getPrice(String ID){
+        for (Product item : getAllItems()) {
+            if (item.getID().equals(ID)) {
+                return item.getPrice();
+            }
+        }
+        return -1;
+    }
+    public String getName(String ID){
+        for (Product item : getAllItems()) {
+            if (item.getID().equals(ID)) {
+                return item.getName();
+            }
+        }
+        return null;
+    }
+    public Integer getQuantity(String ID){
+        for (Product item : getAllItems()) {
+            if (item.getID().equals(ID)) {
+                return item.getQuantity();
+            }
+        }
+        return null;
+    }
+    public Integer getBasketQuantity(String ID){
+        for (Product item : getBasket()) {
+            if (item.getID().equals(ID)) {
+                return item.getQuantity();
+            }
+        }
+        return null;
+    }
+    public void resetQuantity(String ID, int baskQuan){
+            int currentQuan = getQuantity(ID);
+            updateItem(ID, currentQuan + baskQuan);
+    }
+
+    public void clearBasket() {
+        for (Product item : getBasket()) {
+            String ID = item.getID();
+            resetQuantity(ID, item.getQuantity());
+        }
+        basket.clear();
+    }
+    public void removeItemFromBasket(String ID) {
+        int basketQuantity = getBasketQuantity(ID);
+        resetQuantity(ID, basketQuantity);
+        basket.remove(ID);
     }
 
 }

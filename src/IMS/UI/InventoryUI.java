@@ -135,11 +135,7 @@ public class InventoryUI extends GUI {
         });
     }
 
-    private void updatePanel(JPanel panel, String output) {
-        panel.removeAll();
-        panel.add(new JLabel(output));
-        panel.updateUI();
-    }
+
 
 
     @Override

@@ -41,4 +41,10 @@ public abstract class GUI extends JPanel implements UIPanelInterface {
         northPanel.add(label);
         return northPanel;
     }
+
+    protected void updatePanel(JPanel panel, String output) {
+        panel.removeAll();
+        panel.add(new JLabel(output));
+        panel.updateUI();
+    }
 }

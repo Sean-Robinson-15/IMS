@@ -93,11 +93,6 @@ public class SuppliersUI extends GUI {
         });
     }
 
-    private void updatePanel(JPanel panel, String output) {
-        panel.removeAll();
-        panel.add(new JLabel(output));
-        panel.updateUI();
-    }
 
     public void refreshTable(){
         manager.getAllIDs();
