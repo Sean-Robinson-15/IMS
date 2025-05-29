@@ -16,7 +16,7 @@ public class CustomersUI extends GUI {
         this.manager = manager;
         //Add Table
 
-        customerTable = createNonEditTable(new String[]{"ID","Name", "Address", "Email"});
+        customerTable = createNonEditTable(new String[]{"ID","Name", "Email", "Address"});
 
         JTable table = new JTable(customerTable);
         JScrollPane scrollPane = new JScrollPane(table);
@@ -78,17 +78,17 @@ public class CustomersUI extends GUI {
         });
 
         updateButton.addActionListener(e -> {
+            String output = manager.updateUser(customerIDField.getText(), customerNameField.getText(),
+                    customerAddressField.getText(), customerEmailField.getText());
+            updatePanel(errorPanel, output);
+            refreshTable();
         });
 
         removeButton.addActionListener(e -> {
             ArrayList<String> IDs = manager.getAllCustomerIDs();
             String ID = customerIDField.getText();
-            if (IDs.contains(ID)) {
-                manager.removeUser(ID);
-                updatePanel(errorPanel,"ID "+ID+" has been removed.");
-            } else {
-                updatePanel(errorPanel, "ID "+ID+" doesnt Exist!");
-            }
+            String output = manager.removeUser(ID);
+            updatePanel(errorPanel, output);
             refreshTable();
         });
 
@@ -98,7 +98,7 @@ public class CustomersUI extends GUI {
     public void refreshTable(){
         customerTable.setRowCount(0);
         for (Customer user : manager.getCustomers()) {
-            customerTable.addRow(new Object[]{user.getID(), user.getName(), user.getAddress(), user.getEmail()});
+            customerTable.addRow(new Object[]{user.getID(), user.getName(), user.getEmail(), user.getAddress()});
         }
     }
 

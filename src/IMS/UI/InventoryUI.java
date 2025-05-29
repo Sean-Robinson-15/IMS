@@ -79,37 +79,11 @@ public class InventoryUI extends GUI {
 
         updateButton.addActionListener(e -> {
             String ID = productIDField.getText().trim();
+            String name = productNameField.getText();
             String quantityText = productQuantityField.getText().trim();
             String priceText = productPriceField.getText().trim();
-
-            boolean updated = false;
-
-            try {
-                if (!quantityText.isEmpty() && !priceText.isEmpty()) {
-                    int quantity = Integer.parseInt(quantityText);
-                    double price = Double.parseDouble(priceText);
-                    manager.updateItem(ID,quantity,price);
-                    updated = true;
-                } else if (!quantityText.isEmpty()) {
-                    int quantity = Integer.parseInt(quantityText);
-                    manager.updateItem(ID, quantity);
-                    updated = true;
-                } else if (!priceText.isEmpty()) {
-                    double price = Double.parseDouble(priceText);
-                    manager.updateItem(ID, price);
-                    updated = true;
-                }
-            } catch (NumberFormatException except) {
-                updatePanel(errorPanel, "Invalid Number Format");
-                return;
-            }
-
-            if (updated) {
-                updatePanel(errorPanel, "ID " + ID + " has been updated");
-            } else {
-                updatePanel(errorPanel, "No valid quanitity or price provided");
-            }
-
+            String output = manager.updateItem(ID,name, quantityText, priceText);
+            updatePanel(errorPanel, output);
             refreshTable();
         });
 
