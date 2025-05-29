@@ -21,16 +21,18 @@ public class UIManager extends JFrame {
     }
 
     private JPanel createMainMenuUI() {
-        JPanel menuPanel = new JPanel(new GridLayout());
+        JPanel menuPanel = new JPanel(new GridLayout(0,5));
         JButton homeButton = new JButton("Home");
         JButton inventoryButton = new JButton("Inventory");
         JButton ordersButton = new JButton("Orders");
         JButton suppliersButton = new JButton("Suppliers");
+        JButton customersButton = new JButton("Customers");
 
         menuPanel.add(homeButton);
         menuPanel.add(inventoryButton);
         menuPanel.add(ordersButton);
         menuPanel.add(suppliersButton);
+        menuPanel.add(customersButton);
 
         homeButton.addActionListener(e -> {
             switchPanel();
@@ -43,6 +45,11 @@ public class UIManager extends JFrame {
 
         ordersButton.addActionListener(e -> {
             OrdersUI ordersUI = new OrdersUI(manager);
+            //{RETURN} to see if this is better
+//            menuPanel.add(new JLabel(""));
+//            menuPanel.add(new JLabel(""));
+//            menuPanel.add(new JLabel(""));
+//            menuPanel.add(checkoutButton, -1);
             switchPanel(ordersUI, menuPanel);
         });
 
@@ -50,6 +57,12 @@ public class UIManager extends JFrame {
             SuppliersUI suppliersUI = new SuppliersUI(manager);
             switchPanel(suppliersUI, menuPanel);
         });
+
+        customersButton.addActionListener(e -> {
+            CustomersUI customersUI = new CustomersUI(manager);
+            switchPanel(customersUI, menuPanel);
+        });
+
         return menuPanel;
     }
 

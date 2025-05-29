@@ -14,6 +14,7 @@ public class OrdersUI extends GUI {
     private final DefaultTableModel inventoryTable;
     private final DefaultTableModel basketTable;
     private JTextField productIDField;
+    private JTextField userIDField;
     private JTextField productQuantityField;
     private JPanel errorPanel;
 
@@ -65,13 +66,20 @@ public class OrdersUI extends GUI {
     }
 
     private JPanel createInputPanel() {
-        JPanel inputPanel = new JPanel(new GridLayout());
+        JPanel inputPanel = new JPanel(new GridLayout(2 , 1));
+        JPanel topHalf = new JPanel(new GridLayout(1 , 1));
+        JPanel bottomHalf = new JPanel(new GridLayout(1 , 1));
 
         productIDField = new JTextField(10);
+        userIDField = new JTextField(10);
         productQuantityField = new JTextField(5);
 
-        addLabelField(inputPanel, "   ID :  ", productIDField);
-        addLabelField(inputPanel, "  Quantity :  ", productQuantityField);
+        addLabelField(topHalf, "   Customer/Supplier ID :  ", userIDField);
+        inputPanel.add(topHalf);
+
+        addLabelField(bottomHalf, "   Product ID :  ", productIDField);
+        addLabelField(bottomHalf, "  Quantity :  ", productQuantityField);
+        inputPanel.add(bottomHalf);
 
         return inputPanel;
     }
@@ -87,52 +95,32 @@ public class OrdersUI extends GUI {
         addButton.addActionListener(e -> {
             updatePanel(errorPanel, "");
             String ID = productIDField.getText();
-            // {RETURN} to refactor
-            if (Objects.equals(productQuantityField.getText(), "")) {
-                updatePanel(errorPanel, "No Quantity Entered. Please try again.");
-                refreshTable();
-                return;
-            }
-            if (Objects.equals(ID, "")) {
-                updatePanel(errorPanel, "No Product Entered. Please try again.");
-                refreshTable();
-                return;
-            }
-            int inputQuan = Integer.parseInt(productQuantityField.getText());
-            int stockQuan = manager.getQuantity(ID);
-            if (inputQuan <= stockQuan) {
-
-                String name = manager.getName(ID);
-                double price = manager.getPrice(ID);
-
-                manager.addToBasket(ID, name, inputQuan, price);
-            }else {
-                updatePanel(errorPanel, "Requested Quantity too high");
-
-            }
+            String name = manager.getName(ID);
+            double price = manager.getPrice(ID);
+            String quantityStr = productQuantityField.getText();
+            String output = manager.addToBasket(ID, name, quantityStr, price);
+            updatePanel(errorPanel, output);
             refreshTable();
 
         });
 
         checkoutButton.addActionListener(e -> {
-
+            String userID = userIDField.getText();
+            String output = manager.checkoutBasket(userID);
+            updatePanel(errorPanel, output);
+            refreshTable();
         });
 
         removeOneButton.addActionListener(e -> {
             String ID = productIDField.getText();
-            try {
-                manager.removeItemFromBasket(ID);
-                updatePanel(errorPanel, "Item "+ID+" Removed");
-            } catch (NullPointerException ignored) {
-                updatePanel(errorPanel, "Item Already Removed");
-            }
+            String output = manager.removeItemFromBasket(ID);
+            updatePanel(errorPanel, output);
             refreshTable();
         });
 
         removeAllButton.addActionListener(e -> {
             manager.clearBasket();
             refreshTable();
-
         });
 
         buttonPanel.add(addButton);

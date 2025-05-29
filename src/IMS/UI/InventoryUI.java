@@ -3,10 +3,8 @@ import IMS.Inventory.InventoryManager;
 import IMS.Products.Product;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class InventoryUI extends GUI {
     private final InventoryManager manager;
@@ -20,8 +18,8 @@ public class InventoryUI extends GUI {
         //Create Default Table
         inventoryTable = createNonEditTable(new String[]{"ID","Product", "Quantity", "Price"});
         //Create table based on default above
-        JTable table = new JTable(inventoryTable);
-        JScrollPane scrollPane = new JScrollPane(table);
+            JTable table = new JTable(inventoryTable);
+            JScrollPane scrollPane = new JScrollPane(table);
 
         //Add Table to window
 
@@ -70,22 +68,16 @@ public class InventoryUI extends GUI {
 
         //Listeners to do CRUD operations
         addButton.addActionListener(e -> {
-            ArrayList<String> IDs = manager.getAllIDs();
             String ID = productIDField.getText();
             String name = productNameField.getText();
-            int quan = Integer.parseInt(productQuantityField.getText());
-            double price = Double.parseDouble(productPriceField.getText());
-            if (!IDs.contains(ID)) {
-                manager.addItem(ID, name, quan, price);
-                updatePanel(errorPanel, "ID "+ID+" has been added.");
-            } else {
-                updatePanel(errorPanel, "ID "+ID+" already Exists!");
-            }
+            String quan = productQuantityField.getText();
+            String price = productPriceField.getText();
+            String output = manager.addItem(ID, name, quan, price);
+            updatePanel(errorPanel, output);
             refreshTable();
         });
 
         updateButton.addActionListener(e -> {
-            ArrayList<String> IDs = manager.getAllIDs();
             String ID = productIDField.getText().trim();
             String quantityText = productQuantityField.getText().trim();
             String priceText = productPriceField.getText().trim();
@@ -123,14 +115,9 @@ public class InventoryUI extends GUI {
 
 
         removeButton.addActionListener(e -> {
-            ArrayList<String> IDs = manager.getAllIDs();
             String ID = productIDField.getText();
-            if (IDs.contains(ID)) {
-                manager.removeItem(ID);
-                updatePanel(errorPanel,"ID "+ID+" has been removed.");
-            } else {
-                updatePanel(errorPanel, "ID "+ID+" doesnt Exist!");
-            }
+            String output = manager.removeItem(ID);
+            updatePanel(errorPanel,output);
             refreshTable();
         });
     }

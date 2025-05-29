@@ -2,7 +2,7 @@ package IMS.Products;
 
 public class Product {
     private final String ID;
-    private final String name;
+    private String name;
     private int quantity;
     private double price;
 
@@ -38,5 +38,8 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 }

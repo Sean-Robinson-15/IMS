@@ -1,23 +1,33 @@
 package IMS.UI;
 import IMS.Inventory.InventoryManager;
+import IMS.Users.Supplier;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 public class SuppliersUI extends GUI {
     private final InventoryManager manager;
+    private final DefaultTableModel supplierTable;
+
     public SuppliersUI(InventoryManager manager) {
         setLayout(new BorderLayout());
         this.manager = manager;
         //Add Table to window
 
+        supplierTable = createNonEditTable(new String[]{"ID","Name", "Address", "Email", "Department"});
+
+        JTable table = new JTable(supplierTable);
+        JScrollPane scrollPane = new JScrollPane(table);
+
 
         //Initial IMS.UI.UI/Panel Creation. Will {RETURN} to see if there is a better way
         JPanel southPanel = new JPanel(new GridLayout( 3, 1, 5, 5));
         JPanel northPanel = createNorthPanel("Suppliers");
-        JPanel inputPanel = new JPanel(new GridLayout());
+        JPanel inputPanel = new JPanel(new GridLayout(2, 1, 5, 10));
+        JPanel topInput = new JPanel(new GridLayout());
+        JPanel bottomInput = new JPanel(new GridLayout());
         JPanel buttonPanel = new JPanel(new GridLayout());
         JPanel errorPanel = new JPanel(new BorderLayout());
 
@@ -27,16 +37,21 @@ public class SuppliersUI extends GUI {
         JButton removeButton = new JButton("Remove");
 
         //Field Creation
-        JTextField productIDField = new JTextField(10);
-        JTextField productNameField = new JTextField(10);
-        JTextField productQuantityField = new JTextField(5);
-        JTextField productPriceField = new JTextField(5);
+        JTextField supplierIDField = new JTextField(5);
+        JTextField supplierNameField = new JTextField(10);
+        JTextField supplierAddressField = new JTextField(5);
+        JTextField supplierEmailField = new JTextField(5);
+        JTextField supplierDepartmentField = new JTextField(5);
 
         //Add fields to inputPanel
-        addLabelField(inputPanel, "   ID :  ", productIDField);
-        addLabelField(inputPanel, "   Product :  ", productNameField);
-        addLabelField(inputPanel, "  Quantity :  ", productQuantityField);
-        addLabelField(inputPanel, "   Price :  ", productPriceField);
+        addLabelField(topInput, "   ID :  ", supplierIDField);
+        addLabelField(topInput, "   Name :  ", supplierNameField);
+        addLabelField(bottomInput, "  Address :  ", supplierAddressField);
+        addLabelField(topInput, "   Email :  ", supplierEmailField);
+        addLabelField(bottomInput, "   Department (Optional) :  ", supplierDepartmentField);
+
+        inputPanel.add(topInput);
+        inputPanel.add(bottomInput);
 
         //Create blanks as easiest solution to create blank row, will {RETURN} to refacto
 
@@ -53,50 +68,37 @@ public class SuppliersUI extends GUI {
         //Add panels to window
         add(northPanel, BorderLayout.NORTH);
         add(southPanel, BorderLayout.SOUTH);
+        add(scrollPane, BorderLayout.CENTER);
+        refreshTable();
 
         //Listeners to do CRUD operations
         addButton.addActionListener(e -> {
-            ArrayList<String> IDs = manager.getAllIDs();
-            String ID = productIDField.getText();
-            String name = productNameField.getText();
-            int quan = Integer.parseInt(productQuantityField.getText());
-            double price = Double.parseDouble(productPriceField.getText());
-            if (!IDs.contains(ID)) {
-                manager.addItem(ID, name, quan, price);
-                updatePanel(errorPanel, "ID "+ID+" has been added.");
-            } else {
-                updatePanel(errorPanel, "ID "+ID+" already Exists!");
-            }
+            String output = manager.addSupplier(supplierIDField.getText(), supplierNameField.getText(),
+                    supplierAddressField.getText(), supplierEmailField.getText(),
+                    supplierDepartmentField.getText());
+            updatePanel(errorPanel, output);
+            refreshTable();
         });
 
         updateButton.addActionListener(e -> {
-            ArrayList<String> IDs = manager.getAllIDs();
-            String ID = productIDField.getText();
-            int quantity = Integer.parseInt(productQuantityField.getText());
-            if (IDs.contains(ID)) {
-                manager.updateItem(ID, quantity);
-                updatePanel(errorPanel,"ID "+ID+" has been updated.");
-            } else {
-                updatePanel(errorPanel, "ID "+ID+" doesnt Exist!");
-            }
+
         });
 
         removeButton.addActionListener(e -> {
-            ArrayList<String> IDs = manager.getAllIDs();
-            String ID = productIDField.getText();
-            if (IDs.contains(ID)) {
-                manager.removeItem(ID);
-                updatePanel(errorPanel,"ID "+ID+" has been removed.");
-            } else {
-                updatePanel(errorPanel, "ID "+ID+" doesnt Exist!");
-            }
+            String ID = supplierIDField.getText();
+            String output = manager.removeUser(ID);
+            updatePanel(errorPanel,output);
+            refreshTable();
         });
+
     }
 
-
+    @Override
     public void refreshTable(){
-        manager.getAllIDs();
-        // PLaceholder for later
+        supplierTable.setRowCount(0);
+        for (Supplier user : manager.getSuppliers()) {
+            supplierTable.addRow(new Object[]{user.getID(), user.getName(), user.getAddress(), user.getEmail(), user.getDepartment()});
+        }
     }
 
 }
