@@ -116,11 +116,11 @@ public class InventoryManager {
             if (!name.isEmpty()) {
                 product.setName(name);
             }
-
             return ("Item Updated: " + ID + " " + name);
         }
         return ("Error: Product Code (" + ID +") doesnt exist.");
     }
+
     public String updateUser(String ID, String name, String address, String email) {
         User user = users.get(ID);
         if (user != null) {
@@ -134,6 +134,14 @@ public class InventoryManager {
                 user.setName(name);
             }
             return ("Item Updated: " + ID + " " + name);
+        }
+        return ("Error: Product Code (" + ID +") doesnt exist.");
+    }
+    public String updateUser(String ID, String name, String address, String email, String department) {
+        updateUser(ID, name, address, email);
+        Supplier user = (Supplier)users.get(ID);
+        if ( user != null && !department.isEmpty()) {
+            user.setDepartment(department);
         }
         return ("Error: Product Code (" + ID +") doesnt exist.");
     }

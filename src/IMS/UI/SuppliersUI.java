@@ -81,6 +81,11 @@ public class SuppliersUI extends GUI {
         });
 
         updateButton.addActionListener(e -> {
+            String output = manager.updateUser(supplierIDField.getText(), supplierNameField.getText(),
+                    supplierAddressField.getText(), supplierEmailField.getText(),
+                    supplierDepartmentField.getText());
+            updatePanel(errorPanel, output);
+            refreshTable();
 
         });
 

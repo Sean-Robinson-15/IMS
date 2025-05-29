@@ -6,12 +6,12 @@ import java.util.ArrayList;
 
 public class Transaction {
     private final String orderID;
-    private final String stakeholderID;
+    private final String userID;
     private final ArrayList<Product> products;
 
-    public Transaction(String orderID, String stakeholderID, ArrayList<Product> products) {
+    public Transaction(String orderID, String userID, ArrayList<Product> products) {
         this.orderID = orderID;
-        this.stakeholderID = stakeholderID;
+        this.userID = userID;
         this.products = products;
     }
 
