@@ -1,5 +1,6 @@
 package IMS.UI;
 import IMS.Inventory.InventoryManager;
+import IMS.Inventory.ProductManager;
 import IMS.Products.Product;
 import IMS.Alerts.Alerts;
 
@@ -9,10 +10,10 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class ReceivingUI extends GUI {
-    private final InventoryManager manager;
+    private final ProductManager manager;
     private final DefaultTableModel inventoryTable;
 
-    public ReceivingUI(InventoryManager manager) {
+    public ReceivingUI(ProductManager manager) {
         setLayout(new BorderLayout());
         this.manager = manager;
 

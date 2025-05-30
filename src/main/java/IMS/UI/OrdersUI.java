@@ -1,16 +1,18 @@
 package IMS.UI;
-import IMS.Inventory.InventoryManager;
+import IMS.Inventory.*;
 import IMS.Products.Product;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class OrdersUI extends GUI {
     private final InventoryManager manager;
+
+    private final ProductManager productManager;
+    private final BasketManager basketManager;
+    private final UserManager userManager;
+    private final TransactionManager transactionManager;
     private final DefaultTableModel inventoryTable;
     private final DefaultTableModel basketTable;
     private JTextField productIDField;
@@ -20,6 +22,11 @@ public class OrdersUI extends GUI {
 
         public OrdersUI(InventoryManager manager) {
             this.manager = manager;
+            this.productManager = manager.getProductManager();
+            this.basketManager = manager.getBasketManager();
+            this.userManager = manager.getUserManager();
+            this.transactionManager = manager.getTransactionManager();
+
             setLayout(new BorderLayout());
 
             //Create Default Table
@@ -95,10 +102,10 @@ public class OrdersUI extends GUI {
         addButton.addActionListener(e -> {
             updatePanel(errorPanel, "");
             String ID = productIDField.getText();
-            String name = manager.getName(ID);
-            double price = manager.getPrice(ID);
+            String name = productManager.getName(ID);
+            double price = productManager.getPrice(ID);
             String quantityStr = productQuantityField.getText();
-            String output = manager.addToBasket(ID, name, quantityStr, price);
+            String output = basketManager.addToBasket(ID, name, quantityStr, price);
             updatePanel(errorPanel, output);
             refreshTable();
 
@@ -113,13 +120,13 @@ public class OrdersUI extends GUI {
 
         removeOneButton.addActionListener(e -> {
             String ID = productIDField.getText();
-            String output = manager.removeItemFromBasket(ID);
+            String output = basketManager.removeItemFromBasket(ID);
             updatePanel(errorPanel, output);
             refreshTable();
         });
 
         removeAllButton.addActionListener(e -> {
-            manager.clearBasket();
+            basketManager.clearBasket();
             refreshTable();
         });
 
@@ -145,10 +152,10 @@ public class OrdersUI extends GUI {
         inventoryTable.setRowCount(0);
         basketTable.setRowCount(0);
         System.out.println("Refreshing");
-        for (Product item : manager.getAllItems()) {
+        for (Product item : productManager.getAllItems()) {
             inventoryTable.addRow(new Object[]{item.getID(), item.getName(), item.getQuantity(), item.getPrice()});
         }
-        for (Product item : manager.getBasket()) {
+        for (Product item : basketManager.getBasket()) {
             basketTable.addRow(new Object[]{ item.getID(), item.getName(), item.getQuantity(), item.getPrice()});
         }
     }

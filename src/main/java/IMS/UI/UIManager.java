@@ -1,16 +1,26 @@
 package IMS.UI;
 import IMS.Inventory.InventoryManager;
+import IMS.Inventory.ProductManager;
+import IMS.Inventory.TransactionManager;
+import IMS.Inventory.UserManager;
+
 import javax.swing.*;
 import java.awt.*;
 
 
 public class UIManager extends JFrame {
     private final InventoryManager manager;
+    private final TransactionManager transactionManager;
+    private final UserManager userManager;
+    private final ProductManager productManager;
     private final JPanel menuPanel;
 
 
-    public UIManager(InventoryManager manager) {
+    public UIManager(InventoryManager manager, TransactionManager transactionManager, UserManager userManager, ProductManager productManager) {
         this.manager = manager;
+        this.transactionManager = transactionManager;
+        this.userManager = userManager;
+        this.productManager = productManager;
         setTitle("IMS by BNU Industry Solutions LTD");
         setSize(1000,700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -43,7 +53,7 @@ public class UIManager extends JFrame {
         });
 
         inventoryButton.addActionListener(e -> {
-            InventoryUI inventoryUI = new InventoryUI(manager);
+            InventoryUI inventoryUI = new InventoryUI(productManager);
             switchPanel(inventoryUI, menuPanel);
         });
 
@@ -58,22 +68,22 @@ public class UIManager extends JFrame {
         });
 
         suppliersButton.addActionListener(e -> {
-            SuppliersUI suppliersUI = new SuppliersUI(manager);
+            SuppliersUI suppliersUI = new SuppliersUI(userManager);
             switchPanel(suppliersUI, menuPanel);
         });
 
         customersButton.addActionListener(e -> {
-            CustomersUI customersUI = new CustomersUI(manager);
+            CustomersUI customersUI = new CustomersUI(userManager);
             switchPanel(customersUI, menuPanel);
         });
 
         reportsButton.addActionListener(e -> {
-            ReportsUI reportsUI = new ReportsUI(manager);
+            ReportsUI reportsUI = new ReportsUI(transactionManager);
             switchPanel(reportsUI, menuPanel);
         });
 
         ReceivingButton.addActionListener(e -> {
-            ReceivingUI receivingUI = new ReceivingUI(manager);
+            ReceivingUI receivingUI = new ReceivingUI(productManager);
             switchPanel(receivingUI, menuPanel);
         });
 

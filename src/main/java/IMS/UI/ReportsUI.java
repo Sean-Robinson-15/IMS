@@ -1,18 +1,15 @@
 package IMS.UI;
 import IMS.Inventory.InventoryManager;
-import IMS.Users.Supplier;
+import IMS.Inventory.TransactionManager;
 
-import javax.imageio.stream.ImageInputStream;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import javax.swing.table.DefaultTableModel;
 
 public class ReportsUI extends GUI {
-    private final InventoryManager manager;
+    private final TransactionManager manager;
 
-    public ReportsUI(InventoryManager manager) {
+    public ReportsUI(TransactionManager manager) {
         setLayout(new BorderLayout());
         this.manager = manager;
 

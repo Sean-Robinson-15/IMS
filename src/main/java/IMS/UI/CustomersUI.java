@@ -1,5 +1,6 @@
 package IMS.UI;
 import IMS.Inventory.InventoryManager;
+import IMS.Inventory.UserManager;
 import IMS.Users.Customer;
 
 import javax.swing.*;
@@ -8,10 +9,10 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 public class CustomersUI extends GUI {
-    private final InventoryManager manager;
+    private final UserManager manager;
     private final DefaultTableModel customerTable;
 
-    public CustomersUI(InventoryManager manager) {
+    public CustomersUI(UserManager manager) {
         setLayout(new BorderLayout());
         this.manager = manager;
         //Add Table

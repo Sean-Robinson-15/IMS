@@ -1,5 +1,6 @@
 package IMS.UI;
 import IMS.Inventory.InventoryManager;
+import IMS.Inventory.ProductManager;
 import IMS.Products.Product;
 import IMS.Alerts.Alerts;
 
@@ -9,10 +10,10 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class InventoryUI extends GUI {
-    private final InventoryManager manager;
+    private final ProductManager manager;
     private final DefaultTableModel inventoryTable;
 
-    public InventoryUI(InventoryManager manager) {
+    public InventoryUI(ProductManager manager) {
         setLayout(new BorderLayout());
         this.manager = manager;
 
@@ -105,7 +106,7 @@ public class InventoryUI extends GUI {
         ArrayList<Product> lowStock = new ArrayList<>();
         for (Product item : manager.getAllItems()) {
             String quantity = "<html><font color=\"green\">" + item.getQuantity() + "</font></html>";
-            if (item.getQuantity() <= manager.LOWSTOCKTHRESHOLD) {
+            if (item.getQuantity() <= manager.getLowStockThreshold()) {
                 quantity = "<html><font color=\"red\">" + item.getQuantity() + "</font></html>";
                 lowStock.add(item);
             }

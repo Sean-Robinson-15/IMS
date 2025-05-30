@@ -1,17 +1,17 @@
 package IMS.UI;
 import IMS.Inventory.InventoryManager;
+import IMS.Inventory.UserManager;
 import IMS.Users.Supplier;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 public class SuppliersUI extends GUI {
-    private final InventoryManager manager;
+    private final UserManager manager;
     private final DefaultTableModel supplierTable;
 
-    public SuppliersUI(InventoryManager manager) {
+    public SuppliersUI(UserManager manager) {
         setLayout(new BorderLayout());
         this.manager = manager;
         //Add Table to window
