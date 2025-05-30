@@ -47,9 +47,7 @@ public class UIManager extends JFrame {
         menuPanel.add(reportsButton);
         menuPanel.add(ReceivingButton);
 
-        homeButton.addActionListener(e -> {
-            switchPanel();
-        });
+        homeButton.addActionListener(e -> switchPanel());
 
         inventoryButton.addActionListener(e -> {
             InventoryUI inventoryUI = new InventoryUI(productManager);
@@ -57,7 +55,7 @@ public class UIManager extends JFrame {
         });
 
         ordersButton.addActionListener(e -> {
-            OrdersUI ordersUI = new OrdersUI(manager, productManager, basketManager, userManager, transactionManager);
+            OrdersUI ordersUI = new OrdersUI(manager, productManager, basketManager);
             switchPanel(ordersUI, menuPanel);
         });
 

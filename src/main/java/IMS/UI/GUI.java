@@ -35,7 +35,7 @@ public abstract class GUI extends JPanel implements UIPanelInterface {
         JPanel northPanel = new JPanel(new GridLayout());
         JLabel label = new JLabel(pageTitle);
         label.setHorizontalAlignment(JLabel.CENTER);
-        label.setFont(new Font("Verdana", Font.PLAIN, 18));
+        label.setFont(new Font("Arial", Font.BOLD, 18));
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         label.setBorder(border);
         northPanel.add(label);

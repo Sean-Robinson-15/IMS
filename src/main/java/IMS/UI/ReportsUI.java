@@ -1,9 +1,11 @@
 package IMS.UI;
 import IMS.Inventory.TransactionManager;
 import IMS.Orders.Transaction;
+import IMS.Renderers.TransactionRowRenderer;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.TreeMap;
 
@@ -17,9 +19,14 @@ public class ReportsUI extends GUI {
 
         //Create Default Table
         transactionTable = createNonEditTable(new String[]{"OrderID", "UserID" ,"Items", "Price"});
+
 //        inventoryTable.setFont(new Font("Serif", Font.BOLD, 20));
         //Create table based on default above
         JTable table = new JTable(transactionTable);
+        JTableHeader header = table.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 15));
+
+        table.setDefaultRenderer(Object.class, new TransactionRowRenderer());
         JScrollPane mainPanel = new JScrollPane(table);
 
         JPanel northPanel = createNorthPanel("Report");
@@ -40,35 +47,26 @@ public class ReportsUI extends GUI {
         for (Transaction transaction : manager.getAllTransactions()) {
             String userID = transaction.getUserID();
             String orderID = transaction.getOrderID();
-            double totalCost = transaction.getTotalCost();
+            String totalCost = String.format("£%.2f",transaction.getTotalCost());
             int quantity = transaction.getTotalProducts();
-            //Set Color
-            String color = "<html><font color=\"black\">";
-            if (userID.charAt(0) == 'S') {
-                color = "<html><font color=\"red\">";
-            }
-
-            String orderIDStr = color + orderID + "</font></html>";
-            String userIDStr = color + userID + "</font></html>";
-            String quantityStr = color + quantity + "</font></html>";
-            String totalCostStr = color + String.format("£%.2f",totalCost) + "</font></html>";
-
-            transactionTable.addRow(new Object[]{orderIDStr, userIDStr, quantityStr, totalCostStr});
+            transactionTable.addRow(new Object[]{orderID, userID, quantity, totalCost});
         }
     }
 
 
     public void generateReport(JPanel mainPanel){
         TreeMap<String, Double> report = manager.generateReport();
+        final Color DARK_GREEN = new Color(0x21692d);
+        final Color DARK_RED = new Color(0xb50b0b);
         JLabel reportLabel = new JLabel();
         //maybe use get instead to guarantee order
         for (String item : report.keySet()) {
             Color color = Color.BLACK;
             double itemValue = report.get(item);
             if (item.equals("Profit/Loss") && itemValue <= 0) {
-                color = Color.RED;
+                color = DARK_RED;
             } else if (item.equals("Profit/Loss") && itemValue > 0) {
-                color = Color.GREEN;
+                color = DARK_GREEN;
             }
 
             String itemString = String.format("£%.2f",itemValue);

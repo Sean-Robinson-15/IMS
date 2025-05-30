@@ -2,7 +2,6 @@ package IMS.Inventory;
 import IMS.Orders.Purchase;
 import IMS.Orders.Transaction;
 import IMS.Products.Product;
-import IMS.UI.InputValidator;
 
 import java.util.ArrayList;
 
@@ -30,12 +29,17 @@ public class InventoryManager {
         }
 
         String orderId = getNextOrderID(); // This should be generated properly
-        Transaction transaction = basketManager.createSale(orderId, userID);
+        Transaction transaction = basketManager.createTransaction(orderId);
+        if (transaction instanceof Purchase) {
+            for (Product item : basketManager.getBasket()) {
+                productManager.addInTransitItem(item);
+            }
+        }
         String output = transactionManager.addTransaction(orderId, transaction);
         if (output.contains("Error:")) {
             return output;
         }
-        basketManager.clearBasket();
+        basketManager.checkoutBasket();
 
         return orderId + " Checked out for £" + transaction.getTotalCost();
 
@@ -45,17 +49,38 @@ public class InventoryManager {
         return "T" + String.format("%03d",nextOrderID);
     }
 
-    public void testItems() {
-        productManager.randomize(10);
+    public void demoMode() {
+        productManager.randomize((int)(Math.random()*10)+10);
         ArrayList<Product> inventoryArray = productManager.getAllItems();
-        Product prod = inventoryArray.get((int)(Math.random()*inventoryArray.size()));
+        addDemoUsers();
+        demoSale(inventoryArray, true);
+        demoSale(inventoryArray, false);
+        transactionManager.addTransaction("T002", new Purchase("T002", "S001", getRandomProducts(inventoryArray, (int)(Math.random()*10) + 1)));
+        productManager.addInTransitItem( new Product("BNU001", "Prod1", (int)(Math.random()*100), (int)(Math.random()*60)));
+    }
+
+    public void demoSale(ArrayList<Product> inventoryArray, boolean checkout) {
+        int index = getDemoProductIndex(inventoryArray);
+        Product prod = inventoryArray.get(index);
+        inventoryArray.remove(index);
         int quantity = (int)(Math.random()*prod.getQuantity());
-        basketManager.addToBasket(prod.getID(), prod.getName(), String.valueOf(quantity), prod.getPrice());
+        basketManager.addToBasket("C001", prod.getID(), prod.getName(), String.valueOf(quantity), prod.getPrice());
+        if (checkout) {
+            checkoutBasket("C001");
+        }
+    }
+
+    public void addDemoUsers() {
         userManager.addCustomer("C001", "Customer 1", "101 Made Up Lane", "Customer1@gmail.com");
-        userManager.addSupplier("S001", "Supplier 1", "202 Not Real Road", "Supplier1@gmail.com", "Sales");
-        checkoutBasket("S001");
-        transactionManager.addTransaction("T002", new Purchase("T002", "C001", getRandomProducts(inventoryArray, (int)(Math.random()*10) + 1)));
-        productManager.addInTransitItem( new Product("BNU001", "Prod1", 69, 10));
+        userManager.addCustomer("C002","Customer 2", "202 Made Up Lane", "Customer2@gmail.com");
+        userManager.addCustomer("C003","Customer 3", "303 Made Up Lane", "Customer3@gmail.com");
+        userManager.addSupplier("S001", "Supplier 1", "101 Not Real Road", "Supplier1@gmail.com", "Sales");
+        userManager.addSupplier("S002", "Supplier 2", "202 Not Real Road", "Supplier2@gmail.com", "Logistics");
+        userManager.addSupplier("S003", "Supplier 3", "303 Not Real Road", "Supplier3@gmail.com", "General");
+    }
+
+    public int getDemoProductIndex(ArrayList<Product> inventoryArray) {
+        return (int)(Math.random()*inventoryArray.size());
     }
 
     public ArrayList<Product> getRandomProducts(ArrayList<Product> products, int num) {

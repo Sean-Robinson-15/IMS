@@ -1,5 +1,6 @@
 package IMS.Inventory;
 
+import IMS.Orders.Purchase;
 import IMS.Products.Product;
 import IMS.Orders.Sale;
 import IMS.Orders.Transaction;
@@ -9,16 +10,24 @@ import java.util.TreeMap;
 import java.util.ArrayList;
 
 public class BasketManager {
-    private final Map<String, Product> basket = new TreeMap<>();
+    private final Map<String, Product> basket = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     private final ProductManager productManager;
+    public String currentUser = "";
 
     public BasketManager(ProductManager productManager) {
         this.productManager = productManager;
     }
 
-    public String addToBasket( String ID, String name, String quantityStr, double price) {
-        ID=ID.toUpperCase();
+    public String addToBasket( String userID, String ID, String name, String quantityStr, double price) {
         Product prod = null;
+        if (!currentUser.equals(userID) && !currentUser.isEmpty()) {
+            return "Error: User has changed";
+        }
+        currentUser = userID;
+
+        if (userID.isEmpty()) {
+            return "User ID is empty. Please try again.";
+        }
         if ((ID.isEmpty())) {
             return "No Product Entered. Please try again.";
         }
@@ -29,7 +38,12 @@ public class BasketManager {
             return "Invalid Name Entered. Please try again.";
         }
         int quantity = Integer.parseInt(quantityStr);
-        if (quantity > productManager.getQuantity(ID)) {
+
+        if (isCustomer(currentUser)) {
+            quantity = quantity*-1;
+        }
+
+        if (quantity > productManager.getQuantity(ID) && isCustomer(currentUser)) {
             return "quantity greater than available. Please try again. \n";
         }
 
@@ -39,48 +53,69 @@ public class BasketManager {
             }
         }
         //change to use map/key combo on inventory
-        assert prod != null;
+        if (prod == null) {
+            return "Product does not exist. Please try again. \n";
+        }
+
         if (prod.getID().equals(ID)) {
             if (basket.containsKey(ID)) {
                 int currentBasketQuantity = getBasketQuantity(ID);
                 basket.put(ID, new Product(ID, name, currentBasketQuantity + quantity, price));
             } else {
+
                 basket.put(ID, new Product(ID, name, quantity, price));
             }
-            productManager.updateItem(ID, prod.getQuantity() - quantity);
+            productManager.updateItem(ID, prod.getQuantity() + (quantity));
         }
+
         return ID + " added to basket. \n";
     }
 
+    public boolean isCustomer(String userID) {
+        return userID.toUpperCase().contains("C");
+
+    }
+
     public String removeItemFromBasket(String ID) {
-        ID=ID.toUpperCase();
         try {
             int basketQuantity = getBasketQuantity(ID);
             resetQuantity(ID, basketQuantity);
             basket.remove(ID);
+            if (basket.isEmpty()) {
+                currentUser = "";
+            }
             return "Item "+ID+" Removed";
         } catch (NullPointerException e) {
             return "Item "+ID+" Doesnt Exist in basket";
         }
     }
 
-    public void clearBasket() {
+    public void emptyBasket() {
         for (Product item : getBasket()) {
+            int basketQuantity = item.getQuantity();
             String ID = item.getID();
-            resetQuantity(ID, item.getQuantity());
+            resetQuantity(ID, basketQuantity);
         }
+        currentUser = "";
         basket.clear();
     }
 
+    public void checkoutBasket() {
+        if (!isCustomer(currentUser)) {
+            emptyBasket();
+            return;
+        }
+        basket.clear();
+        currentUser = "";
+    }
+
     public Integer getBasketQuantity(String ID){
-        ID=ID.toUpperCase();
         return basket.get(ID).getQuantity();
     }
 
-    public void resetQuantity(String ID, int baskQuantity){
-        ID=ID.toUpperCase();
+    public void resetQuantity(String ID, int basketQuantity){
         int currentQuan = productManager.getQuantity(ID);
-        productManager.updateItem(ID, currentQuan + baskQuantity);
+        productManager.updateItem(ID, currentQuan - basketQuantity);
     }
 
     public ArrayList<Product> getBasket() {
@@ -91,10 +126,16 @@ public class BasketManager {
         return basket.isEmpty();
     }
 
-    public Transaction createSale(String orderID, String userID) {
-        return new Sale(orderID, userID, getBasket());
+    public Transaction createTransaction(String orderID) {
+        if (isCustomer(currentUser)) {
+            for (Product item : getBasket()) {
+                int basketQuantity = item.getQuantity();
+                basketQuantity *= -1;
+                item.setQuantity(basketQuantity);
+            }
+            return new Sale(orderID, currentUser, getBasket());
+        }
+        return new Purchase(orderID, currentUser, getBasket());
     }
-
-
 
 }

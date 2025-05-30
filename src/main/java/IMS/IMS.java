@@ -16,7 +16,7 @@ public class IMS {
 
 //        InventoryUI main = new InventoryUI(manager);
         UIManager main = new UIManager(manager, transactionManager, basketManager, userManager,productManager);
-        manager.testItems();
+        manager.demoMode();
         SwingUtilities.invokeLater(() -> main.setVisible(true));
     }
 }

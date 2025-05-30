@@ -11,8 +11,6 @@ public class OrdersUI extends GUI {
 
     private final ProductManager productManager;
     private final BasketManager basketManager;
-    private final UserManager userManager;
-    private final TransactionManager transactionManager;
     private final DefaultTableModel inventoryTable;
     private final DefaultTableModel basketTable;
     private JTextField productIDField;
@@ -20,17 +18,10 @@ public class OrdersUI extends GUI {
     private JTextField productQuantityField;
     private JPanel errorPanel;
 
-        public OrdersUI(InventoryManager manager,
-                        ProductManager productManager,
-                        BasketManager basketManager,
-                        UserManager userManager,
-                        TransactionManager transactionManager) {
+        public OrdersUI(InventoryManager manager, ProductManager productManager, BasketManager basketManager) {
             this.manager = manager;
             this.productManager = productManager;
             this.basketManager = basketManager;
-            this.userManager = userManager;
-            this.transactionManager = transactionManager;
-
             setLayout(new BorderLayout());
 
             //Create Default Table
@@ -99,7 +90,7 @@ public class OrdersUI extends GUI {
         JPanel buttonPanel = new JPanel(new GridLayout());
 
         JButton addButton = new JButton("Add To Basket/Update");
-        JButton removeOneButton = new JButton("Remove from Basket");
+        JButton removeItemButton = new JButton("Remove from Basket");
         JButton removeAllButton = new JButton("Remove All");
         JButton checkoutButton = new JButton("Checkout");
 
@@ -109,7 +100,8 @@ public class OrdersUI extends GUI {
             String name = productManager.getName(ID);
             double price = productManager.getPrice(ID);
             String quantityStr = productQuantityField.getText();
-            String output = basketManager.addToBasket(ID, name, quantityStr, price);
+            String userID = userIDField.getText();
+            String output = basketManager.addToBasket(userID, ID, name, quantityStr, price);
             updatePanel(errorPanel, output);
             refreshTable();
 
@@ -122,7 +114,7 @@ public class OrdersUI extends GUI {
             refreshTable();
         });
 
-        removeOneButton.addActionListener(e -> {
+        removeItemButton.addActionListener(e -> {
             String ID = productIDField.getText();
             String output = basketManager.removeItemFromBasket(ID);
             updatePanel(errorPanel, output);
@@ -130,12 +122,12 @@ public class OrdersUI extends GUI {
         });
 
         removeAllButton.addActionListener(e -> {
-            basketManager.clearBasket();
+            basketManager.emptyBasket();
             refreshTable();
         });
 
         buttonPanel.add(addButton);
-        buttonPanel.add(removeOneButton);
+        buttonPanel.add(removeItemButton);
         buttonPanel.add(removeAllButton);
         buttonPanel.add(checkoutButton);
 
@@ -160,7 +152,11 @@ public class OrdersUI extends GUI {
             inventoryTable.addRow(new Object[]{item.getID(), item.getName(), item.getQuantity(), item.getPrice()});
         }
         for (Product item : basketManager.getBasket()) {
-            basketTable.addRow(new Object[]{ item.getID(), item.getName(), item.getQuantity(), item.getPrice()});
+            int quantity = item.getQuantity();
+            if (quantity <0) {
+                quantity *= -1;
+            }
+            basketTable.addRow(new Object[]{ item.getID(), item.getName(), quantity, item.getPrice()});
         }
     }
 }

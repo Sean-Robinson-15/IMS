@@ -22,7 +22,7 @@ public class InputValidatorTest {
         inputs.put("ID", "P001");
         inputs.put("name", "TestProduct");
         inputs.put("quantityStr", "10");
-        inputs.put("priceStr", "69");
+        inputs.put("priceStr", "70");
 
         //Valid
         String output = manager.confirmInputs(inputs);

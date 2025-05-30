@@ -1,5 +1,4 @@
 package IMS.UI;
-import IMS.Inventory.InventoryManager;
 import IMS.Inventory.ProductManager;
 import IMS.Products.Product;
 import IMS.Alerts.Alerts;
@@ -106,7 +105,7 @@ public class InventoryUI extends GUI {
         inventoryTable.setRowCount(0);
         ArrayList<Product> lowStock = new ArrayList<>();
         for (Product item : manager.getAllItems()) {
-            String quantity = "<html> style=\"background-color:DodgerBlue;\"" + item.getQuantity() + "</html>";
+            String quantity = Integer.toString(item.getQuantity());
             if (item.getQuantity() <= manager.getLowStockThreshold()) {
                 quantity = "<html><font color=\"red\">" + item.getQuantity() + "</font></html>";
                 lowStock.add(item);

@@ -1,17 +1,11 @@
 package IMS.Inventory;
-import IMS.Products.Product;
-import IMS.UI.InputValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
-import java.util.TreeMap;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserManagerTest {
 
     private UserManager manager;
-    private InputValidator inputValidator;
 
     @BeforeEach
     void setUp() {
@@ -21,7 +15,7 @@ class UserManagerTest {
     @Test
     void testAddCustomer() {
         //Init
-        String output = "";
+        String output;
 
         // Valid
         manager.addCustomer("c001", "Cus Tomer", "101 Made Up Lane", "Cus@tomer.com");
@@ -51,7 +45,7 @@ class UserManagerTest {
     @Test
     void testAddSupplier() {
         //Init
-        String output = "";
+        String output;
 
         // Valid
         manager.addSupplier("s001", "Cus Tomer", "101 Made Up Lane", "Cus@tomer.com", "Department");
@@ -65,7 +59,7 @@ class UserManagerTest {
 
         // Invalid
         output = manager.addSupplier("s001", "Cus Tomer", "101 Made Up Lane", "Cus@tomer.com", "Department");
-        assertEquals("Supplier with ID S001 already exists.", output);
+        assertEquals("Supplier with ID s001 already exists.", output);
 
         output = manager.addSupplier("s002", "", "101 Made Up Lane", "Cus@tomer.com", "Department");
         assertEquals("Please enter all necessary fields.", output);
@@ -97,7 +91,7 @@ class UserManagerTest {
 
         output = manager.updateUser("c001", "Test lowercase", "", "");
         assertEquals("Test lowercase", manager.getUserName("C001"));
-        assertEquals("User Updated: C001", output);
+        assertEquals("User Updated: c001", output);
 
         output = manager.updateUser("C001", "", "New Address", "");
         assertEquals("New Address", manager.getUserAddress("C001"));
@@ -123,7 +117,7 @@ class UserManagerTest {
 
         output = manager.updateUser("s001", "", "", "", "lowercase");
         assertEquals("lowercase", manager.getUserDepartment("S001"));
-        assertEquals("User Updated: S001", output);
+        assertEquals("User Updated: s001", output);
 
         //Invalid
         output = manager.updateUser("C001", "", "", "");

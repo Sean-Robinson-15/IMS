@@ -9,10 +9,9 @@ import java.util.TreeMap;
 import java.util.ArrayList;
 
 public class UserManager {
-    private final Map<String, User> users = new TreeMap<>();
-
+    private final Map<String, User> users = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     public String addCustomer(String ID, String name, String address, String email) {
-        ID=ID.toUpperCase();
+
         if (users.containsKey(ID)) {
             return "Customer with ID " + ID + " already exists.";
         }
@@ -24,7 +23,6 @@ public class UserManager {
     }
 
     public String addSupplier(String ID, String name, String address, String email, String department) {
-        ID=ID.toUpperCase();
         if (users.containsKey(ID)) {
             return "Supplier with ID " + ID + " already exists.";
         }
@@ -36,7 +34,6 @@ public class UserManager {
     }
 
     public String updateUser(String ID, String name, String address, String email) {
-        ID=ID.toUpperCase();
         User user = users.get(ID);
         if (user != null) {
             if (address.isEmpty() && email.isEmpty() && name.isEmpty()) {
@@ -57,7 +54,6 @@ public class UserManager {
     }
 
     public String updateUser(String ID, String name, String address, String email, String department) {
-        ID=ID.toUpperCase();
         String output = updateUser(ID, name, address, email);
         if (output.contains("Error:") && department.isEmpty()) return output;
         Supplier user = (Supplier)users.get(ID);
@@ -87,7 +83,7 @@ public class UserManager {
             if (i instanceof Customer) {
                 CustomersList.add((Customer) i);
             }
-        };
+        }
         return CustomersList;
     }
 
@@ -98,12 +94,12 @@ public class UserManager {
             if (i instanceof Supplier) {
                 suppliersList.add((Supplier) i);
             }
-        };
+        }
         return suppliersList;
     }
 
     public ArrayList<String> getAllCustomerIDs() {
-        ArrayList<String> IDs = new ArrayList<String>();
+        ArrayList<String> IDs = new ArrayList<>();
         for (User p : users.values()) {
             if (p instanceof Customer) {
                 IDs.add(p.getID());
@@ -112,47 +108,19 @@ public class UserManager {
         return IDs;
     }
 
-    public ArrayList<String> getAllSupplierIDs() {
-        ArrayList<String> IDs = new ArrayList<String>();
-        for (User p : users.values()) {
-            if (p instanceof Supplier) {
-                IDs.add(p.getID());
-            }
-        }
-        return IDs;
-    }
-
     public String getUserName(String ID) {
-        ID=ID.toUpperCase();
         return users.get(ID).getName();
     }
     public String getUserAddress(String ID) {
-        ID=ID.toUpperCase();
         return users.get(ID).getAddress();
     }
     public String getUserEmail(String ID) {
-        ID=ID.toUpperCase();
         return users.get(ID).getEmail();
     }
     public String getUserDepartment(String ID) {
-        ID=ID.toUpperCase();
         if (users.get(ID) instanceof Supplier supplier) {
             return supplier.getDepartment();
         }
         return "";
     }
-    public String getUserType(String ID) {
-        ID=ID.toUpperCase();
-        if (users.get(ID) instanceof Customer) {
-            return "Customer";
-        } else if (users.get(ID) instanceof Supplier) {
-            return "Supplier";
-        }
-        return "";
-    }
-
-
-
-
-
 }

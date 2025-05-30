@@ -1,17 +1,14 @@
 package IMS.Inventory;
 import IMS.Products.Product;
-import IMS.UI.InputValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductManagerTest {
 
     private ProductManager manager;
-    private InputValidator inputValidator;
 
     @BeforeEach
     void setUp() {
@@ -61,8 +58,8 @@ class ProductManagerTest {
     @Test
     void testUpdateItem() {
         //Init
-        manager.addInventoryItem("P001", "Product1", "50", "69");
-        String output = "";
+        manager.addInventoryItem("P001", "Product1", "50", "70");
+        String output;
 
         // Valid
         output = manager.getName("P001");
@@ -72,9 +69,9 @@ class ProductManagerTest {
         assertEquals(50, outputInt);
 
         Double outputDouble = manager.getPrice("P001");
-        assertEquals(69, outputDouble);
+        assertEquals(70, outputDouble);
 
-        manager.updateItem("P001", "Product1", "10", "69");
+        manager.updateItem("P001", "Product1", "10", "70");
         assertEquals(10, manager.getQuantity("P001"));
 
         manager.updateItem("P001", 21);
@@ -93,15 +90,15 @@ class ProductManagerTest {
         output = manager.updateItem("test","Test1","10", "16");
         assertEquals("Error: Product Code [test] doesnt exist.", output);
 
-        output = manager.updateItem("P001", "Product1", "-10", "69");
+        output = manager.updateItem("P001", "Product1", "-10", "70");
         assertNotEquals(-10, manager.getQuantity("P001"));
         assertEquals("Quantity cannot be negative. Please try again.", output);
 
-        output = manager.updateItem("P001", "Product1", "string", "69");
+        output = manager.updateItem("P001", "Product1", "string", "70");
         assertEquals("Quantity must be an integer. Please try again.", output);
 
-        output = manager.updateItem("P001", "Product1", "10", "-69");
-        assertNotEquals(-69, manager.getPrice("P001"));
+        output = manager.updateItem("P001", "Product1", "10", "-70");
+        assertNotEquals(-70, manager.getPrice("P001"));
         assertEquals("Price cannot be negative. Please try again.", output);
 
         output = manager.updateItem("P001", "Product1", "10", "string");
@@ -114,8 +111,8 @@ class ProductManagerTest {
     @Test
     void testRemoveItem() {
         //Init
-        manager.addInventoryItem("P001", "Product1", "50", "69");
-        String output = "";
+        manager.addInventoryItem("P001", "Product1", "50", "70");
+        String output;
 
         // Valid
         manager.removeItem("P001");
@@ -127,6 +124,54 @@ class ProductManagerTest {
 
         output = manager.removeItem("");
         assertEquals("Error: Product Code is empty", output);
+    }
+
+    @Test
+    void testReceiveItem() {
+        //Init
+        manager.addInventoryItem("P001", "Product1", "50", "70");
+        manager.addInTransitItem(new Product("P009", "Product1", 55, 70));
+        manager.addInTransitItem(new Product("P008", "Product1", 55, 70));
+        manager.addInTransitItem(new Product("P007", "Product1", 55, 70));
+        manager.addInTransitItem(new Product("P001", "Product1", 55, 70));
+
+        //Invalid
+        manager.receiveItem("P002", "50");
+        assertEquals(0, manager.getQuantity("P002"));
+
+        manager.receiveItem("P2", "50");
+        assertEquals(0, manager.getQuantity("P002"));
+
+        manager.receiveItem("", "50");
+        assertEquals(0, manager.getQuantity(""));
+
+        manager.receiveItem("P007", "-10");
+        assertEquals(0, manager.getQuantity("P007"));
+        assertEquals(55, manager.getInTransit().getFirst().getQuantity());
+
+        manager.receiveItem("P007", "STRING");
+        assertEquals(0, manager.getQuantity("P007"));
+        assertEquals(55, manager.getInTransit().getFirst().getQuantity());
+
+        //Valid
+        manager.receiveItem("P008", "");//Blank == recieve all
+        assertEquals(55, manager.getQuantity("P008"));
+
+        manager.receiveItem("p009", "");//lowercase
+        assertEquals(55, manager.getQuantity("p009"));
+
+        manager.receiveItem("P007", "55");
+        assertEquals(55, manager.getQuantity("P007")); //Checks inventory value
+        assertEquals(1, manager.getInTransit().size());
+
+        manager.receiveItem("P001", "40");
+        assertEquals(90, manager.getQuantity("P001"));
+        assertNotEquals(0, manager.getInTransit().size());
+        assertEquals(15, manager.getInTransit().getFirst().getQuantity());
+
+        manager.receiveItem("P001", "15");
+        assertEquals(105, manager.getQuantity("P001"));
+        assertEquals(0, manager.getInTransit().size());
     }
 
 }

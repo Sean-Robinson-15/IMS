@@ -1,22 +1,19 @@
 package IMS.Inventory;
-
 import IMS.UI.InputValidator;
 import IMS.Products.Product;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 public class ProductManager {
-    private final Map<String, Product> inventory = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);;
+    private final Map<String, Product> inventory = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     private final Map<String, Product> inTransit = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     private final InputValidator validator = new InputValidator();
-    private final int LOWSTOCKTHRESHOLD = InventoryManager.DEFAULT_LOW_STOCK_THRESHOLD;
 
     public String addInventoryItem(String ID, String name, String quantityStr, String priceStr) {
         TreeMap<String, String> inputList = new TreeMap<>(Map.of("ID", ID, "name", name, "quantityStr", quantityStr, "priceStr", priceStr));
         String validationResult = validator.confirmInputs(inputList);
-        if (validationResult != "") {
+        if (!validationResult.isEmpty()) {
             return "Error: "+validationResult;
         }
 
@@ -35,12 +32,12 @@ public class ProductManager {
         Product product = inventory.get(ID);
         if (product != null) {
             String validationResult = validator.validateInt(quantityStr, "Quantity");
-            if (validationResult != "") return validationResult;
+            if (!validationResult.isEmpty()) return validationResult;
             int quantity = Integer.parseInt(quantityStr);
             product.setQuantity(quantity);
 
             validationResult = validator.validateDouble(priceStr, "Price");
-            if (validationResult != "") return validationResult;
+            if (!validationResult.isEmpty()) return validationResult;
             double price = Double.parseDouble(priceStr);
             product.setPrice(price);
 
@@ -58,7 +55,7 @@ public class ProductManager {
 
 
     public String removeItem(String ID) {
-        ID=ID.toUpperCase();
+        
         if (ID.isEmpty()) return ("Error: Product Code is empty");
         if (inventory.remove(ID) != null) {
             return ("Item Removed : " + ID);
@@ -67,16 +64,11 @@ public class ProductManager {
         }
     }
 
-    public boolean productExists(String ID) {
-        ID=ID.toUpperCase();
-        return inventory.containsKey(ID);
-    }
-
     public ArrayList<Product> getAllItems() {
         return new ArrayList<>(inventory.values());
     }
     public ArrayList<String> getAllIDs() {
-        ArrayList<String> IDs = new ArrayList<String>();
+        ArrayList<String> IDs = new ArrayList<>();
         for (Product p : inventory.values()) {
             IDs.add(p.getID());
         }
@@ -90,7 +82,7 @@ public class ProductManager {
         return inventory.get(ID).getName();
     }
     public Integer getQuantity(String ID){
-        return inventory.get(ID).getQuantity();
+        try { return inventory.get(ID).getQuantity();} catch (NullPointerException e) {return 0;}
     }
 
     public ArrayList<Product> getInTransit() {
@@ -102,7 +94,33 @@ public class ProductManager {
     }
 
     public void randomize(int num)  {
-        String[] randomStr = {"rD9av", "R11Xt", "E6qa2", "BOnbh", "2oFxY", "Xt31Q", "eMPF2", "bJJKZ", "R870x", "m3cwL"};
+        String[] randomStr = {
+                "Drill-X500",
+                "ConveyorB72",
+                "Press-6000",
+                "Lathe-M140",
+                "CNC-Mill303",
+                "RobotArm47",
+                "Extruder-T9",
+                "Welder-RT55",
+                "HydPress829",
+                "Grinder-P45",
+                "InjectMold88",
+                "Compressor12",
+                "TensileTest5",
+                "Furnace-K700",
+                "AssemblyBot3",
+                "PalletWrap22",
+                "StampingM67",
+                "CutterV450",
+                "Boiler-TX90",
+                "Mixer-A230",
+                "ForkliftAZ5",
+                "CraneHoist8",
+                "PumpSystem42",
+                "MillingMC75",
+                "PackagingT11"
+        };
         for (int i = 0; i < num; i++) {
             String ID = String.format("BNU%03d", (int)(Math.random()*1000));
             String name = randomStr[(int)(Math.random()*randomStr.length)];
@@ -113,8 +131,61 @@ public class ProductManager {
     }
 
     public int getLowStockThreshold() {
-        return LOWSTOCKTHRESHOLD;
+        return InventoryManager.DEFAULT_LOW_STOCK_THRESHOLD;
     }
 
 
+    public String receiveItem(String id, String quantityText) {
+        if (id.isEmpty()) {
+            return "Error: Product ID is empty";
+        }
+
+        Product inTransitProduct = inTransit.get(id);
+        if (inTransitProduct == null) {
+            return "Error: Product ID [" + id +"] doesnt exist in in transit.";
+        }
+        int inTransitQuantity = inTransitProduct.getQuantity();
+        Product product = inventory.get(id);
+
+        int receivedQuantity;
+
+
+        if (quantityText.isEmpty()) {
+             receivedQuantity = inTransitQuantity;
+        } else {
+            try {
+                receivedQuantity = Integer.parseInt(quantityText);
+            } catch (NumberFormatException e) {
+                return "Error: Invalid quantity entered. Please try again.";
+            }
+        }
+
+        if (receivedQuantity <= 0) {
+            return "Error: Quantity must be greater than 0";
+        }
+
+        if (inTransitQuantity < receivedQuantity) {
+            return "Error: received quantity is greater than in transit quantity. \n";
+        }
+
+        //Create Product with 0 quantity if product doesnt exist
+        if (product == null) {
+            addInventoryItem(id, inTransitProduct.getName(), "0",
+                    Double.toString(inTransitProduct.getPrice()));
+            product = inventory.get(id);
+        }
+
+        int currentQuantity = product.getQuantity();
+        product.setQuantity(currentQuantity + receivedQuantity);
+
+        if (inTransitQuantity == receivedQuantity) {
+            inTransit.remove(id);
+            return "Item received: " + id + " " + quantityText;
+        }
+
+        inTransitProduct.setQuantity(inTransitQuantity - receivedQuantity);
+        return "Item received: " + id + " " + quantityText + " (Remaining: " + inTransitQuantity + ")";
+
+
+    }
 }

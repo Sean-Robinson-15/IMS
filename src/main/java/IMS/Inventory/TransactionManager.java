@@ -1,10 +1,6 @@
 package IMS.Inventory;
-
 import IMS.Orders.Transaction;
 import IMS.Orders.Sale;
-import IMS.Orders.Purchase;
-import IMS.Products.Product;
-
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.ArrayList;
@@ -21,15 +17,12 @@ public class TransactionManager {
         return "Order ID " + orderID + " added.";
     }
 
-    public Transaction getTransaction(String orderID) {
-        return transactions.get(orderID);
-    }
     public ArrayList<Transaction> getAllTransactions() {
         return new ArrayList<>(transactions.values());
     }
 
     public TreeMap<String,Double> generateReport() {
-        TreeMap<String,Double> report = new TreeMap<>();
+        TreeMap<String,Double> report = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         double sales = 0;
         double purchases = 0;
 
@@ -43,6 +36,7 @@ public class TransactionManager {
         }
 
         double profit = sales - purchases;
+        System.out.println("Sales: " + sales);
         report.put("Revenue", sales);
         report.put("Purchases", purchases);
         report.put("Profit/Loss", profit);
