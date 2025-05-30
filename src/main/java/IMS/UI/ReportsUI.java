@@ -1,36 +1,62 @@
 package IMS.UI;
-import IMS.Inventory.InventoryManager;
 import IMS.Inventory.TransactionManager;
+import IMS.Orders.Transaction;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.TreeMap;
 
 public class ReportsUI extends GUI {
     private final TransactionManager manager;
+    private final DefaultTableModel transactionTable;
 
     public ReportsUI(TransactionManager manager) {
         setLayout(new BorderLayout());
         this.manager = manager;
 
-        //Initial IMS.UI.UI/Panel Creation. Will {RETURN} to see if there is a better way
-        JPanel mainPanel = new JPanel(new GridLayout( 1, 3, 5, 5));
+        //Create Default Table
+        transactionTable = createNonEditTable(new String[]{"OrderID", "UserID" ,"Items", "Price"});
+//        inventoryTable.setFont(new Font("Serif", Font.BOLD, 20));
+        //Create table based on default above
+        JTable table = new JTable(transactionTable);
+        JScrollPane mainPanel = new JScrollPane(table);
+
         JPanel northPanel = createNorthPanel("Report");
-        generateReport(mainPanel);
-
-
-        //Added to southPanel
+        JPanel southPanel = new JPanel(new GridLayout( 1, 3, 5, 5));
+        generateReport(southPanel);
 
         //Add panels to window
         add(northPanel, BorderLayout.NORTH);
         add(mainPanel, BorderLayout.CENTER);
+        add(southPanel, BorderLayout.SOUTH);
+        refreshTable();
 
     }
 
     @Override
     public void refreshTable(){
+        transactionTable.setRowCount(0);
+        for (Transaction transaction : manager.getAllTransactions()) {
+            String userID = transaction.getUserID();
+            String orderID = transaction.getOrderID();
+            double totalCost = transaction.getTotalCost();
+            int quantity = transaction.getTotalProducts();
+            //Set Color
+            String color = "<html><font color=\"black\">";
+            if (userID.charAt(0) == 'S') {
+                color = "<html><font color=\"red\">";
+            }
 
+            String orderIDStr = color + orderID + "</font></html>";
+            String userIDStr = color + userID + "</font></html>";
+            String quantityStr = color + quantity + "</font></html>";
+            String totalCostStr = color + String.format("£%.2f",totalCost) + "</font></html>";
+
+            transactionTable.addRow(new Object[]{orderIDStr, userIDStr, quantityStr, totalCostStr});
+        }
     }
+
 
     public void generateReport(JPanel mainPanel){
         TreeMap<String, Double> report = manager.generateReport();

@@ -69,7 +69,6 @@ public class UserManager {
     }
 
     public String removeUser(String ID) {
-        ID=ID.toUpperCase();
         if (users.remove(ID) != null) {
             return "Item Removed : " + ID;
         } else {
@@ -78,7 +77,6 @@ public class UserManager {
     }
 
     public boolean userExists(String ID) {
-        ID=ID.toUpperCase();
         return users.containsKey(ID);
     }
 

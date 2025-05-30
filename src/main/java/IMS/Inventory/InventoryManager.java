@@ -11,31 +11,38 @@ public class InventoryManager {
     private final UserManager userManager;
     private final TransactionManager transactionManager;
     private final BasketManager basketManager;
-    private final InputValidator validator;
-
     public static final int DEFAULT_LOW_STOCK_THRESHOLD = 10;
 
 
-    public InventoryManager(ProductManager productManager, UserManager userManager, TransactionManager transactionManager) {
+    public InventoryManager(ProductManager productManager, BasketManager basketManager, UserManager userManager, TransactionManager transactionManager) {
         this.productManager = productManager;
         this.userManager = userManager;
         this.transactionManager = transactionManager;
-        this.basketManager = new BasketManager(productManager);
-        this.validator = new InputValidator();
+        this.basketManager = basketManager;
     }
 
     public String checkoutBasket(String userID) {
-        if (!userManager.userExists(userID) || basketManager.isBasketEmpty()) {
-            return "Basket or Customer ID is empty. Please try again.";
+        if (!userManager.userExists(userID)) {
+            return "Error: User does not exist. Please try again.";
+        }
+        if(basketManager.isBasketEmpty()) {
+            return "Error: Basket is empty. Please try again.";
         }
 
-        String orderId = "T001"; // This should be generated properly
+        String orderId = getNextOrderID(); // This should be generated properly
         Transaction transaction = basketManager.createSale(orderId, userID);
-        transactionManager.addTransaction(orderId, transaction);
+        String output = transactionManager.addTransaction(orderId, transaction);
+        if (output.contains("Error:")) {
+            return output;
+        }
         basketManager.clearBasket();
 
         return orderId + " Checked out for £" + transaction.getTotalCost();
 
+    }
+    public String getNextOrderID() {
+        int nextOrderID = transactionManager.getAllTransactions().size() + 1;
+        return "T" + String.format("%03d",nextOrderID);
     }
 
     public void testItems() {
@@ -47,7 +54,7 @@ public class InventoryManager {
         userManager.addCustomer("C001", "Customer 1", "101 Made Up Lane", "Customer1@gmail.com");
         userManager.addSupplier("S001", "Supplier 1", "202 Not Real Road", "Supplier1@gmail.com", "Sales");
         checkoutBasket("S001");
-        transactionManager.addTransaction("T002", new Purchase("T001", "C001", getRandomProducts(inventoryArray, (int)(Math.random()*10) + 1)));
+        transactionManager.addTransaction("T002", new Purchase("T002", "C001", getRandomProducts(inventoryArray, (int)(Math.random()*10) + 1)));
         productManager.addInTransitItem( new Product("BNU001", "Prod1", 69, 10));
     }
 
@@ -61,22 +68,5 @@ public class InventoryManager {
         }
         return randomProducts;
     }
-
-    public ProductManager getProductManager() {
-        return productManager;
-    }
-
-    public UserManager getUserManager() {
-        return userManager;
-    }
-
-    public BasketManager getBasketManager() {
-        return basketManager;
-    }
-
-    public TransactionManager getTransactionManager() {
-        return transactionManager;
-    }
-
 
 }

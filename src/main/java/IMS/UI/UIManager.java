@@ -1,8 +1,5 @@
 package IMS.UI;
-import IMS.Inventory.InventoryManager;
-import IMS.Inventory.ProductManager;
-import IMS.Inventory.TransactionManager;
-import IMS.Inventory.UserManager;
+import IMS.Inventory.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,14 +8,16 @@ import java.awt.*;
 public class UIManager extends JFrame {
     private final InventoryManager manager;
     private final TransactionManager transactionManager;
+    private final BasketManager basketManager;
     private final UserManager userManager;
     private final ProductManager productManager;
     private final JPanel menuPanel;
 
 
-    public UIManager(InventoryManager manager, TransactionManager transactionManager, UserManager userManager, ProductManager productManager) {
+    public UIManager(InventoryManager manager, TransactionManager transactionManager, BasketManager basketManager, UserManager userManager, ProductManager productManager) {
         this.manager = manager;
         this.transactionManager = transactionManager;
+        this.basketManager = basketManager;
         this.userManager = userManager;
         this.productManager = productManager;
         setTitle("IMS by BNU Industry Solutions LTD");
@@ -37,7 +36,7 @@ public class UIManager extends JFrame {
         JButton ordersButton = new JButton("Orders");
         JButton suppliersButton = new JButton("Suppliers");
         JButton customersButton = new JButton("Customers");
-        JButton reportsButton = new JButton("Reports");
+        JButton reportsButton = new JButton("Report");
         JButton ReceivingButton = new JButton("Receiving");
 
         menuPanel.add(homeButton);
@@ -58,12 +57,7 @@ public class UIManager extends JFrame {
         });
 
         ordersButton.addActionListener(e -> {
-            OrdersUI ordersUI = new OrdersUI(manager);
-            //{RETURN} to see if this is better
-//            menuPanel.add(new JLabel(""));
-//            menuPanel.add(new JLabel(""));
-//            menuPanel.add(new JLabel(""));
-//            menuPanel.add(checkoutButton, -1);
+            OrdersUI ordersUI = new OrdersUI(manager, productManager, basketManager, userManager, transactionManager);
             switchPanel(ordersUI, menuPanel);
         });
 

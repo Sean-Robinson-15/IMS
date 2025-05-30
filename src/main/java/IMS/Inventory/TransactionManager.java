@@ -14,7 +14,8 @@ public class TransactionManager {
 
     public String addTransaction(String orderID, Transaction transaction) {
         if (transactions.containsKey(orderID)) {
-            return "Order ID " + orderID + " already exists.";
+            System.out.println("Order ID " + orderID + " already exists.");
+            return "Error: Order ID " + orderID + " already exists.";
         }
         transactions.put(orderID, transaction);
         return "Order ID " + orderID + " added.";

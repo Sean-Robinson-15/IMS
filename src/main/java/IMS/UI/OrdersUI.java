@@ -20,12 +20,16 @@ public class OrdersUI extends GUI {
     private JTextField productQuantityField;
     private JPanel errorPanel;
 
-        public OrdersUI(InventoryManager manager) {
+        public OrdersUI(InventoryManager manager,
+                        ProductManager productManager,
+                        BasketManager basketManager,
+                        UserManager userManager,
+                        TransactionManager transactionManager) {
             this.manager = manager;
-            this.productManager = manager.getProductManager();
-            this.basketManager = manager.getBasketManager();
-            this.userManager = manager.getUserManager();
-            this.transactionManager = manager.getTransactionManager();
+            this.productManager = productManager;
+            this.basketManager = basketManager;
+            this.userManager = userManager;
+            this.transactionManager = transactionManager;
 
             setLayout(new BorderLayout());
 

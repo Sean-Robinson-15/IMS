@@ -34,4 +34,11 @@ public class Transaction {
     public ArrayList<Product> getProducts() {
         return products;
     }
+
+    public String getOrderID() {
+        return orderID;
+    }
+    public String getUserID() {
+        return userID;
+    }
 }

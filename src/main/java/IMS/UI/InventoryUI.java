@@ -65,8 +65,9 @@ public class InventoryUI extends GUI {
 
         //Add panels to window
         add(northPanel, BorderLayout.NORTH);
-        add(southPanel, BorderLayout.SOUTH);
         add(scrollPane, BorderLayout.CENTER);
+        add(southPanel, BorderLayout.SOUTH);
+
         refreshTable();
 
         //Listeners to do CRUD operations
@@ -105,7 +106,7 @@ public class InventoryUI extends GUI {
         inventoryTable.setRowCount(0);
         ArrayList<Product> lowStock = new ArrayList<>();
         for (Product item : manager.getAllItems()) {
-            String quantity = "<html><font color=\"green\">" + item.getQuantity() + "</font></html>";
+            String quantity = "<html> style=\"background-color:DodgerBlue;\"" + item.getQuantity() + "</html>";
             if (item.getQuantity() <= manager.getLowStockThreshold()) {
                 quantity = "<html><font color=\"red\">" + item.getQuantity() + "</font></html>";
                 lowStock.add(item);

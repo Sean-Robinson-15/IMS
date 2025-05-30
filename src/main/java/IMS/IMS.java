@@ -1,8 +1,5 @@
 package IMS;
-import IMS.Inventory.InventoryManager;
-import IMS.Inventory.ProductManager;
-import IMS.Inventory.TransactionManager;
-import IMS.Inventory.UserManager;
+import IMS.Inventory.*;
 import IMS.UI.UIManager;
 
 import javax.swing.*;
@@ -14,10 +11,11 @@ public class IMS {
         TransactionManager transactionManager = new TransactionManager();
         UserManager userManager = new UserManager();
         ProductManager productManager = new ProductManager();
-        InventoryManager manager = new InventoryManager(productManager,userManager,transactionManager);
+        BasketManager basketManager = new BasketManager(productManager);
+        InventoryManager manager = new InventoryManager(productManager, basketManager, userManager, transactionManager);
 
 //        InventoryUI main = new InventoryUI(manager);
-        UIManager main = new UIManager(manager, transactionManager, userManager,productManager);
+        UIManager main = new UIManager(manager, transactionManager, basketManager, userManager,productManager);
         manager.testItems();
         SwingUtilities.invokeLater(() -> main.setVisible(true));
     }
