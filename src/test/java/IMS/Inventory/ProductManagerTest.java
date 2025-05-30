@@ -4,7 +4,7 @@ import IMS.UI.InputValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,6 +65,15 @@ class ProductManagerTest {
         String output = "";
 
         // Valid
+        output = manager.getName("P001");
+        assertEquals("Product1", output);
+
+        Integer outputInt = manager.getQuantity("P001");
+        assertEquals(50, outputInt);
+
+        Double outputDouble = manager.getPrice("P001");
+        assertEquals(69, outputDouble);
+
         manager.updateItem("P001", "Product1", "10", "69");
         assertEquals(10, manager.getQuantity("P001"));
 
@@ -82,7 +91,7 @@ class ProductManagerTest {
         assertEquals("Error: Product Code [] doesnt exist.", output);
 
         output = manager.updateItem("test","Test1","10", "16");
-        assertEquals("Error: Product Code [TEST] doesnt exist.", output);
+        assertEquals("Error: Product Code [test] doesnt exist.", output);
 
         output = manager.updateItem("P001", "Product1", "-10", "69");
         assertNotEquals(-10, manager.getQuantity("P001"));
@@ -97,6 +106,8 @@ class ProductManagerTest {
 
         output = manager.updateItem("P001", "Product1", "10", "string");
         assertEquals("Price must be an integer. Please try again.", output);
+
+
 
     }
 

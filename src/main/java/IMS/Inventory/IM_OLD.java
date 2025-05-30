@@ -11,17 +11,17 @@
 //
 //public class IM_OLD {
 //    public static final int DEFAULT_LOW_STOCK_THRESHOLD = ;
-//    private final Map<String, Product> inventory = new HashMap<>();
-//    private final Map<String, Product> inTransit = new HashMap<>();
-//    private final Map<String, Product> basket = new HashMap<>();
-//    private final Map<String, Transaction> transactions = new HashMap<>();
-//    private final Map<String, User> users = new HashMap<>();
+//    private final Map<String, Product> inventory = new TreeMap<>();
+//    private final Map<String, Product> inTransit = new TreeMap<>();
+//    private final Map<String, Product> basket = new TreeMap<>();
+//    private final Map<String, Transaction> transactions = new TreeMap<>();
+//    private final Map<String, User> users = new TreeMap<>();
 //    public int LOWSTOCKTHRESHOLD = 5;
 //
 //
 //    public String addInventoryItem(String ID, String name, String quantityStr, String priceStr) {
 //        ID=ID.toUpperCase();
-//        HashMap<String, String> inputList = new HashMap<>(Map.of("ID",ID, "name",name, "quantityStr",quantityStr, "priceStr",priceStr));
+//        TreeMap<String, String> inputList = new TreeMap<>(Map.of("ID",ID, "name",name, "quantityStr",quantityStr, "priceStr",priceStr));
 //        if (!confirmInputs(inputList).isEmpty()) {
 //            return confirmInputs(inputList);
 //        }
@@ -68,7 +68,7 @@
 //        return ID + " added to basket. \n";
 //    }
 //
-//    public String confirmInputs(HashMap<String, String> inputs) {
+//    public String confirmInputs(TreeMap<String, String> inputs) {
 //        ArrayList<String> emptyInputs = new ArrayList<>();
 //        for (String key : inputs.keySet()) {
 //            if (inputs.get(key).isEmpty()) {
@@ -412,8 +412,8 @@
 //        return "Customer " + name + " added with ID " + ID;
 //    }
 //
-//    public HashMap<String,Double> generateReport() {
-//        HashMap<String,Double> report = new HashMap<>();
+//    public TreeMap<String,Double> generateReport() {
+//        TreeMap<String,Double> report = new TreeMap<>();
 //        double sales = 0;
 //        double purchases = 0;
 //

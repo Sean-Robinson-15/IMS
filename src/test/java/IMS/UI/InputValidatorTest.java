@@ -3,7 +3,7 @@ package IMS.UI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,7 +18,7 @@ public class InputValidatorTest {
     @Test
     void testConfirmInputs() {
         //Init
-        HashMap<String, String> inputs = new HashMap<>();
+        TreeMap<String, String> inputs = new TreeMap<>();
         inputs.put("ID", "P001");
         inputs.put("name", "TestProduct");
         inputs.put("quantityStr", "10");

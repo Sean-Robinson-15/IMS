@@ -5,11 +5,11 @@ import IMS.Users.Customer;
 import IMS.Users.Supplier;
 
 import java.util.Map;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.ArrayList;
 
 public class UserManager {
-    private final Map<String, User> users = new HashMap<>();
+    private final Map<String, User> users = new TreeMap<>();
 
     public String addCustomer(String ID, String name, String address, String email) {
         ID=ID.toUpperCase();

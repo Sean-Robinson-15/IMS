@@ -3,18 +3,18 @@ package IMS.Inventory;
 import IMS.UI.InputValidator;
 import IMS.Products.Product;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class ProductManager {
-    private final Map<String, Product> inventory = new HashMap<>();
-    private final Map<String, Product> inTransit = new HashMap<>();
+    private final Map<String, Product> inventory = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);;
+    private final Map<String, Product> inTransit = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     private final InputValidator validator = new InputValidator();
     private final int LOWSTOCKTHRESHOLD = InventoryManager.DEFAULT_LOW_STOCK_THRESHOLD;
 
     public String addInventoryItem(String ID, String name, String quantityStr, String priceStr) {
-        ID=ID.toUpperCase();
-        HashMap<String, String> inputList = new HashMap<>(Map.of("ID", ID, "name", name, "quantityStr", quantityStr, "priceStr", priceStr));
+        TreeMap<String, String> inputList = new TreeMap<>(Map.of("ID", ID, "name", name, "quantityStr", quantityStr, "priceStr", priceStr));
         String validationResult = validator.confirmInputs(inputList);
         if (validationResult != "") {
             return "Error: "+validationResult;
@@ -32,7 +32,6 @@ public class ProductManager {
     }
 
     public String updateItem(String ID, String name, String quantityStr, String priceStr) {
-        ID=ID.toUpperCase();
         Product product = inventory.get(ID);
         if (product != null) {
             String validationResult = validator.validateInt(quantityStr, "Quantity");
@@ -85,17 +84,13 @@ public class ProductManager {
     }
 
     public double getPrice(String ID){
-        ID=ID.toUpperCase();
         return inventory.get(ID).getPrice();
     }
     public String getName(String ID){
-        ID=ID.toUpperCase();
         return inventory.get(ID).getName();
     }
     public Integer getQuantity(String ID){
-        ID=ID.toUpperCase();
-        Product prod = inventory.get(ID);
-        return prod.getQuantity();
+        return inventory.get(ID).getQuantity();
     }
 
     public ArrayList<Product> getInTransit() {

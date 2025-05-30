@@ -5,11 +5,11 @@ import IMS.Orders.Sale;
 import IMS.Orders.Transaction;
 
 import java.util.Map;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.ArrayList;
 
 public class BasketManager {
-    private final Map<String, Product> basket = new HashMap<>();
+    private final Map<String, Product> basket = new TreeMap<>();
     private final ProductManager productManager;
 
     public BasketManager(ProductManager productManager) {

@@ -1,10 +1,10 @@
 package IMS.UI;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class InputValidator {
-    public String confirmInputs(HashMap<String, String> inputs) {
+    public String confirmInputs(TreeMap<String, String> inputs) {
         ArrayList<String> emptyInputs = new ArrayList<>();
         for (String key : inputs.keySet()) {
             if (inputs.get(key).isEmpty()) {

@@ -4,7 +4,7 @@ import IMS.Inventory.TransactionManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class ReportsUI extends GUI {
     private final TransactionManager manager;
@@ -33,7 +33,7 @@ public class ReportsUI extends GUI {
     }
 
     public void generateReport(JPanel mainPanel){
-        HashMap<String, Double> report = manager.generateReport();
+        TreeMap<String, Double> report = manager.generateReport();
         JLabel reportLabel = new JLabel();
         //maybe use get instead to guarantee order
         for (String item : report.keySet()) {

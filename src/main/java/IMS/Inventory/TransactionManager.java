@@ -6,11 +6,11 @@ import IMS.Orders.Purchase;
 import IMS.Products.Product;
 
 import java.util.Map;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.ArrayList;
 
 public class TransactionManager {
-    private final Map<String, Transaction> transactions = new HashMap<>();
+    private final Map<String, Transaction> transactions = new TreeMap<>();
 
     public String addTransaction(String orderID, Transaction transaction) {
         if (transactions.containsKey(orderID)) {
@@ -27,8 +27,8 @@ public class TransactionManager {
         return new ArrayList<>(transactions.values());
     }
 
-    public HashMap<String,Double> generateReport() {
-        HashMap<String,Double> report = new HashMap<>();
+    public TreeMap<String,Double> generateReport() {
+        TreeMap<String,Double> report = new TreeMap<>();
         double sales = 0;
         double purchases = 0;
 
