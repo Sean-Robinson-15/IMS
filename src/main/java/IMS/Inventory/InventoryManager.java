@@ -87,9 +87,13 @@ public class InventoryManager {
         ArrayList<Product> randomProducts = new ArrayList<>();
         for (int i = 0; i < num; i++) {
             int randomIndex = (int)(Math.random()*products.size());
-            Product randomProduct = products.get(randomIndex);
-            randomProduct.setQuantity((int)(Math.random()*randomProduct.getQuantity()));
-            randomProducts.add(products.get(randomIndex));
+            Product originalProduct = products.get(randomIndex);
+
+            Product randomProduct = new Product(originalProduct.getID(),
+                    originalProduct.getName(), (int)(Math.random()*originalProduct.getQuantity()),
+                    originalProduct.getPrice());
+
+            randomProducts.add(randomProduct);
         }
         return randomProducts;
     }
