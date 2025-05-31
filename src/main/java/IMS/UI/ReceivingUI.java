@@ -10,13 +10,13 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class ReceivingUI extends GUI implements TableUIInterface {
-    private final ProductManager manager;
+    private final ProductManager productManager;
     private DefaultTableModel inventoryTable;
     private final JTextField productIDField;
     private final JTextField productQuantityField;
 
-    public ReceivingUI(ProductManager manager) {
-        this.manager = manager;
+    public ReceivingUI(ProductManager productManager) {
+        this.productManager = productManager;
 
         productIDField = new JTextField(10);
         productQuantityField = new JTextField(5);
@@ -52,7 +52,7 @@ public class ReceivingUI extends GUI implements TableUIInterface {
         receiveButton.addActionListener(e -> {
             String ID = productIDField.getText().trim();
             String quantityText = productQuantityField.getText().trim();
-            String output = manager.receiveItem(ID, quantityText);
+            String output = productManager.receiveItem(ID, quantityText);
             updatePanel(errorPanel, output);
             refreshTable();
         });
@@ -75,7 +75,7 @@ public class ReceivingUI extends GUI implements TableUIInterface {
     public void refreshTable() {
         inventoryTable.setRowCount(0);
         ArrayList<Product> lowStock = new ArrayList<>();
-        for (Product item : manager.getInTransit()) {
+        for (Product item : productManager.getInTransit()) {
             inventoryTable.addRow(new Object[]{item.getID(), item.getName(), item.getQuantity()});
         }
         Alerts.sendStockAlert(lowStock);

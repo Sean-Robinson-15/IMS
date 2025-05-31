@@ -6,7 +6,7 @@ import java.awt.*;
 
 
 public class UIManager extends JFrame {
-    private final InventoryManager manager;
+    private final InventoryManager inventoryManager;
     private final TransactionManager transactionManager;
     private final BasketManager basketManager;
     private final UserManager userManager;
@@ -14,18 +14,23 @@ public class UIManager extends JFrame {
     private final JPanel menuPanel;
 
 
-    public UIManager(InventoryManager manager, TransactionManager transactionManager, BasketManager basketManager, UserManager userManager, ProductManager productManager) {
-        this.manager = manager;
-        this.transactionManager = transactionManager;
-        this.basketManager = basketManager;
-        this.userManager = userManager;
-        this.productManager = productManager;
+    public UIManager() {
+        this.transactionManager = new TransactionManager();
+        this.userManager = new UserManager();
+        this.productManager = new ProductManager();
+        this.basketManager = new BasketManager(productManager);
+        this.inventoryManager = new InventoryManager(productManager, basketManager,
+                 userManager, transactionManager);
+
+        inventoryManager.demoMode();
+
         setTitle("IMS by BNU Industry Solutions LTD");
         setSize(1000,700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocation(900, 500);
         menuPanel = createMainMenuUI();
         add(menuPanel, BorderLayout.NORTH);
+
 
     }
 
@@ -55,7 +60,7 @@ public class UIManager extends JFrame {
         });
 
         ordersButton.addActionListener(e -> {
-            OrdersUI ordersUI = new OrdersUI(manager, productManager, basketManager);
+            OrdersUI ordersUI = new OrdersUI(inventoryManager, productManager, basketManager);
             switchPanel(ordersUI, menuPanel);
         });
 

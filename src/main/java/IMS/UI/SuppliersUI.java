@@ -8,7 +8,7 @@ import java.awt.*;
 import javax.swing.table.DefaultTableModel;
 
 public class SuppliersUI extends GUI implements UserUIInterface, TableUIInterface {
-    private final UserManager manager;
+    private final UserManager userManager;
     private DefaultTableModel supplierTable;
     private final JTextField supplierIDField;
     private final JTextField supplierNameField;
@@ -16,8 +16,8 @@ public class SuppliersUI extends GUI implements UserUIInterface, TableUIInterfac
     private final JTextField supplierEmailField;
     private final JTextField supplierDepartmentField;
 
-    public SuppliersUI(UserManager manager) {
-        this.manager = manager;
+    public SuppliersUI(UserManager userManager) {
+        this.userManager = userManager;
 
         supplierIDField = new JTextField(5);
         supplierNameField = new JTextField(10);
@@ -77,7 +77,7 @@ public class SuppliersUI extends GUI implements UserUIInterface, TableUIInterfac
 
         
         addButton.addActionListener(e -> {
-            String output = manager.addSupplier(supplierIDField.getText(), supplierNameField.getText(),
+            String output = userManager.addSupplier(supplierIDField.getText(), supplierNameField.getText(),
                     supplierAddressField.getText(), supplierEmailField.getText(),
                     supplierDepartmentField.getText());
             updatePanel(errorPanel, output);
@@ -85,7 +85,7 @@ public class SuppliersUI extends GUI implements UserUIInterface, TableUIInterfac
         });
 
         updateButton.addActionListener(e -> {
-            String output = manager.updateUser(supplierIDField.getText(), supplierNameField.getText(),
+            String output = userManager.updateUser(supplierIDField.getText(), supplierNameField.getText(),
                     supplierAddressField.getText(), supplierEmailField.getText(),
                     supplierDepartmentField.getText());
             updatePanel(errorPanel, output);
@@ -95,7 +95,7 @@ public class SuppliersUI extends GUI implements UserUIInterface, TableUIInterfac
 
         removeButton.addActionListener(e -> {
             String ID = supplierIDField.getText();
-            String output = manager.removeUser(ID);
+            String output = userManager.removeUser(ID);
             updatePanel(errorPanel,output);
             refreshTable();
         });
@@ -122,7 +122,7 @@ public class SuppliersUI extends GUI implements UserUIInterface, TableUIInterfac
     @Override
     public void refreshTable(){
         supplierTable.setRowCount(0);
-        for (Supplier user : manager.getSuppliers()) {
+        for (Supplier user : userManager.getSuppliers()) {
             supplierTable.addRow(new Object[]{user.getID(), user.getName(), user.getAddress(), user.getEmail(), user.getDepartment()});
         }
     }

@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class InventoryUI extends GUI implements TableUIInterface {
-    private final ProductManager manager;
+    private final ProductManager productManager;
     private DefaultTableModel inventoryTable;
     private final JTextField productIDField;
     private final JTextField productNameField;
@@ -19,8 +19,8 @@ public class InventoryUI extends GUI implements TableUIInterface {
     private ArrayList<Product> lowStock;
     private ArrayList<Product>  addingTolowStock;
 
-    public InventoryUI(ProductManager manager) {
-        this.manager = manager;
+    public InventoryUI(ProductManager productManager) {
+        this.productManager = productManager;
 
         productIDField = new JTextField(10);
         productNameField = new JTextField(10);
@@ -48,9 +48,9 @@ public class InventoryUI extends GUI implements TableUIInterface {
         inventoryTable.setRowCount(0);
         boolean sendAlert = false;
         addingTolowStock = new ArrayList<>();
-        for (Product item : manager.getAllItems()) {
+        for (Product item : productManager.getAllItems()) {
             String quantity = Integer.toString(item.getQuantity());
-            if (item.getQuantity() <= manager.getLowStockThreshold()) {
+            if (item.getQuantity() <= productManager.getLowStockThreshold()) {
                 quantity = "<html><font color=\"red\">" + item.getQuantity() + "</font></html>";
                 sendAlert = addToLowStock(item);
             } else if (lowStock != null) {
@@ -97,7 +97,7 @@ public class InventoryUI extends GUI implements TableUIInterface {
             String name = productNameField.getText();
             String quan = productQuantityField.getText();
             String price = productPriceField.getText();
-            String output = manager.addInventoryItem(ID, name, quan, price);
+            String output = productManager.addInventoryItem(ID, name, quan, price);
             updatePanel(errorPanel, output);
             refreshTable();
         });
@@ -107,7 +107,7 @@ public class InventoryUI extends GUI implements TableUIInterface {
             String name = productNameField.getText();
             String quantityText = productQuantityField.getText().trim();
             String priceText = productPriceField.getText().trim();
-            String output = manager.updateItem(ID,name, quantityText, priceText);
+            String output = productManager.updateItem(ID,name, quantityText, priceText);
             updatePanel(errorPanel, output);
             refreshTable();
         });
@@ -115,7 +115,7 @@ public class InventoryUI extends GUI implements TableUIInterface {
 
         removeButton.addActionListener(e -> {
             String ID = productIDField.getText();
-            String output = manager.removeItem(ID);
+            String output = productManager.removeItem(ID);
             updatePanel(errorPanel,output);
             refreshTable();
         });

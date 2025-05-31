@@ -6,7 +6,6 @@ import IMS.Users.Customer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 public class CustomersUI extends GUI implements UserUIInterface, TableUIInterface {
@@ -90,7 +89,6 @@ public class CustomersUI extends GUI implements UserUIInterface, TableUIInterfac
         });
 
         removeButton.addActionListener(e -> {
-            ArrayList<String> IDs = userManager.getAllCustomerIDs();
             String ID = customerIDField.getText();
             String output = userManager.removeUser(ID);
             updatePanel(errorPanel, output);

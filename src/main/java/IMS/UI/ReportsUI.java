@@ -11,11 +11,11 @@ import java.awt.*;
 import java.util.TreeMap;
 
 public class ReportsUI extends GUI implements TableUIInterface {
-    private final TransactionManager manager;
+    private final TransactionManager transactionManager;
     private DefaultTableModel transactionTable;
 
-    public ReportsUI(TransactionManager manager) {
-        this.manager = manager;
+    public ReportsUI(TransactionManager transactionManager) {
+        this.transactionManager = transactionManager;
 
         JPanel northPanel = createNorthPanel("Report");
         JScrollPane mainPanel = createTablePanel();
@@ -39,7 +39,7 @@ public class ReportsUI extends GUI implements TableUIInterface {
     @Override
     public void refreshTable(){
         transactionTable.setRowCount(0);
-        for (Transaction transaction : manager.getAllTransactions()) {
+        for (Transaction transaction : transactionManager.getAllTransactions()) {
             String userID = transaction.getUserID();
             String orderID = transaction.getOrderID();
             String totalCost = String.format("£%.2f",transaction.getTotalCost());
@@ -67,7 +67,7 @@ public class ReportsUI extends GUI implements TableUIInterface {
 
 
     public void generateReport(JPanel mainPanel){
-        TreeMap<String, Double> report = manager.generateReport();
+        TreeMap<String, Double> report = transactionManager.generateReport();
         final Color DARK_GREEN = new Color(0x21692d);
         final Color DARK_RED = new Color(0xb50b0b);
         JLabel reportLabel = new JLabel();

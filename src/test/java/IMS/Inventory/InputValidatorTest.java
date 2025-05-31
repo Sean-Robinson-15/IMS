@@ -8,11 +8,11 @@ import java.util.TreeMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InputValidatorTest {
-    private InputValidator manager;
+    private InputValidator validator;
 
     @BeforeEach
     void setUp() {
-        manager = new InputValidator();
+        validator = new InputValidator();
     }
 
     @Test
@@ -25,34 +25,34 @@ public class InputValidatorTest {
         inputs.put("priceStr", "70");
 
         //Valid
-        String output = manager.confirmInputs(inputs);
+        String output = validator.confirmInputs(inputs);
         assertEquals("", output);
 
         //Invalid
         inputs.put("priceStr", "");
-        output = manager.confirmInputs(inputs);
+        output = validator.confirmInputs(inputs);
         assertEquals("Please fill in all fields. Empty fields: [priceStr]", output);
 
         inputs.put("priceStr", "-10");
-        output = manager.confirmInputs(inputs);
+        output = validator.confirmInputs(inputs);
         assertEquals("Price cannot be negative. Please try again.", output);
 
         inputs.put("priceStr", "hello world");
-        output = manager.confirmInputs(inputs);
+        output = validator.confirmInputs(inputs);
         assertEquals("Price must be an integer. Please try again.", output);
     }
 
         @Test
         void testValidateInteger() {
             //Valid
-            String output = manager.validateInt("21", "Variable");
+            String output = validator.validateInt("21", "Variable");
             assertEquals("", output );
 
             //Invalid
-            output = manager.validateInt("Not an Int", "Variable");
+            output = validator.validateInt("Not an Int", "Variable");
             assertEquals("Variable must be an integer. Please try again.", output );
 
-            output = manager.validateInt("-21", "Variable");
+            output = validator.validateInt("-21", "Variable");
             assertEquals("Variable cannot be negative. Please try again.", output );
 
         }

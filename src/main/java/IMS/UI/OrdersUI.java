@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class OrdersUI extends GUI  {
-    private final InventoryManager manager;
+    private final InventoryManager inventoryManager;
     private final ProductManager productManager;
     private final BasketManager basketManager;
     private final DefaultTableModel inventoryTable;
@@ -16,8 +16,8 @@ public class OrdersUI extends GUI  {
     private JTextField userIDField;
     private JTextField productQuantityField;
 
-    public OrdersUI(InventoryManager manager, ProductManager productManager, BasketManager basketManager) {
-        this.manager = manager;
+    public OrdersUI(InventoryManager inventoryManager, ProductManager productManager, BasketManager basketManager) {
+        this.inventoryManager = inventoryManager;
         this.productManager = productManager;
         this.basketManager = basketManager;
 
@@ -107,7 +107,7 @@ public class OrdersUI extends GUI  {
 
         checkoutButton.addActionListener(e -> {
             String userID = userIDField.getText();
-            String output = manager.checkoutBasket(userID);
+            String output = inventoryManager.checkoutBasket(userID);
             updatePanel(errorPanel, output);
             refreshTable();
         });

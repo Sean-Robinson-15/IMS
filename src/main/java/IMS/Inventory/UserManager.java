@@ -69,12 +69,11 @@ public class UserManager {
     public ArrayList<Supplier> getSuppliers() {
         return userData.getSuppliers();
     }
-    public ArrayList<String> getAllCustomerIDs() {
-        return userData.getAllCustomerIDs();
-    }
 
     public boolean userExists(String ID) {
-        return userData.userExists(ID).isEmpty();
+        // as this function returns messages if correct, empty is actually an error, so false.
+        // so we use ! to flip the boolean
+        return !userData.userExists(ID).isEmpty();
     }
 
     public String removeUser(String ID) {
