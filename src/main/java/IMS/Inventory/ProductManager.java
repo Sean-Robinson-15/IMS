@@ -30,13 +30,20 @@ public class ProductManager {
     public String updateItem(String ID, String name, String quantityStr, String priceStr) {
         Product product = inventory.get(ID);
         if (product != null) {
-            String validationResult = validator.validateInt(quantityStr, "Quantity");
-            if (!validationResult.isEmpty()) return validationResult;
-            int quantity = Integer.parseInt(quantityStr);
-            product.setQuantity(quantity);
 
-            if(quantityStr.isEmpty() ) {
-                validationResult = validator.validateDouble(priceStr, "Price");
+            if(name.isEmpty() && quantityStr.isEmpty() && priceStr.isEmpty()) {
+                return ("All Fields empty, please enter at least one field to update.");
+            }
+
+            if(!quantityStr.isEmpty()) {
+                String validationResult = validator.validateInt(quantityStr, "Quantity");
+                if (!validationResult.isEmpty()) return validationResult;
+                int quantity = Integer.parseInt(quantityStr);
+                product.setQuantity(quantity);
+            }
+
+            if(!priceStr.isEmpty()) {
+                String validationResult = validator.validateDouble(priceStr, "Price");
                 if (!validationResult.isEmpty()) return validationResult;
                 double price = Double.parseDouble(priceStr);
                 product.setPrice(price);

@@ -1,137 +1,99 @@
 package IMS.Inventory;
-
-import IMS.Users.User;
-import IMS.Users.Customer;
-import IMS.Users.Supplier;
-
-import java.util.Map;
-import java.util.TreeMap;
+import IMS.Users.*;
 import java.util.ArrayList;
 
 public class UserManager {
-    private final Map<String, User> users = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-    public String addCustomer(String ID, String name, String address, String email) {
+    private final UserData userData;
 
-        if (users.containsKey(ID)) {
-            return "Customer with ID " + ID + " already exists.";
-        }
-        if (name.isEmpty() || address.isEmpty() || email.isEmpty()) {
-            return "Please enter all necessary fields.";
-        }
-        users.put(ID, new Customer(ID, name, address, email));
-        return "Customer " + name + " added with ID " + ID;
+    public UserManager() {
+         userData = new UserData();
     }
 
-    public String addSupplier(String ID, String name, String address, String email, String department) {
-        if (users.containsKey(ID)) {
-            return "Supplier with ID " + ID + " already exists.";
-        }
+//    private final Map<String, User> users = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private String validateAddUser(String ID, String name, String address, String email) {
         if (ID.isEmpty() || name.isEmpty() || address.isEmpty() || email.isEmpty()) {
             return "Please enter all necessary fields.";
         }
-        users.put(ID, new Supplier(ID, name, address, email, department));
-        return "Supplier " + name + " added with ID " + ID;
-    }
-
-    public String updateUser(String ID, String name, String address, String email) {
-        User user = users.get(ID);
-        if (user != null) {
-            if (address.isEmpty() && email.isEmpty() && name.isEmpty()) {
-                return ("Error: All fields are empty for [" + ID +"]");
-            }
-            if (!address.isEmpty()) {
-                user.setAddress(address);
-            }
-            if (!email.isEmpty()) {
-                user.setEmail(email);
-            }
-            if (!name.isEmpty()) {
-                user.setName(name);
-            }
-            return ("User Updated: " + ID);
-        }
-        return ("Error: User ID [" + ID +"] doesnt exist.");
-    }
-
-    public String updateUser(String ID, String name, String address, String email, String department) {
-        String output = updateUser(ID, name, address, email);
-        if (output.contains("Error:") && department.isEmpty()) return output;
-        Supplier user = (Supplier)users.get(ID);
-        if ( user != null && !department.isEmpty()) {
-            user.setDepartment(department);
-            return ("User Updated: " + ID);
-        }
-        return ("Error: Supplier ID [" + ID +"] doesnt exist.");
-    }
-
-    public String removeUser(String ID) {
-        if (users.remove(ID) != null) {
-            return "Item Removed : " + ID;
-        } else {
-            return "Error! User Code [" + ID +"] doesnt exist.";
-        }
-    }
-
-    public boolean userExists(String ID) {
-        return users.containsKey(ID);
-    }
-
-    public ArrayList<Customer> getCustomers() {
-        ArrayList<User> usersList = new ArrayList<>(users.values());
-        ArrayList<Customer> customersList = new ArrayList<>();
-        for (User user : usersList) {
-            if (user instanceof Customer customer) {
-                customersList.add(new Customer(
-                        customer.getID(),
-                        customer.getName(),
-                        customer.getAddress(),
-                        customer.getEmail()
-                ));
-            }
-        }
-        return customersList;
-    }
-
-    public ArrayList<Supplier> getSuppliers() {
-        ArrayList<User> usersList = new ArrayList<>(users.values());
-        ArrayList<Supplier> suppliersList = new ArrayList<>();
-        for (User user : usersList) {
-            if (user instanceof Supplier supplier) {
-                suppliersList.add(new Supplier(
-                    supplier.getID(),
-                    supplier.getName(),
-                    supplier.getAddress(),
-                    supplier.getEmail(),
-                    supplier.getDepartment()
-                ));
-            }
-        }
-        return suppliersList;
-    }
-
-    public ArrayList<String> getAllCustomerIDs() {
-        ArrayList<String> IDs = new ArrayList<>();
-        for (User p : users.values()) {
-            if (p instanceof Customer) {
-                IDs.add(p.getID());
-            }
-        }
-        return IDs;
-    }
-
-    public String getUserName(String ID) {
-        return users.get(ID).getName();
-    }
-    public String getUserAddress(String ID) {
-        return users.get(ID).getAddress();
-    }
-    public String getUserEmail(String ID) {
-        return users.get(ID).getEmail();
-    }
-    public String getUserDepartment(String ID) {
-        if (users.get(ID) instanceof Supplier supplier) {
-            return supplier.getDepartment();
+        if (!userData.userExists(ID).isEmpty()) {
+            return userData.userExists(ID);
         }
         return "";
     }
+
+    private String validateUpdateUser(String ID, String name, String address, String email, String department) {
+        if (address.isEmpty() && email.isEmpty() && name.isEmpty() && department.isEmpty()) {
+            return ("Error: All fields are empty for [" + ID +"]");
+        }
+        if (userData.userExists(ID).isEmpty()) {
+            return "Error: User with ID [" + ID + "] does not exist.";
+        }
+        return "";
+    }
+
+    public String addCustomer(String ID, String name, String address, String email) {
+        String validUser = validateAddUser(ID, name, address, email);
+        if (!validUser.isEmpty()) {
+            return validUser;
+        }
+        return userData.addCustomer(ID, name, address, email);
+
+    }
+
+    public String addSupplier(String ID, String name, String address, String email, String department) {
+        String validAdd = validateAddUser(ID, name, address, email);
+        if (!validAdd.isEmpty()) {
+            return validAdd;
+        }
+        return userData.addSupplier(ID, name, address, email, department);
+    }
+
+    public String updateUser (String ID, String name, String address, String email) {
+        String validUpdate = validateUpdateUser(ID, name, address, email, "");
+        if (!validUpdate.isEmpty()) {
+            return validUpdate;
+        }
+        return userData.updateUser(ID, name, address, email, "");
+    }
+
+    public String updateUser (String ID, String name, String address, String email, String department) {
+        String validUpdate = validateUpdateUser(ID, name, address, email, department);
+        if (!validUpdate.isEmpty()) {
+            return validUpdate;
+        }
+        return userData.updateUser(ID, name, address, email, department);
+    }
+
+    public ArrayList<Customer> getCustomers() {
+        return userData.getCustomers();
+    }
+    public ArrayList<Supplier> getSuppliers() {
+        return userData.getSuppliers();
+    }
+    public ArrayList<String> getAllCustomerIDs() {
+        return userData.getAllCustomerIDs();
+    }
+
+    public boolean userExists(String ID) {
+        return userData.userExists(ID).isEmpty();
+    }
+
+    public String removeUser(String ID) {
+        return userData.removeUser(ID);
+    }
+
+    public String getUserName(String ID) {
+        return userData.getUserName(ID);
+    }
+
+    public String getUserAddress(String ID) {
+        return userData.getUserAddress(ID);
+    }
+
+    public String getUserEmail(String ID) {
+        return userData.getUserEmail(ID);
+    }
+    public String getUserDepartment(String ID) {
+        return userData.getUserDepartment(ID);
+    }
+
 }

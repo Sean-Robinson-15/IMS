@@ -10,15 +10,15 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 public class CustomersUI extends GUI implements UserUIInterface, TableUIInterface {
-    private final UserManager manager;
+    private final UserManager userManager;
     private DefaultTableModel customerTable;
     private final JTextField customerNameField;
     private final JTextField customerAddressField;
     private final JTextField customerEmailField;
     private final JTextField customerIDField;
 
-    public CustomersUI(UserManager manager) {
-        this.manager = manager;
+    public CustomersUI(UserManager userManager) {
+        this.userManager = userManager;
 
         customerIDField = new JTextField(5);
         customerNameField = new JTextField(10);
@@ -76,23 +76,23 @@ public class CustomersUI extends GUI implements UserUIInterface, TableUIInterfac
 
         
         addButton.addActionListener(e -> {
-            String output = manager.addCustomer(customerIDField.getText(), customerNameField.getText(),
+            String output = userManager.addCustomer(customerIDField.getText(), customerNameField.getText(),
                     customerAddressField.getText(), customerEmailField.getText());
             updatePanel(errorPanel, output);
             refreshTable();
         });
 
         updateButton.addActionListener(e -> {
-            String output = manager.updateUser(customerIDField.getText(), customerNameField.getText(),
+            String output = userManager.updateUser(customerIDField.getText(), customerNameField.getText(),
                     customerAddressField.getText(), customerEmailField.getText());
             updatePanel(errorPanel, output);
             refreshTable();
         });
 
         removeButton.addActionListener(e -> {
-            ArrayList<String> IDs = manager.getAllCustomerIDs();
+            ArrayList<String> IDs = userManager.getAllCustomerIDs();
             String ID = customerIDField.getText();
-            String output = manager.removeUser(ID);
+            String output = userManager.removeUser(ID);
             updatePanel(errorPanel, output);
             refreshTable();
         });
@@ -109,7 +109,7 @@ public class CustomersUI extends GUI implements UserUIInterface, TableUIInterfac
     @Override
     public void refreshTable(){
         customerTable.setRowCount(0);
-        for (Customer user : manager.getCustomers()) {
+        for (Customer user : userManager.getCustomers()) {
             customerTable.addRow(new Object[]{user.getID(), user.getName(), user.getEmail(), user.getAddress()});
         }
     }
