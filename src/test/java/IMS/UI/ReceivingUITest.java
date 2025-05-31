@@ -33,7 +33,7 @@ public class ReceivingUITest {
         when (mockProductManager.getInTransit()).thenReturn(testProducts);
 
         receivingUI = new ReceivingUI(mockProductManager);
-    }
+    } //End of Setup Method
 
     @Test
     void testCreateTablePanel() {
