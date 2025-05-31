@@ -53,6 +53,11 @@ public class ReportsUI extends GUI {
         }
     }
 
+    @Override
+    public JPanel createSouthPanel(JPanel inputPanel, JPanel buttonPanel) {
+        return null;
+    }
+
 
     public void generateReport(JPanel mainPanel){
         TreeMap<String, Double> report = manager.generateReport();

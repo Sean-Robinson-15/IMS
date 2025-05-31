@@ -1,4 +1,5 @@
 package IMS.Inventory;
+import IMS.Orders.Purchase;
 import IMS.Orders.Sale;
 import IMS.Orders.Transaction;
 import org.junit.jupiter.api.BeforeEach;
@@ -132,14 +133,22 @@ class BasketManagerTest {
     }
 
     @Test
-    void testCreateTransaction() {
+    void testCreateSale() {
         //Init
         productManager.addInventoryItem("P001", "Product1", "50", "70");
         manager.addToBasket("C001","P001", "Product1", "10", 70);
 
         Transaction transaction = manager.createTransaction("T001");
         assertInstanceOf(Sale.class, transaction);
+    }
 
-        //Valid
+    @Test
+    void testCreatePurchase() {
+        //Init
+        productManager.addInventoryItem("P001", "Product1", "50", "70");
+        manager.addToBasket("S001","P001", "Product1", "10", 70);
+
+        Transaction transaction = manager.createTransaction("T001");
+        assertInstanceOf(Purchase.class, transaction);
     }
 }

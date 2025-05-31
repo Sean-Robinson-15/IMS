@@ -23,13 +23,14 @@ public class SuppliersUI extends GUI {
 
 
         //Initial IMS.UI.UI/Panel Creation. Will {RETURN} to see if there is a better way
-        JPanel southPanel = new JPanel(new GridLayout( 3, 1, 5, 5));
+
         JPanel northPanel = createNorthPanel("Suppliers");
         JPanel inputPanel = new JPanel(new GridLayout(2, 1, 5, 10));
         JPanel topInput = new JPanel(new GridLayout());
         JPanel bottomInput = new JPanel(new GridLayout());
         JPanel buttonPanel = new JPanel(new GridLayout());
         JPanel errorPanel = new JPanel(new BorderLayout());
+        JPanel southPanel = createSouthPanel(inputPanel, buttonPanel);
 
         //Button Creation
         JButton addButton = new JButton("Add");
@@ -61,9 +62,7 @@ public class SuppliersUI extends GUI {
         buttonPanel.add(removeButton);
 
         //Added to southPanel
-        southPanel.add(errorPanel);
-        southPanel.add(inputPanel);
-        southPanel.add(buttonPanel);
+
 
         //Add panels to window
         add(northPanel, BorderLayout.NORTH);
@@ -104,6 +103,15 @@ public class SuppliersUI extends GUI {
         for (Supplier user : manager.getSuppliers()) {
             supplierTable.addRow(new Object[]{user.getID(), user.getName(), user.getAddress(), user.getEmail(), user.getDepartment()});
         }
+    }
+
+    @Override
+    public JPanel createSouthPanel(JPanel inputPanel, JPanel buttonPanel) {
+        JPanel southPanel = new JPanel(new GridLayout( 3, 1, 5, 5));
+        southPanel.add(errorPanel);
+        southPanel.add(inputPanel);
+        southPanel.add(buttonPanel);
+        return null;
     }
 
 }

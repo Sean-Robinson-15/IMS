@@ -76,4 +76,9 @@ public class ReceivingUI extends GUI {
         }
         Alerts.sendStockAlert(lowStock);
     }
+
+    @Override
+    public JPanel createSouthPanel(JPanel inputPanel, JPanel buttonPanel) {
+        return null;
+    }
 }

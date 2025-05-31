@@ -1,4 +1,4 @@
-package IMS.UI;
+package IMS.Inventory;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

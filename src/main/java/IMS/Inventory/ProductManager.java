@@ -1,5 +1,4 @@
 package IMS.Inventory;
-import IMS.UI.InputValidator;
 import IMS.Products.Product;
 import java.util.Map;
 import java.util.TreeMap;

@@ -18,27 +18,29 @@ public class OrdersUI extends GUI {
     private JTextField productQuantityField;
     private JPanel errorPanel;
 
-        public OrdersUI(InventoryManager manager, ProductManager productManager, BasketManager basketManager) {
-            this.manager = manager;
-            this.productManager = productManager;
-            this.basketManager = basketManager;
-            setLayout(new BorderLayout());
+    public OrdersUI(InventoryManager manager, ProductManager productManager, BasketManager basketManager) {
+        this.manager = manager;
+        this.productManager = productManager;
+        this.basketManager = basketManager;
+        setLayout(new BorderLayout());
 
-            //Create Default Table
-            inventoryTable = createNonEditTable(new String[]{"ID","Product", "Quantity", "Price"});
-            basketTable = createNonEditTable(new String[]{"ID", "Product", "Quantity", "Price"});
+        //Create Default Table
+        inventoryTable = createNonEditTable(new String[]{"ID","Product", "Quantity", "Price"});
+        basketTable = createNonEditTable(new String[]{"ID", "Product", "Quantity", "Price"});
 
-            JSplitPane mainPanel = createMainPanel();
-            JPanel northPanel = createNorthPanel("Orders");
-            JPanel southPanel = createSouthPanel();
+        JSplitPane mainPanel = createMainPanel();
+        JPanel northPanel = createNorthPanel("Orders");
+        JPanel inputPanel = createInputPanel();
+        JPanel buttonPanel = createButtonPanel();
+        JPanel southPanel = createSouthPanel(inputPanel, buttonPanel);
 
-            //Add panels to window
-            add(northPanel, BorderLayout.NORTH);
-            add(southPanel, BorderLayout.SOUTH);
-            add(mainPanel, BorderLayout.CENTER);
-            refreshTable();
+        //Add panels to window
+        add(northPanel, BorderLayout.NORTH);
+        add(southPanel, BorderLayout.SOUTH);
+        add(mainPanel, BorderLayout.CENTER);
+        refreshTable();
 
-        }
+    }
 
     private JSplitPane createMainPanel() {
         JTable table = new JTable(inventoryTable);
@@ -51,14 +53,10 @@ public class OrdersUI extends GUI {
         mainPanel.setResizeWeight(1);
         return mainPanel;
     }
-
-
-
-    private JPanel createSouthPanel() {
+    @Override
+    public JPanel createSouthPanel(JPanel inputPanel, JPanel buttonPanel) {
         JPanel southPanel = new JPanel(new GridLayout( 3, 1, 5, 5));
         errorPanel = new JPanel(new BorderLayout());
-        JPanel inputPanel = createInputPanel();
-        JPanel buttonPanel = createButtonPanel();
 
         southPanel.add(errorPanel);
         southPanel.add(inputPanel);
