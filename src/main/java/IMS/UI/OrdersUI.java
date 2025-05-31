@@ -114,7 +114,15 @@ public class OrdersUI extends GUI  {
 
         removeItemButton.addActionListener(e -> {
             String ID = productIDField.getText();
-            String output = basketManager.removeItemFromBasket(ID);
+            String quantityStr = productQuantityField.getText();
+            String output;
+
+            if (quantityStr.isEmpty()) {
+                output = basketManager.removeItemFromBasket(ID);
+            } else {
+                output = basketManager.removeItemFromBasket(ID, quantityStr);
+            }
+
             updatePanel(errorPanel, output);
             refreshTable();
         });

@@ -41,7 +41,14 @@ public class InventoryManager {
         }
         basketManager.checkoutBasket();
 
-        return orderId + " Checked out for £" + transaction.getTotalCost();
+        String totalCost = String.format("%.02f", transaction.getTotalCost());
+
+        if (transaction instanceof Purchase) {
+            return orderId + " Checked out for £" + totalCost +
+                    ". Product moved to Receving.";
+        }
+
+        return orderId + " Checked out for £" + totalCost;
 
     }
     public String getNextOrderID() {

@@ -90,6 +90,48 @@ public class BasketManager {
         }
     }
 
+    public String removeItemFromBasket(String ID, String quantity) {
+        try {
+            Product basketProduct = basket.get(ID);
+            int removeQuantity;
+
+            try {
+                removeQuantity = Integer.parseInt(quantity)*-1;
+                if (removeQuantity >= 0) { //yes its the wrong way round, because its a negative number
+                    return "Quantity must be positive. Please try again.";
+                }
+
+            } catch (NumberFormatException e) {
+                return "Quantity must be an integer. Please try again.";
+            }
+
+            if (basketProduct.getQuantity() > removeQuantity) {
+                System.out.println("Basket quantity: " + basketProduct.getQuantity());
+                System.out.println("Remove quantity: " + removeQuantity);
+                return "Removal quantity too high.";
+            }
+
+            resetQuantity(ID, removeQuantity);
+
+            if (basket.isEmpty()) {
+                currentUser = "";
+            }
+
+            if (basketProduct.getQuantity() == removeQuantity) {
+                basket.remove(ID);
+                return "Item "+ID+" Removed \n";
+            } else {
+                basketProduct.setQuantity(basketProduct.getQuantity() - removeQuantity);
+                return "Item "+ID+" Quantity reduced by "+quantity+" \n";
+            }
+
+
+
+        } catch (NullPointerException e) {
+            return "Item "+ID+" Doesnt Exist in basket";
+        }
+    }
+
     public void emptyBasket() {
         for (Product item : getBasket()) {
             int basketQuantity = item.getQuantity();
