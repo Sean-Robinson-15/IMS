@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="IMS3:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/IMS3_jar</output-path>
+    <root id="archive" name="IMS3.jar">
+      <element id="module-output" name="IMS3" />
+    </root>
+  </artifact>
+</component>
