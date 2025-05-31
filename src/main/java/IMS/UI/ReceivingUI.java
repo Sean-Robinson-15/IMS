@@ -52,6 +52,8 @@ public class ReceivingUI extends GUI implements TableUIInterface {
         receiveButton.addActionListener(e -> {
             String ID = productIDField.getText().trim();
             String quantityText = productQuantityField.getText().trim();
+
+
             String output = productManager.receiveItem(ID, quantityText);
             updatePanel(errorPanel, output);
             refreshTable();
