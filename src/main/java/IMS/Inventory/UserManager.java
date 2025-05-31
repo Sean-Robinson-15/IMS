@@ -90,9 +90,15 @@ public class UserManager {
     public ArrayList<Supplier> getSuppliers() {
         ArrayList<User> usersList = new ArrayList<>(users.values());
         ArrayList<Supplier> suppliersList = new ArrayList<>();
-        for (User i : usersList) {
-            if (i instanceof Supplier) {
-                suppliersList.add((Supplier) i);
+        for (User user : usersList) {
+            if (user instanceof Supplier supplier) {
+                suppliersList.add(new Supplier(
+                    supplier.getID(),
+                    supplier.getName(),
+                    supplier.getAddress(),
+                    supplier.getEmail(),
+                    supplier.getDepartment()
+                ));
             }
         }
         return suppliersList;
