@@ -78,13 +78,18 @@ public class UserManager {
 
     public ArrayList<Customer> getCustomers() {
         ArrayList<User> usersList = new ArrayList<>(users.values());
-        ArrayList<Customer> CustomersList = new ArrayList<>();
-        for (User i : usersList) {
-            if (i instanceof Customer) {
-                CustomersList.add((Customer) i);
+        ArrayList<Customer> customersList = new ArrayList<>();
+        for (User user : usersList) {
+            if (user instanceof Customer customer) {
+                customersList.add(new Customer(
+                        customer.getID(),
+                        customer.getName(),
+                        customer.getAddress(),
+                        customer.getEmail()
+                ));
             }
         }
-        return CustomersList;
+        return customersList;
     }
 
     public ArrayList<Supplier> getSuppliers() {
