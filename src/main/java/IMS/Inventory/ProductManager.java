@@ -35,14 +35,17 @@ public class ProductManager {
             int quantity = Integer.parseInt(quantityStr);
             product.setQuantity(quantity);
 
-            validationResult = validator.validateDouble(priceStr, "Price");
-            if (!validationResult.isEmpty()) return validationResult;
-            double price = Double.parseDouble(priceStr);
-            product.setPrice(price);
+            if(quantityStr.isEmpty() ) {
+                validationResult = validator.validateDouble(priceStr, "Price");
+                if (!validationResult.isEmpty()) return validationResult;
+                double price = Double.parseDouble(priceStr);
+                product.setPrice(price);
+            }
 
             if (!name.isEmpty()) {
                 product.setName(name);
             }
+
             return ("Item Updated: " + ID + " " + name);
         }
         return ("Error: Product Code [" + ID +"] doesnt exist.");

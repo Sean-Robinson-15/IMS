@@ -1,4 +1,5 @@
 package IMS.UI;
+import IMS.Interfaces.TableUIInterface;
 import IMS.Inventory.TransactionManager;
 import IMS.Orders.Transaction;
 import IMS.Renderers.TransactionRowRenderer;
@@ -9,36 +10,30 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.TreeMap;
 
-public class ReportsUI extends GUI {
+public class ReportsUI extends GUI implements TableUIInterface {
     private final TransactionManager manager;
-    private final DefaultTableModel transactionTable;
+    private DefaultTableModel transactionTable;
 
     public ReportsUI(TransactionManager manager) {
-        setLayout(new BorderLayout());
         this.manager = manager;
 
-        //Create Default Table
-        transactionTable = createNonEditTable(new String[]{"OrderID", "UserID" ,"Items", "Price"});
+        JPanel northPanel = createNorthPanel("Report");
+        JScrollPane mainPanel = createTablePanel();
+        JPanel southPanel = createSouthPanel();
 
-//        inventoryTable.setFont(new Font("Serif", Font.BOLD, 20));
-        //Create table based on default above
+        addPanels(northPanel, mainPanel, southPanel);
+        refreshTable();
+
+    }
+
+    @Override
+    public JScrollPane createTablePanel() {
+        transactionTable = createNonEditTable(new String[]{"OrderID", "UserID" ,"Items", "Price"});
         JTable table = new JTable(transactionTable);
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 15));
-
         table.setDefaultRenderer(Object.class, new TransactionRowRenderer());
-        JScrollPane mainPanel = new JScrollPane(table);
-
-        JPanel northPanel = createNorthPanel("Report");
-        JPanel southPanel = new JPanel(new GridLayout( 1, 3, 5, 5));
-        generateReport(southPanel);
-
-        //Add panels to window
-        add(northPanel, BorderLayout.NORTH);
-        add(mainPanel, BorderLayout.CENTER);
-        add(southPanel, BorderLayout.SOUTH);
-        refreshTable();
-
+        return new JScrollPane(table);
     }
 
     @Override
@@ -54,8 +49,20 @@ public class ReportsUI extends GUI {
     }
 
     @Override
-    public JPanel createSouthPanel(JPanel inputPanel, JPanel buttonPanel) {
+    protected JPanel createInputPanel() {
         return null;
+    }
+
+    @Override
+    protected JPanel createButtonPanel() {
+        return null;
+    }
+
+    @Override
+    public JPanel createSouthPanel() {
+        JPanel southPanel = new JPanel(new GridLayout( 1, 3, 5, 5));
+        generateReport(southPanel);
+        return southPanel;
     }
 
 

@@ -1,4 +1,5 @@
 package IMS.UI;
+import IMS.Interfaces.TableUIInterface;
 import IMS.Inventory.ProductManager;
 import IMS.Products.Product;
 import IMS.Alerts.Alerts;
@@ -8,53 +9,45 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class ReceivingUI extends GUI {
+public class ReceivingUI extends GUI implements TableUIInterface {
     private final ProductManager manager;
-    private final DefaultTableModel inventoryTable;
+    private DefaultTableModel inventoryTable;
+    private final JTextField productIDField;
+    private final JTextField productQuantityField;
 
     public ReceivingUI(ProductManager manager) {
-        setLayout(new BorderLayout());
         this.manager = manager;
 
-        //Create Default Table
-        inventoryTable = createNonEditTable(new String[]{"ID","Product", "Quantity"});
-        //Create table based on default above
-        JTable table = new JTable(inventoryTable);
-        JScrollPane scrollPane = new JScrollPane(table);
+        productIDField = new JTextField(10);
+        productQuantityField = new JTextField(5);
 
-        //Initial IMS.UI.UI/Panel Creation. Will {RETURN} to see if there is a better way
-        JPanel southPanel = new JPanel(new GridLayout( 3, 1, 5, 5));
         JPanel northPanel = createNorthPanel("Receiving (Products In Transit)");
-        JPanel inputPanel = new JPanel(new GridLayout());
-        JPanel buttonPanel = new JPanel(new GridLayout());
-        JPanel errorPanel = new JPanel(new BorderLayout());
+        JScrollPane mainPanel = createTablePanel();
+        JPanel southPanel = createSouthPanel();
 
-        //Button Creation
-        JButton receiveButton = new JButton("Receive");
+        addPanels(northPanel, mainPanel, southPanel);
+        refreshTable();
+    }
+    @Override
+    public JScrollPane createTablePanel() {
+        inventoryTable = createNonEditTable(new String[]{"ID","Product", "Quantity"});
+        JTable table = new JTable(inventoryTable);
+        return new JScrollPane(table);
+    }
 
-        //Field Creation
-        JTextField productIDField = new JTextField(10);
-        JTextField productQuantityField = new JTextField(5);
-
-        //Add fields to inputPanel
+    @Override
+    public JPanel createInputPanel() {
+        JPanel inputPanel = new JPanel(new GridLayout(2, 1, 5, 10));
         addLabelField(inputPanel, "   ID :  ", productIDField);
         addLabelField(inputPanel, "  Quantity :  ", productQuantityField);
+        return inputPanel;
+    }
 
-        //Create blanks as easiest solution to create blank row, will {RETURN} to refacto
-
-        //Add buttons to buttonPanel
+    @Override
+    public JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel(new GridLayout());
+        JButton receiveButton = new JButton("Receive");
         buttonPanel.add(receiveButton);
-
-        //Added to southPanel
-        southPanel.add(errorPanel);
-        southPanel.add(inputPanel);
-        southPanel.add(buttonPanel);
-
-        //Add panels to window
-        add(northPanel, BorderLayout.NORTH);
-        add(southPanel, BorderLayout.SOUTH);
-        add(scrollPane, BorderLayout.CENTER);
-        refreshTable();
 
         receiveButton.addActionListener(e -> {
             String ID = productIDField.getText().trim();
@@ -64,8 +57,19 @@ public class ReceivingUI extends GUI {
             refreshTable();
         });
 
+        return buttonPanel;
     }
 
+    @Override
+    public JPanel createSouthPanel() {
+        JPanel inputPanel = createInputPanel();
+        JPanel buttonPanel = createButtonPanel();
+        JPanel southPanel = new JPanel(new GridLayout( 3, 1, 5, 5));
+        southPanel.add(errorPanel);
+        southPanel.add(inputPanel);
+        southPanel.add(buttonPanel);
+        return southPanel;
+    }
 
     @Override
     public void refreshTable() {
@@ -75,10 +79,5 @@ public class ReceivingUI extends GUI {
             inventoryTable.addRow(new Object[]{item.getID(), item.getName(), item.getQuantity()});
         }
         Alerts.sendStockAlert(lowStock);
-    }
-
-    @Override
-    public JPanel createSouthPanel(JPanel inputPanel, JPanel buttonPanel) {
-        return null;
     }
 }

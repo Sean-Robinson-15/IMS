@@ -1,76 +1,81 @@
 package IMS.UI;
-import IMS.Inventory.InventoryManager;
+import IMS.Interfaces.TableUIInterface;
+import IMS.Interfaces.UserUIInterface;
 import IMS.Inventory.UserManager;
 import IMS.Users.Supplier;
-
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.table.DefaultTableModel;
 
-public class SuppliersUI extends GUI {
+public class SuppliersUI extends GUI implements UserUIInterface, TableUIInterface {
     private final UserManager manager;
-    private final DefaultTableModel supplierTable;
+    private DefaultTableModel supplierTable;
+    private final JTextField supplierIDField;
+    private final JTextField supplierNameField;
+    private final JTextField supplierAddressField;
+    private final JTextField supplierEmailField;
+    private final JTextField supplierDepartmentField;
 
     public SuppliersUI(UserManager manager) {
-        setLayout(new BorderLayout());
         this.manager = manager;
-        //Add Table to window
 
-        supplierTable = createNonEditTable(new String[]{"ID","Name", "Address", "Email", "Department"});
-
-        JTable table = new JTable(supplierTable);
-        JScrollPane scrollPane = new JScrollPane(table);
-
-
-        //Initial IMS.UI.UI/Panel Creation. Will {RETURN} to see if there is a better way
+        supplierIDField = new JTextField(5);
+        supplierNameField = new JTextField(10);
+        supplierAddressField = new JTextField(5);
+        supplierEmailField = new JTextField(5);
+        supplierDepartmentField = new JTextField(5);
 
         JPanel northPanel = createNorthPanel("Suppliers");
-        JPanel inputPanel = new JPanel(new GridLayout(2, 1, 5, 10));
-        JPanel topInput = new JPanel(new GridLayout());
-        JPanel bottomInput = new JPanel(new GridLayout());
-        JPanel buttonPanel = new JPanel(new GridLayout());
-        JPanel errorPanel = new JPanel(new BorderLayout());
-        JPanel southPanel = createSouthPanel(inputPanel, buttonPanel);
+        JScrollPane mainPanel = createTablePanel();
+        JPanel southPanel = createSouthPanel();
 
+        
+        addPanels(northPanel, mainPanel, southPanel);
+        refreshTable();
+    }
+
+    @Override
+    public JScrollPane createTablePanel() {
+        supplierTable = createNonEditTable(new String[]{"ID","Name", "Address", "Email", "Department"});
+        JTable table = new JTable(supplierTable);
+        return new JScrollPane(table);
+    }
+
+    @Override
+    public JPanel createTopInput() {
+        JPanel topInput = new JPanel(new GridLayout());
+        addLabelField(topInput, "   ID :  ", supplierIDField);
+        addLabelField(topInput, "   Name :  ", supplierNameField);
+        addLabelField(topInput, "   Email :  ", supplierEmailField);
+        return topInput;
+    }
+    @Override
+    public JPanel createBottomInput() {
+        JPanel bottomInput = new JPanel(new GridLayout());
+        addLabelField(bottomInput, "  Address :  ", supplierAddressField);
+        addLabelField(bottomInput, "   Department (Optional) :  ", supplierDepartmentField);
+        return bottomInput;
+    }
+
+    @Override
+    public JPanel createInputPanel() {
+        JPanel topInput = createTopInput();
+        JPanel bottomInput = createBottomInput();
+        JPanel inputPanel = new JPanel(new GridLayout(2, 1, 5, 10));
+        inputPanel.add(topInput);
+        inputPanel.add(bottomInput);
+        return inputPanel;
+    }
+
+    @Override
+    public JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel(new GridLayout());
         //Button Creation
         JButton addButton = new JButton("Add");
         JButton updateButton = new JButton("Update");
         JButton removeButton = new JButton("Remove");
 
-        //Field Creation
-        JTextField supplierIDField = new JTextField(5);
-        JTextField supplierNameField = new JTextField(10);
-        JTextField supplierAddressField = new JTextField(5);
-        JTextField supplierEmailField = new JTextField(5);
-        JTextField supplierDepartmentField = new JTextField(5);
-
-        //Add fields to inputPanel
-        addLabelField(topInput, "   ID :  ", supplierIDField);
-        addLabelField(topInput, "   Name :  ", supplierNameField);
-        addLabelField(bottomInput, "  Address :  ", supplierAddressField);
-        addLabelField(topInput, "   Email :  ", supplierEmailField);
-        addLabelField(bottomInput, "   Department (Optional) :  ", supplierDepartmentField);
-
-        inputPanel.add(topInput);
-        inputPanel.add(bottomInput);
-
-        //Create blanks as easiest solution to create blank row, will {RETURN} to refacto
-
-        //Add buttons to buttonPanel
-        buttonPanel.add(addButton);
-        buttonPanel.add(updateButton);
-        buttonPanel.add(removeButton);
-
-        //Added to southPanel
-
-
-        //Add panels to window
-        add(northPanel, BorderLayout.NORTH);
-        add(southPanel, BorderLayout.SOUTH);
-        add(scrollPane, BorderLayout.CENTER);
-        refreshTable();
-
-        //Listeners to do CRUD operations
+        
         addButton.addActionListener(e -> {
             String output = manager.addSupplier(supplierIDField.getText(), supplierNameField.getText(),
                     supplierAddressField.getText(), supplierEmailField.getText(),
@@ -95,6 +100,23 @@ public class SuppliersUI extends GUI {
             refreshTable();
         });
 
+        //Create blanks as easiest solution to create blank row, will {RETURN} to refacto
+        //Add buttons to buttonPanel
+        buttonPanel.add(addButton);
+        buttonPanel.add(updateButton);
+        buttonPanel.add(removeButton);
+        return buttonPanel;
+    }
+
+    @Override
+    public JPanel createSouthPanel() {
+        JPanel inputPanel = createInputPanel();
+        JPanel buttonPanel = createButtonPanel();
+        JPanel southPanel = new JPanel(new GridLayout( 3, 1, 5, 5));
+        southPanel.add(errorPanel);
+        southPanel.add(inputPanel);
+        southPanel.add(buttonPanel);
+        return southPanel;
     }
 
     @Override
@@ -103,15 +125,6 @@ public class SuppliersUI extends GUI {
         for (Supplier user : manager.getSuppliers()) {
             supplierTable.addRow(new Object[]{user.getID(), user.getName(), user.getAddress(), user.getEmail(), user.getDepartment()});
         }
-    }
-
-    @Override
-    public JPanel createSouthPanel(JPanel inputPanel, JPanel buttonPanel) {
-        JPanel southPanel = new JPanel(new GridLayout( 3, 1, 5, 5));
-        southPanel.add(errorPanel);
-        southPanel.add(inputPanel);
-        southPanel.add(buttonPanel);
-        return null;
     }
 
 }

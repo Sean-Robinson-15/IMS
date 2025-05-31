@@ -6,9 +6,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class OrdersUI extends GUI {
+public class OrdersUI extends GUI  {
     private final InventoryManager manager;
-
     private final ProductManager productManager;
     private final BasketManager basketManager;
     private final DefaultTableModel inventoryTable;
@@ -16,13 +15,11 @@ public class OrdersUI extends GUI {
     private JTextField productIDField;
     private JTextField userIDField;
     private JTextField productQuantityField;
-    private JPanel errorPanel;
 
     public OrdersUI(InventoryManager manager, ProductManager productManager, BasketManager basketManager) {
         this.manager = manager;
         this.productManager = productManager;
         this.basketManager = basketManager;
-        setLayout(new BorderLayout());
 
         //Create Default Table
         inventoryTable = createNonEditTable(new String[]{"ID","Product", "Quantity", "Price"});
@@ -30,16 +27,18 @@ public class OrdersUI extends GUI {
 
         JSplitPane mainPanel = createMainPanel();
         JPanel northPanel = createNorthPanel("Orders");
-        JPanel inputPanel = createInputPanel();
-        JPanel buttonPanel = createButtonPanel();
-        JPanel southPanel = createSouthPanel(inputPanel, buttonPanel);
-
-        //Add panels to window
-        add(northPanel, BorderLayout.NORTH);
-        add(southPanel, BorderLayout.SOUTH);
-        add(mainPanel, BorderLayout.CENTER);
+        JPanel southPanel = createSouthPanel();
+        
+        addPanels(northPanel, mainPanel, southPanel);
         refreshTable();
+    }
 
+    private JPanel createTablePanel(JTable table, String header) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+        JLabel headerLabel = createHeader(header);
+        panel.add(headerLabel, BorderLayout.NORTH);
+        return panel;
     }
 
     private JSplitPane createMainPanel() {
@@ -54,18 +53,18 @@ public class OrdersUI extends GUI {
         return mainPanel;
     }
     @Override
-    public JPanel createSouthPanel(JPanel inputPanel, JPanel buttonPanel) {
+    public JPanel createSouthPanel() {
+        JPanel inputPanel = createInputPanel();
+        JPanel buttonPanel = createButtonPanel();
         JPanel southPanel = new JPanel(new GridLayout( 3, 1, 5, 5));
-        errorPanel = new JPanel(new BorderLayout());
-
         southPanel.add(errorPanel);
         southPanel.add(inputPanel);
         southPanel.add(buttonPanel);
 
         return southPanel;
     }
-
-    private JPanel createInputPanel() {
+    @Override
+    public JPanel createInputPanel() {
         JPanel inputPanel = new JPanel(new GridLayout(2 , 1));
         JPanel topHalf = new JPanel(new GridLayout(1 , 1));
         JPanel bottomHalf = new JPanel(new GridLayout(1 , 1));
@@ -84,7 +83,8 @@ public class OrdersUI extends GUI {
         return inputPanel;
     }
 
-    private JPanel createButtonPanel() {
+    @Override
+    public JPanel createButtonPanel() {
         JPanel buttonPanel = new JPanel(new GridLayout());
 
         JButton addButton = new JButton("Add To Basket/Update");
@@ -132,13 +132,7 @@ public class OrdersUI extends GUI {
         return buttonPanel;
     }
 
-    private JPanel createTablePanel(JTable table, String header) {
-            JPanel panel = new JPanel(new BorderLayout());
-            panel.add(new JScrollPane(table), BorderLayout.CENTER);
-            JLabel headerLabel = createHeader(header);
-            panel.add(headerLabel, BorderLayout.NORTH);
-            return panel;
-    }
+
 
 
     @Override

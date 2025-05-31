@@ -1,4 +1,6 @@
 package IMS.UI;
+import IMS.Interfaces.TableUIInterface;
+import IMS.Interfaces.UserUIInterface;
 import IMS.Inventory.UserManager;
 import IMS.Users.Customer;
 
@@ -7,82 +9,72 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
-public class CustomersUI extends GUI {
+public class CustomersUI extends GUI implements UserUIInterface, TableUIInterface {
     private final UserManager manager;
-    private final DefaultTableModel customerTable;
-    private JPanel errorPanel;
+    private DefaultTableModel customerTable;
+    private final JTextField customerNameField;
+    private final JTextField customerAddressField;
+    private final JTextField customerEmailField;
+    private final JTextField customerIDField;
 
     public CustomersUI(UserManager manager) {
-        setLayout(new BorderLayout());
         this.manager = manager;
-        //Add Table
 
-        customerTable = createNonEditTable(new String[]{"ID","Name", "Email", "Address"});
+        customerIDField = new JTextField(5);
+        customerNameField = new JTextField(10);
+        customerAddressField = new JTextField(5);
+        customerEmailField = new JTextField(5);
 
-        JTable table = new JTable(customerTable);
-        JScrollPane scrollPane = new JScrollPane(table);
-
-        //Field Creation
-        JTextField customerIDField = new JTextField(5);
-        JTextField customerNameField = new JTextField(10);
-        JTextField customerAddressField = new JTextField(5);
-        JTextField customerEmailField = new JTextField(5);
-
-        //Initial IMS.UI.UI/Panel Creation. Will {RETURN} to see if there is a better way
-
-        JPanel topInput = createTopInput(customerIDField, customerNameField, customerEmailField);
-        JPanel bottomInput = createBottomInput(customerAddressField);
-        JPanel inputPanel = createInputPanel(topInput, bottomInput);
-
-
-        JPanel errorPanel = new JPanel(new BorderLayout());
-        JPanel buttonPanel = createButtonPanel(customerIDField,customerNameField,
-                customerAddressField, customerEmailField, errorPanel);
-        JPanel southPanel = createSouthPanel( inputPanel, buttonPanel);
         JPanel northPanel = createNorthPanel("Customers");
-
-
-
-        //Add panels to window
-        add(northPanel, BorderLayout.NORTH);
-        add(southPanel, BorderLayout.SOUTH);
-        add(scrollPane, BorderLayout.CENTER);
+        JScrollPane mainPanel = createTablePanel();
+        JPanel southPanel = createSouthPanel();
+        
+        addPanels(northPanel, mainPanel, southPanel);
         refreshTable();
-
-
-
     }
 
-    private JPanel createTopInput(JTextField customerIDField, JTextField customerNameField, JTextField customerEmailField) {
+    @Override
+    public JScrollPane createTablePanel() {
+        customerTable = createNonEditTable(new String[]{"ID","Name", "Email", "Address"});
+        JTable table = new JTable(customerTable);
+        return new JScrollPane(table);
+    }
+
+    @Override
+    public JPanel createTopInput() {
         JPanel topInput = new JPanel(new GridLayout());
         addLabelField(topInput, "   ID :  ", customerIDField);
         addLabelField(topInput, "   Name :  ", customerNameField);
         addLabelField(topInput, "   Email :  ", customerEmailField);
         return topInput;
     }
-    private JPanel createBottomInput(JTextField customerAddressField) {
+
+    @Override
+    public JPanel createBottomInput() {
         JPanel bottomInput = new JPanel(new GridLayout());
         addLabelField(bottomInput, "  Address :  ", customerAddressField);
         return bottomInput;
     }
 
-    private JPanel createInputPanel(JPanel topInput, JPanel bottomInput) {
+    @Override
+    public JPanel createInputPanel() {
+        JPanel topInput = createTopInput();
+        JPanel bottomInput = createBottomInput();
         JPanel inputPanel = new JPanel(new GridLayout(2, 1, 5, 10));
         inputPanel.add(topInput);
         inputPanel.add(bottomInput);
         return inputPanel;
     }
 
-    private JPanel createButtonPanel(JTextField customerIDField, JTextField customerNameField,
-                             JTextField customerAddressField, JTextField customerEmailField,
-                             JPanel errorPanel) {
+    @Override
+    public JPanel createButtonPanel() {
         JPanel buttonPanel = new JPanel(new GridLayout());
         //Button Creation
         JButton addButton = new JButton("Add");
         JButton updateButton = new JButton("Update");
         JButton removeButton = new JButton("Remove");
 
-        //Listeners to do CRUD operations
+        
         addButton.addActionListener(e -> {
             String output = manager.addCustomer(customerIDField.getText(), customerNameField.getText(),
                     customerAddressField.getText(), customerEmailField.getText());
@@ -111,16 +103,6 @@ public class CustomersUI extends GUI {
         buttonPanel.add(updateButton);
         buttonPanel.add(removeButton);
         return buttonPanel;
-    }
-
-    @Override
-    public JPanel createSouthPanel(JPanel inputPanel, JPanel buttonPanel) {
-        errorPanel = new JPanel(new BorderLayout());
-        JPanel southPanel = new JPanel(new GridLayout( 3, 1, 5, 5));
-        southPanel.add(errorPanel);
-        southPanel.add(inputPanel);
-        southPanel.add(buttonPanel);
-        return southPanel;
     }
 
 

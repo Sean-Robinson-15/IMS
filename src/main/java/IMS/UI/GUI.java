@@ -8,6 +8,13 @@ import java.awt.*;
 
 public abstract class GUI extends JPanel implements UIPanelInterface {
 
+    protected JPanel errorPanel;
+
+    public GUI() {
+        setLayout(new BorderLayout());
+        errorPanel = new JPanel(new BorderLayout());
+    }
+
     protected void addLabelField(JPanel parent, String labelText, JTextField textField) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JLabel(labelText), BorderLayout.WEST);
@@ -21,6 +28,26 @@ public abstract class GUI extends JPanel implements UIPanelInterface {
                 return false;
             }
         };
+    }
+
+    protected abstract JPanel createInputPanel();
+    protected abstract JPanel createButtonPanel();
+
+
+    protected void addPanels(JPanel northPanel, JComponent mainPanel, JPanel southPanel) {
+        add(northPanel, BorderLayout.NORTH);
+        add(mainPanel, BorderLayout.CENTER);
+        add(southPanel, BorderLayout.SOUTH);
+    }
+
+    protected JPanel createSouthPanel() {
+        JPanel inputPanel = createInputPanel();
+        JPanel buttonPanel = createButtonPanel();
+        JPanel southPanel = new JPanel(new GridLayout( 3, 1, 5, 5));
+        southPanel.add(errorPanel);
+        southPanel.add(inputPanel);
+        southPanel.add(buttonPanel);
+        return southPanel;
     }
 
     protected JLabel createHeader(String text) {
