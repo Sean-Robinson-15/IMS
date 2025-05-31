@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class ReceivingUI extends GUI implements TableUIInterface {
     private final ProductManager productManager;
-    private DefaultTableModel inventoryTable;
+    private DefaultTableModel receivingTable;
     private final JTextField productIDField;
     private final JTextField productQuantityField;
 
@@ -30,8 +30,8 @@ public class ReceivingUI extends GUI implements TableUIInterface {
     }
     @Override
     public JScrollPane createTablePanel() {
-        inventoryTable = createNonEditTable(new String[]{"ID","Product", "Quantity"});
-        JTable table = new JTable(inventoryTable);
+        receivingTable = createNonEditTable(new String[]{"ID","Product", "Quantity"});
+        JTable table = new JTable(receivingTable);
         return new JScrollPane(table);
     }
 
@@ -73,10 +73,10 @@ public class ReceivingUI extends GUI implements TableUIInterface {
 
     @Override
     public void refreshTable() {
-        inventoryTable.setRowCount(0);
+        receivingTable.setRowCount(0);
         ArrayList<Product> lowStock = new ArrayList<>();
         for (Product item : productManager.getInTransit()) {
-            inventoryTable.addRow(new Object[]{item.getID(), item.getName(), item.getQuantity()});
+            receivingTable.addRow(new Object[]{item.getID(), item.getName(), item.getQuantity()});
         }
         Alerts.sendStockAlert(lowStock);
     }

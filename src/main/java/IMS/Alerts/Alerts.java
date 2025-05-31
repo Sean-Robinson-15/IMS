@@ -9,7 +9,6 @@ public class Alerts {
     public static void sendStockAlert(ArrayList<Product> items) {
         String message;
         if (items.isEmpty()) {
-            System.out.println("DIdnt RUn");
             return;
         }
 
