@@ -1,5 +1,5 @@
-package IMS.UI;
-import IMS.Inventory.*;
+package IMS.Managers;
+import IMS.UI.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,10 +30,25 @@ public class UIManager extends JFrame {
         setLocation(900, 500);
         menuPanel = createMainMenuUI();
         add(menuPanel, BorderLayout.NORTH);
+        add(createHomePanel(), BorderLayout.CENTER);
+
 
 
     }
 
+    private JPanel createHomePanel(){
+        JPanel homePanel = new JPanel(new GridLayout(3,1));
+        JLabel welcomeLabel = new JLabel("Welcome to BNU Industry Systems' Inventory Management System (IMS) ");
+        welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
+        JLabel messageLabel = new JLabel("Please select a function from the menu to begin." );
+        messageLabel.setHorizontalAlignment(JLabel.CENTER);
+        JLabel bottomMessageLabel = new JLabel("BNU Industry Systems LTD 2025" );
+        bottomMessageLabel.setHorizontalAlignment(JLabel.CENTER);
+        homePanel.add(welcomeLabel);
+        homePanel.add(messageLabel);
+        homePanel.add(bottomMessageLabel);
+        return homePanel;
+    }
     private JPanel createMainMenuUI() {
         JPanel menuPanel = new JPanel(new GridLayout(0,7));
         JButton homeButton = new JButton("Home");
@@ -52,7 +67,9 @@ public class UIManager extends JFrame {
         menuPanel.add(reportsButton);
         menuPanel.add(ReceivingButton);
 
-        homeButton.addActionListener(e -> switchPanel());
+        homeButton.addActionListener(e -> {
+            switchPanel();
+        });
 
         inventoryButton.addActionListener(e -> {
             InventoryUI inventoryUI = new InventoryUI(productManager);
@@ -87,8 +104,17 @@ public class UIManager extends JFrame {
         return menuPanel;
     }
 
+    private void switchPanel() {
+        getContentPane().removeAll();
+        add(menuPanel, BorderLayout.NORTH);
+        add(createHomePanel(), BorderLayout.CENTER);
+        repaint();
+        revalidate();
+    }
+
     private void switchPanel(JPanel panel, JPanel menuPanel) {
         String panelName = panel.getClass().getSimpleName();
+        getContentPane().removeAll();
         if (!checkUI(panelName)) {
             removeUIExcept(panelName);
             add(panel);
@@ -96,12 +122,6 @@ public class UIManager extends JFrame {
             repaint();
             revalidate();
         }
-    }
-    private void switchPanel() {
-        getContentPane().removeAll();
-        add(menuPanel, BorderLayout.NORTH);
-        repaint();
-        revalidate();
     }
 
     private boolean checkUI(String string) {

@@ -1,4 +1,4 @@
-package IMS.Inventory;
+package IMS.Managers;
 
 import IMS.Orders.Purchase;
 import IMS.Products.Product;
@@ -23,11 +23,15 @@ public class BasketManager {
         if (!currentUser.equals(userID) && !currentUser.isEmpty()) {
             return "Error: User has changed";
         }
-        currentUser = userID;
+
 
         if (userID.isEmpty()) {
             return "User ID is empty. Please try again.";
         }
+        if (userID.charAt(0) != 'C' && userID.charAt(0) != 'c' && userID.charAt(0) != 'S' && userID.charAt(0) != 's') {
+            return "User ID must start with C (Customer) or S (Supplier). Please try again.";
+        }
+        currentUser = userID;
         if ((ID.isEmpty())) {
             return "No Product Entered. Please try again.";
         }

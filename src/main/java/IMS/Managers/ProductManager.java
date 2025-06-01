@@ -1,4 +1,4 @@
-package IMS.Inventory;
+package IMS.Managers;
 import IMS.Products.Product;
 import java.util.Map;
 import java.util.TreeMap;

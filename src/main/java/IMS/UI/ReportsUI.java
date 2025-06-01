@@ -1,6 +1,6 @@
 package IMS.UI;
 import IMS.Interfaces.TableUIInterface;
-import IMS.Inventory.TransactionManager;
+import IMS.Managers.TransactionManager;
 import IMS.Orders.Transaction;
 import IMS.Renderers.TransactionRowRenderer;
 

@@ -1,4 +1,4 @@
-package IMS.Inventory;
+package IMS.Managers;
 import IMS.Users.*;
 import java.util.ArrayList;
 
@@ -13,6 +13,9 @@ public class UserManager {
     private String validateAddUser(String ID, String name, String address, String email) {
         if (ID.isEmpty() || name.isEmpty() || address.isEmpty() || email.isEmpty()) {
             return "Please enter all necessary fields.";
+        }
+        if (ID.charAt(0) != 'C' && ID.charAt(0) != 'c' && ID.charAt(0) != 'S' && ID.charAt(0) != 's') {
+            return "User ID must start with C (Customer) or S (Supplier).";
         }
         if (!userData.userExists(ID).isEmpty()) {
             return userData.userExists(ID);

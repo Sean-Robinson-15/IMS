@@ -1,7 +1,7 @@
 package IMS.UI;
 import IMS.Interfaces.TableUIInterface;
 import IMS.Interfaces.UserUIInterface;
-import IMS.Inventory.UserManager;
+import IMS.Managers.UserManager;
 import IMS.Users.Customer;
 
 import javax.swing.*;

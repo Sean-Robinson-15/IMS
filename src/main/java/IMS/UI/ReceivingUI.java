@@ -1,6 +1,6 @@
 package IMS.UI;
 import IMS.Interfaces.TableUIInterface;
-import IMS.Inventory.ProductManager;
+import IMS.Managers.ProductManager;
 import IMS.Products.Product;
 import IMS.Alerts.Alerts;
 

@@ -1,4 +1,4 @@
-package IMS.Inventory;
+package IMS.Managers;
 import IMS.Orders.Purchase;
 import IMS.Orders.Sale;
 import IMS.Orders.Transaction;

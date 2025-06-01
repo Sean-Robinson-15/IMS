@@ -1,4 +1,4 @@
-package IMS.Inventory;
+package IMS.Managers;
 
 import java.util.ArrayList;
 import java.util.TreeMap;

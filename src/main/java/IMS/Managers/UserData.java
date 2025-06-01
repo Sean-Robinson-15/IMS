@@ -1,4 +1,4 @@
-package IMS.Inventory;
+package IMS.Managers;
 
 import IMS.Users.User;
 import IMS.Users.Customer;

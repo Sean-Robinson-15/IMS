@@ -1,5 +1,5 @@
 package IMS;
-import IMS.UI.UIManager;
+import IMS.Managers.UIManager;
 
 import javax.swing.*;
 

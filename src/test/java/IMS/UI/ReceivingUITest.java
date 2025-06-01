@@ -1,6 +1,6 @@
 package IMS.UI;
 
-import IMS.Inventory.ProductManager;
+import IMS.Managers.ProductManager;
 import IMS.Products.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

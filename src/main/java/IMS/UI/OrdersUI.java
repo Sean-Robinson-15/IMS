@@ -1,5 +1,5 @@
 package IMS.UI;
-import IMS.Inventory.*;
+import IMS.Managers.*;
 import IMS.Products.Product;
 
 import javax.swing.*;
