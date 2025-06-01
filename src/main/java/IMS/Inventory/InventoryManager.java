@@ -13,7 +13,9 @@ public class InventoryManager {
     public static final int DEFAULT_LOW_STOCK_THRESHOLD = 10;
 
 
-    public InventoryManager(ProductManager productManager, BasketManager basketManager, UserManager userManager, TransactionManager transactionManager) {
+    public InventoryManager(ProductManager productManager, BasketManager basketManager,
+                            UserManager userManager, TransactionManager transactionManager)
+    {
         this.productManager = productManager;
         this.userManager = userManager;
         this.transactionManager = transactionManager;

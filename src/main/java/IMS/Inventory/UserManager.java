@@ -63,12 +63,7 @@ public class UserManager {
         return userData.updateUser(ID, name, address, email, department);
     }
 
-    public ArrayList<Customer> getCustomers() {
-        return userData.getCustomers();
-    }
-    public ArrayList<Supplier> getSuppliers() {
-        return userData.getSuppliers();
-    }
+
 
     public boolean userExists(String ID) {
         // as this function returns messages if correct, empty is actually an error, so false.
@@ -80,14 +75,18 @@ public class UserManager {
         return userData.removeUser(ID);
     }
 
+    public ArrayList<Customer> getCustomers() {
+        return userData.getCustomers();
+    }
+    public ArrayList<Supplier> getSuppliers() {
+        return userData.getSuppliers();
+    }
     public String getUserName(String ID) {
         return userData.getUserName(ID);
     }
-
     public String getUserAddress(String ID) {
         return userData.getUserAddress(ID);
     }
-
     public String getUserEmail(String ID) {
         return userData.getUserEmail(ID);
     }

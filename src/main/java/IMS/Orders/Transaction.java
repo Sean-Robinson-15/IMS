@@ -4,7 +4,7 @@ import IMS.Products.Product;
 
 import java.util.ArrayList;
 
-public abstract class Transaction {
+public class Transaction {
     private final String orderID;
     private final String userID;
     private final ArrayList<Product> products;

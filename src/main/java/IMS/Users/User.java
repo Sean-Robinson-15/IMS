@@ -1,20 +1,20 @@
 package IMS.Users;
 
 public class User {
-    private final String UserID;
+    private final String userID;
     private String name;
     private String address;
     private String email;
 
-    public User(String UserID, String name, String address, String email) {
-        this.UserID = UserID.toUpperCase();
+    public User(String userID, String name, String address, String email) {
+        this.userID = userID.toUpperCase();
         this.name = name;
         this.address = address;
         this.email = email;
     }
 
     public String getID(){
-        return UserID;
+        return userID;
     }
     public String getName(){
         return name;

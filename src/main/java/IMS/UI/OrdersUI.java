@@ -140,9 +140,6 @@ public class OrdersUI extends GUI  {
         return buttonPanel;
     }
 
-
-
-
     @Override
     public void refreshTable() {
         inventoryTable.setRowCount(0);

@@ -17,10 +17,6 @@ public class TransactionManager {
         return "Order ID " + orderID + " added.";
     }
 
-    public ArrayList<Transaction> getAllTransactions() {
-        return new ArrayList<>(transactions.values());
-    }
-
     public TreeMap<String,Double> generateReport() {
         TreeMap<String,Double> report = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         double sales = 0;
@@ -41,6 +37,10 @@ public class TransactionManager {
         report.put("Purchases", purchases);
         report.put("Profit/Loss", profit);
         return report;
+    }
+
+    public ArrayList<Transaction> getAllTransactions() {
+        return new ArrayList<>(transactions.values());
     }
 
 }
