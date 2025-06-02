@@ -32,7 +32,6 @@ public class TransactionManager {
         }
 
         double profit = sales - purchases;
-        System.out.println("Sales: " + sales);
         report.put("Revenue", sales);
         report.put("Purchases", purchases);
         report.put("Profit/Loss", profit);

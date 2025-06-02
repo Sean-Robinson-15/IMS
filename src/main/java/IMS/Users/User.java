@@ -26,12 +26,12 @@ public class User {
         return address;
     }
     public void setName(String name){
-        this.name = name;
+        if (!name.isEmpty()) {this.name = name;}
     }
     public void setEmail(String email){
-        this.email = email;
+        if (!email.isEmpty()) {this.email = email;}
     }
     public void setAddress(String address){
-         this.address=address;
+         if (!address.isEmpty()) {this.address=address;}
     }
 }

@@ -66,8 +66,6 @@ public class UserManager {
         return userData.updateUser(ID, name, address, email, department);
     }
 
-
-
     public boolean userExists(String ID) {
         // as this function returns messages if correct, empty is actually an error, so false.
         // so we use ! to flip the boolean
